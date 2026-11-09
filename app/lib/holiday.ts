@@ -8,13 +8,13 @@ export const holiday = {
   food: {
     slug: "catering-wigilijny-bialystok",
     label: "Catering wigilijny",
-    title: "Catering wigilijny w Białymstoku",
-    description: "Gdzie szukać potraw na Wigilię w Białymstoku i co sprawdzić przed zamówieniem.",
+    title: "Catering wigilijny w Białymstoku 2026",
+    description: "Menu, ceny, terminy i miejsca odbioru cateringu na Wigilię 2026 w Białymstoku.",
   },
   trees: {
     slug: "choinki-bialystok",
     label: "Choinki z odbiorem i dostawą",
-    title: "Choinki w Białymstoku – odbiór przy Atrium Biała i dostawa",
-    description: "Jodły i świerki w Białymstoku. Poznaj nasz punkt przy Atrium Biała i sprawdź, jak wybrać drzewko.",
+    title: "Gdzie kupić choinkę w Białymstoku? Sezon 2026",
+    description: "Choinki przy Galerii Biała, odbiór i dostawa oraz lokalizacje sprzedaży w mieście i okolicach.",
   },
 };

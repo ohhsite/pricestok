@@ -1,3 +1,4 @@
+import OfferVisual from "./OfferVisual";
 import { Gift, CookingPot, TreePine, ArrowUpRight } from "lucide-react";
 import { listOffers } from "../lib/repository";
 import { isActive } from "../lib/data";
@@ -27,6 +28,7 @@ export function HolidayLinks({ current }: { current?: string }) {
           </a>
         ))}
       </div>
+      <a className="holiday-comparison-link" href="/porownanie-cen-cateringu-wigilijnego-bialystok-2026">Catering wigilijny 2026 — porównaj opublikowane ceny →</a>
     </section>
   );
 }
@@ -52,6 +54,7 @@ export async function HolidayPage({ guide, children }: {
             <div className="holiday-grid">
               {offers.map((offer) => (
                 <article className="detail-box" key={offer.id}>
+                  <div className="holiday-offer-image"><OfferVisual offer={offer} /></div>
                   <div className="eyebrow">{offer.guideKind === "idea" ? "Propozycja" : "Promocja"}{offer.sponsored && " · Sponsorowane"}</div>
                   <h3><a href={"/promocja/" + offer.slug}>{offer.title}</a></h3>
                   <p>{offer.summary}</p>
