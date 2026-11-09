@@ -1,6 +1,9 @@
 export function siteUrl() {
-  const raw = process.env.SITE_URL || "http://localhost:3000";
+  const production = process.env.NODE_ENV === "production";
+  const raw = process.env.SITE_URL || (production ? "https://pricestok.pl" : "http://localhost:3000");
   const u = new URL(raw);
+  if (production && ["localhost", "127.0.0.1", "[::1]"].includes(u.hostname))
+    return "https://pricestok.pl";
   if (!["http:", "https:"].includes(u.protocol))
     throw new Error("Nieprawidłowy SITE_URL");
   return u.origin;
