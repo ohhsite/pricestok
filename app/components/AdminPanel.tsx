@@ -1,7 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Plus, X, RefreshCw, Search } from "lucide-react";
-import { Offer, categories, today, isActive } from "../lib/data";
+import { Offer, categories as defaultCategories, today, isActive } from "../lib/data";
+import { holiday } from "../lib/holiday";
+import CategoryAdmin from "./CategoryAdmin";
+import type { Category } from "../lib/categories";
 import { BillingAdmin } from "./Billing";
 import { offerPhoto, photoName } from "../lib/photos";
 import type { Company } from "../lib/companies";
@@ -39,6 +42,9 @@ function slugify(t: string) {
     .slice(0, 90);
 }
 export default function AdminPanel() {
+  const [moveTo, setMoveTo] = useState("");
+  const [tab, setTab] = useState("oferty");
+  const [categories, setCategories] = useState<Category[]>(defaultCategories);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [companyError, setCompanyError] = useState("");
   const [companyDraft, setCompanyDraft] = useState<{
@@ -79,6 +85,7 @@ export default function AdminPanel() {
               : "Nie udało się pobrać danych."),
         );
       setOffers(d.offers);
+      setCategories(d.categories || defaultCategories);
       setOrders(d.orders || []);
       setSubs(d.submissions);
       setMetrics(d.metrics);
@@ -90,6 +97,8 @@ export default function AdminPanel() {
     }
   }
   useEffect(() => {
+    const saved = Number(localStorage.getItem("pricestok-admin-page-size"));
+    if ([10, 20, 50, 100].includes(saved)) setPageSize(saved);
     reload();
     loadCompanies();
   }, []);
@@ -166,7 +175,7 @@ export default function AdminPanel() {
       }
       const refreshed = await reload();
       setSelected([]);
-      if (refreshed) setMessage("Zmiany zostały zapisane.");
+      if (refreshed) setMessage(data.action === "verifyOffer" ? "Oferta sprawdzona · " + today() : "Zmiany zostały zapisane.");
       return true;
     } catch (e: any) {
       setMessage(e.message);
@@ -177,12 +186,11 @@ export default function AdminPanel() {
   }
   const categoryName = (id: string) =>
     categories.find((c) => c.id === id)?.name || id;
+  const isArchived = (o: Offer) => o.status === "archived" || (o.status === "published" && !!o.end && o.end < today());
   const results = offers.filter(
     (o) =>
       (!category || o.category === category) &&
-      (status === "all" ||
-        o.status === status ||
-        (status === "expired" && !!o.end && o.end < today())) &&
+      (tab === "archiwum" ? isArchived(o) : !isArchived(o) && (status === "all" || o.status === status)) &&
       `${o.title} ${o.company}`.toLowerCase().includes(query.toLowerCase()),
   );
   results.sort((a, b) => {
@@ -291,11 +299,17 @@ export default function AdminPanel() {
           className="table-action"
           disabled={busy}
           onClick={() =>
-            action({ action: "save", offer: { ...o, verified: today() } })
+            action({ action: "verifyOffer", id: o.id })
           }
         >
-          Oznacz jako sprawdzoną
+          {o.verified === today() ? "✓ Sprawdzona dziś" : "Oznacz jako sprawdzoną"}
         </button>
+        <button className="table-action" disabled={busy} onClick={() => {
+          if (!confirm(o.sponsored ? "Zarchiwizować płatną ofertę?" : "Usunąć tę ofertę z panelu i strony?")) return;
+          void action(o.sponsored
+            ? { action: "bulk", ids: [o.id], status: "archived" }
+            : { action: "deleteOffer", id: o.id });
+        }}>{o.sponsored ? "Archiwizuj" : "Usuń"}</button>
       </div>
     );
   }
@@ -306,7 +320,7 @@ export default function AdminPanel() {
         <div>
           <div className="eyebrow">PRICESTOK · REDAKCJA</div>
           <h1 className="page-title">Twoje promocje</h1>
-          <p className="lead" style={{ fontSize: 13 }}>
+          <p className="lead">
             Dodawaj, aktualizuj i porządkuj oferty w jednym miejscu.
           </p>
         </div>
@@ -319,24 +333,18 @@ export default function AdminPanel() {
         >
           Wyloguj
         </button>
-        <button className="button" onClick={() => setEdit(blank())}>
+        <button className="button" onClick={() => { setTab("oferty"); setEdit(blank()); }}>
           <Plus size={17} /> Nowa promocja
         </button>
       </div>
       <nav className="admin-tools" aria-label="Sekcje panelu">
-        <a className="filter-button" href="#panel-oferty">
-          Oferty
-        </a>
-        <a className="filter-button" href="#panel-zgloszenia">
-          Zgłoszenia
-        </a>
-        <a className="filter-button" href="#panel-firmy">
-          Firmy
-        </a>
-        <a className="filter-button" href="#panel-platnosci">
-          Płatności
-        </a>
+        {Object.entries({ oferty: "Oferty", archiwum: "Archiwum ofert", zgloszenia: "Zgłoszenia", firmy: "Firmy", platnosci: "Płatności", kategorie: "Kategorie" }).map(([id, name]) => (
+          <button key={id} className="filter-button" aria-pressed={tab === id} onClick={() => { setTab(id); setPage(1); setSelected([]); }}>{name}</button>
+        ))}
       </nav>
+      {message && <p className="message" role="status">{message}</p>}
+      {tab === "kategorie" && <CategoryAdmin categories={categories} reload={reload} />}
+      {(tab === "oferty" || tab === "archiwum") && <>
       <div className="panel-stats">
         <div className="stat">
           Aktualne oferty
@@ -354,11 +362,6 @@ export default function AdminPanel() {
           <strong>{metrics.reduce((s, r) => s + r.clicks, 0)}</strong>
         </div>
       </div>
-      {message && (
-        <div role="status" className="message">
-          {message}
-        </div>
-      )}
       <div className="admin-tools" id="panel-oferty">
         <input
           value={query}
@@ -380,8 +383,6 @@ export default function AdminPanel() {
           <option value="all">Wszystkie statusy</option>
           <option value="published">Opublikowane</option>
           <option value="draft">Szkice</option>
-          <option value="archived">Archiwum</option>
-          <option value="expired">Po terminie</option>
         </select>
         <select
           value={category}
@@ -416,6 +417,12 @@ export default function AdminPanel() {
         </button>
         {selected.length > 0 && (
           <>
+            <select aria-label="Kategoria docelowa" value={moveTo} onChange={(e) => setMoveTo(e.target.value)}>
+              <option value="">Kategoria docelowa</option>
+              {categories.map((c) => <option key={c.id} value={c.id}>{c.parent ? categoryName(c.parent) + " / " : ""}{c.name}</option>)}
+            </select>
+            <button className="table-action" disabled={busy || !moveTo}
+              onClick={() => action({ action: "moveOffers", ids: selected, category: moveTo })}>Przenieś zaznaczone</button>
             <span>{selected.length} zaznaczonych (maks. 100)</span>
             <button className="table-action" onClick={() => setSelected([])}>
               Wyczyść zaznaczenie
@@ -460,6 +467,7 @@ export default function AdminPanel() {
             value={pageSize}
             onChange={(event) => {
               setPageSize(Number(event.target.value));
+              localStorage.setItem("pricestok-admin-page-size", event.target.value);
               setPage(1);
             }}
           >
@@ -607,11 +615,12 @@ export default function AdminPanel() {
         Liczniki mierzą otwarcia i przejścia, nie unikalnych użytkowników.
         Weryfikację oznaczaj dopiero po sprawdzeniu aktualnych warunków.
       </p>
-      <section className="submissions" id="panel-platnosci">
-        <BillingAdmin />
+      </>}
+      {tab === "platnosci" && <section className="submissions" id="panel-platnosci">
+        <BillingAdmin categories={categories} />
         <h2>Płatne zamówienia ({orders.length})</h2>
         {!orders.length && (
-          <p className="lead" style={{ fontSize: 13 }}>
+          <p className="lead">
             Zamówienia pojawią się po rozpoczęciu płatności przez firmę.
           </p>
         )}
@@ -691,8 +700,8 @@ export default function AdminPanel() {
             </div>
           </article>
         ))}
-      </section>
-      <section className="submissions" id="panel-zgloszenia">
+      </section>}
+      {tab === "zgloszenia" && <section className="submissions" id="panel-zgloszenia">
         <h2>Zgłoszenia od firm</h2>
         <div className="admin-tools">
           <button
@@ -711,7 +720,7 @@ export default function AdminPanel() {
           </button>
         </div>
         {!subs.some((s) => Boolean(s.archived_at) === archive) && (
-          <p className="lead" style={{ fontSize: 13 }}>
+          <p className="lead">
             {archive
               ? "Brak zgłoszeń w archiwum."
               : "Nowe zgłoszenia z formularza pojawią się tutaj."}
@@ -754,9 +763,7 @@ export default function AdminPanel() {
                           website: d.source,
                           description: d.conditions || "",
                         });
-                        document
-                          .getElementById("panel-firmy")
-                          ?.scrollIntoView();
+                        setTab("firmy");
                       }}
                     >
                       Przygotuj wizytówkę firmy
@@ -766,6 +773,12 @@ export default function AdminPanel() {
                     <button
                       className="table-action"
                       onClick={() => {
+                        const linked = offers.find((o) => o.id === "zgloszenie-" + s.id);
+                        setTab("oferty");
+                        if (linked) {
+                          setEdit({ ...linked });
+                          return;
+                        }
                         const b = blank();
                         setEdit({
                           ...b,
@@ -801,8 +814,8 @@ export default function AdminPanel() {
               </article>
             );
           })}
-      </section>
-      <section className="submissions" id="panel-firmy">
+      </section>}
+      {tab === "firmy" && <section className="submissions" id="panel-firmy">
         <h2>Lokalne firmy ({companies.length})</h2>
         <form
           key={companyDraft ? JSON.stringify(companyDraft) : "new"}
@@ -868,7 +881,7 @@ export default function AdminPanel() {
             </li>
           ))}
         </ul>
-      </section>
+      </section>}
       {edit && (
         <div
           className="modal-backdrop"
@@ -904,6 +917,34 @@ export default function AdminPanel() {
               }}
             >
               <div className="form-grid">
+                <label className="field full">Meta title (opcjonalnie)
+                  <input maxLength={120} value={edit.metaTitle || ""} onChange={(e) => field("metaTitle", e.target.value)} />
+                </label>
+                <label className="field full">Meta description (opcjonalnie)
+                  <textarea maxLength={320} value={edit.metaDescription || ""} onChange={(e) => field("metaDescription", e.target.value)} />
+                </label>
+                <fieldset className="field full">
+                  <legend>Pokaż w przewodniku</legend>
+                  {Object.values(holiday).map((guide) => (
+                    <label key={guide.slug}>
+                      <input type="checkbox" checked={edit.guides?.includes(guide.slug) ?? false}
+                        onChange={(event) => field("guides", event.target.checked
+                          ? [...(edit.guides || []), guide.slug]
+                          : (edit.guides || []).filter((slug) => slug !== guide.slug))} />
+                      {" "}{guide.label}
+                    </label>
+                  ))}
+                </fieldset>
+                <label className="field">Typ wpisu
+                  <select value={edit.guideKind || "offer"} onChange={(event) => field("guideKind", event.target.value)}>
+                    <option value="offer">Promocja</option>
+                    <option value="idea">Propozycja w regularnej cenie</option>
+                  </select>
+                </label>
+                <label className="field">Zakup lub odbiór
+                  <input maxLength={250} value={edit.fulfillment || ""} onChange={(event) => field("fulfillment", event.target.value)}
+                    placeholder="Np. voucher PDF, odbiór do 23 grudnia" />
+                </label>
                 <label className="field full">
                   Tytuł *
                   <input

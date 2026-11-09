@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { packages, type PackageId } from "../lib/packages";
-import { categories } from "../lib/data";
+import { categories as defaultCategories } from "../lib/data";
+import type { Category } from "../lib/categories";
 const money = (c: number) =>
   (c / 100).toLocaleString("pl-PL", { style: "currency", currency: "PLN" });
 const states: Record<string, string> = {
@@ -35,10 +36,12 @@ export default function Billing({
   enabled,
   vat,
   email,
+  categories = defaultCategories,
 }: {
   enabled: boolean;
   vat: number;
   email: string;
+  categories?: Category[];
 }) {
   const [plan, setPlan] = useState<PackageId>("oneoff"),
     [requestId, setRequestId] = useState(""),
@@ -338,7 +341,7 @@ export default function Billing({
     </>
   );
 }
-export function BillingAdmin() {
+export function BillingAdmin({ categories = defaultCategories }: { categories?: Category[] }) {
   const [orders, setOrders] = useState<any[]>([]),
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);

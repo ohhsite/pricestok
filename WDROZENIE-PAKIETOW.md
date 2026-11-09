@@ -6,3 +6,7 @@
 4. W panelu pod „Zamówienia, płatności i publikacje” wybierz „Edytuj treść publikacji”. Korekty i wymiany obsługuje redakcja na podstawie numeru zamówienia. Pakiet od 3 miesięcy pozwala na pierwszą wymianę po 30 dniach i kolejną po następnych 30 dniach.
 
 Nowy cennik nie przyjmuje nowych subskrypcji. Wcześniejsze zamówienia i ich statusy pozostają w bazie. Aktywne wcześniejsze subskrypcje można zakończyć przez Stripe lub link zarządzania zamówieniem.
+
+## Kategorie i szkice zgłoszeń
+
+Po dotychczasowych migracjach uruchom `supabase/kategorie.sql`. Nowe zgłoszenia promocji będą od razu widoczne jako szkice w zakładce Oferty. Wcześniejsze zgłoszenia można otworzyć w zakładce Zgłoszenia i ręcznie przygotować z nich ofertę.

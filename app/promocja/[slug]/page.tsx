@@ -3,18 +3,21 @@ import { offerPhoto, photoName } from "../../lib/photos";
 import { notFound } from "next/navigation";
 import { Header, Footer } from "../../components/Shell";
 import { listOffers } from "../../lib/repository";
-import { categories, isActive, dateLabel, Offer } from "../../lib/data";
+import { listCategories } from "../../lib/categories";
+import { holiday } from "../../lib/holiday";
+import { isActive, dateLabel, Offer } from "../../lib/data";
 import { ArrowUpRight, MapPin, CalendarDays, Check } from "lucide-react";
 import TrackView from "../../components/TrackView";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
   const o = (await listOffers()).find((o) => o.slug === slug);
+  const title = o?.metaTitle?.trim() || (o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna");
+  const description = o?.metaDescription?.trim() || o?.summary;
   return {
-    title: o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna",
-    description: o
-      ? `${o.summary} Sprawdź warunki promocji w Białymstoku.`
-      : undefined,
+    title,
+    description,
+    openGraph: o ? { title, description, url: `/promocja/${slug}`, type: "website" as const } : undefined,
     alternates: { canonical: `/promocja/${slug}` },
     robots:
       o && isActive(o)
@@ -26,7 +29,7 @@ export default async function Detail({ params }: any) {
   const { slug } = await params;
   const o = (await listOffers()).find((o) => o.slug === slug);
   if (!o || o.status === "draft" || o.status === "archived") notFound();
-  const cat = categories.find((c) => c.id === o.category);
+  const cat = (await listCategories()).find((c) => c.id === o.category);
   const active = isActive(o);
   return (
     <>
@@ -179,6 +182,14 @@ export default async function Detail({ params }: any) {
             Zgłoś zmianę lub nieaktualną ofertę →
           </a>
         </section>
+        {o.fulfillment && <p>Zakup lub odbiór: {o.fulfillment}</p>}
+        {!!o.guides?.length && (
+          <nav className="admin-tools" aria-label="Powiązane przewodniki">
+            {Object.values(holiday).filter((g) => o.guides?.includes(g.slug)).map((g) =>
+              <a key={g.slug} href={"/" + g.slug} className="text-link">{g.label} ↗</a>
+            )}
+          </nav>
+        )}
       </main>
       <Footer />
     </>

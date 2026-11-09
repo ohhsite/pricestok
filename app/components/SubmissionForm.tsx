@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { categories } from "../lib/data";
-export default function SubmissionForm() {
+import { categories as defaultCategories } from "../lib/data";
+import type { Category } from "../lib/categories";
+export default function SubmissionForm({ categories = defaultCategories }: { categories?: Category[] }) {
   const [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false),
     [success, setSuccess] = useState(false);

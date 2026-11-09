@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import {
   Offer,
-  categories,
+  categories as defaultCategories,
   isActive,
   today,
   weekday,
@@ -47,12 +47,16 @@ function countLabel(n: number) {
       ? "oferty"
       : "ofert";
 }
+import type { Category } from "../lib/categories";
+
 export function OfferCard({
   o,
   saved,
   onSave,
+  categories = defaultCategories,
 }: {
   o: Offer;
+  categories?: Category[];
   saved: boolean;
   onSave: () => void;
 }) {
@@ -131,10 +135,16 @@ export default function Catalog({
   offers,
   initialCategory = "all",
   pageTitle,
+  categoryContent,
+  beforeCategories,
+  categories = defaultCategories,
 }: {
   offers: Offer[];
   initialCategory?: string;
   pageTitle?: string;
+  categoryContent?: string;
+  beforeCategories?: React.ReactNode;
+  categories?: Category[];
 }) {
   const [heartCounts, setHeartCounts] = useState<Record<string, number>>({});
   const [heartBusy, setHeartBusy] = useState(false);
@@ -187,12 +197,14 @@ export default function Catalog({
   const adTitle = process.env.NEXT_PUBLIC_PRICESTOK_AD_TITLE || "";
   const hasAd = /^https?:\/\/[^\s]+$/i.test(adUrl) && !!adTitle.trim();
   const active = offers.filter((o) => isActive(o));
+  const matchesCategory = (o: Offer, id: string) =>
+    o.category === id || categories.some((c) => c.id === o.category && c.parent === id);
   const heroOffer = active.find((o) => o.category === "jedzenie") || active[0];
   const areas = [...new Set(active.map((o) => o.area))].sort();
   const day = weekday();
   let filtered = active.filter(
     (o) =>
-      (category === "all" || o.category === category) &&
+      (category === "all" || matchesCategory(o, category)) &&
       (area === "all" || o.area === area) &&
       (!savedOnly || saved.includes(o.id)) &&
       `${o.title} ${o.company} ${o.summary}`
@@ -339,6 +351,7 @@ export default function Catalog({
           </div>
         </aside>
         <section className="category-section container" aria-label="Kategorie">
+          {beforeCategories}
           <div className="section-mini">
             <span>Znajdź coś dla siebie</span>
             <span>Małe oszczędności, wielka przyjemność.</span>
@@ -359,7 +372,7 @@ export default function Catalog({
               <strong>Wszystkie</strong>
               <small>{active.length} okazji</small>
             </a>
-            {categories.map((c) => {
+            {categories.filter((c) => !c.parent).map((c) => {
               const Icon = icons[c.icon];
               return (
                 <a
@@ -382,9 +395,9 @@ export default function Catalog({
                   </span>
                   <strong>{c.name}</strong>
                   <small>
-                    {active.filter((o) => o.category === c.id).length}{" "}
+                    {active.filter((o) => matchesCategory(o, c.id)).length}{" "}
                     {countLabel(
-                      active.filter((o) => o.category === c.id).length,
+                      active.filter((o) => matchesCategory(o, c.id)).length,
                     )}
                   </small>
                 </a>
@@ -392,6 +405,13 @@ export default function Catalog({
             })}
           </div>
         </section>
+        {categories.some((c) => c.parent === category) && (
+          <nav className="container admin-tools" aria-label="Podkategorie">
+            {categories.filter((c) => c.parent === category).map((c) => (
+              <a className="filter-button" key={c.id} href={"/kategoria/" + c.id}>{c.name}</a>
+            ))}
+          </nav>
+        )}
         <section className="offers-section container" id="okazje">
           <div className="section-heading">
             <div>
@@ -522,6 +542,7 @@ export default function Catalog({
                   <OfferCard
                     key={o.id}
                     o={{ ...o, hearts: hearts(o) }}
+                    categories={categories}
                     saved={saved.includes(o.id)}
                     onSave={() => save(o.id)}
                   />
@@ -601,6 +622,12 @@ export default function Catalog({
             <Heart /> Z myślą o Białymstoku
           </span>
         </div>
+        {categoryContent && (
+          <section className="container detail-long">
+            <h2>Więcej o kategorii</h2>
+            <p style={{ whiteSpace: "pre-wrap" }}>{categoryContent}</p>
+          </section>
+        )}
       </main>
       <Footer />
     </>

@@ -1,10 +1,12 @@
+import { holiday } from "../../lib/holiday";
 import { adminAllowed } from "../../lib/admin";
 import { listOffers, saveOffer } from "../../lib/repository";
 import { getSupabase } from "../../lib/supabase";
 import { getStripe } from "../../lib/stripe";
 import { validPaidSession } from "../../lib/plans";
 import { sameOrigin } from "../../lib/config";
-import { categories, Offer, today } from "../../lib/data";
+import { listCategories } from "../../lib/categories";
+import { Offer, today } from "../../lib/data";
 import { photoName } from "../../lib/photos";
 export async function GET() {
   if (!(await adminAllowed()))
@@ -44,6 +46,7 @@ export async function GET() {
     return Response.json(
       {
         offers: await listOffers(true),
+        categories: await listCategories(),
         submissions: sub.data?.map((s) => ({
           ...s,
           data: JSON.stringify(s.data),
@@ -67,6 +70,12 @@ export async function GET() {
 }
 function valid(o: any): o is Offer {
   return (
+    (o?.metaTitle === undefined || (typeof o.metaTitle === "string" && o.metaTitle.length <= 120)) &&
+    (o?.metaDescription === undefined || (typeof o.metaDescription === "string" && o.metaDescription.length <= 320)) &&
+    (o?.guides === undefined || (Array.isArray(o.guides) && o.guides.length <= 3 &&
+      o.guides.every((slug: unknown) => Object.values(holiday).some((g) => g.slug === slug)))) &&
+    (o?.guideKind === undefined || ["offer", "idea"].includes(o.guideKind)) &&
+    (o?.fulfillment === undefined || (typeof o.fulfillment === "string" && o.fulfillment.length <= 250)) &&
     typeof o?.id === "string" &&
     /^[a-z0-9-]{1,100}$/.test(o.id) &&
     typeof o.slug === "string" &&
@@ -88,7 +97,6 @@ function valid(o: any): o is Offer {
       "image",
       "source",
     ].every((k) => typeof o[k] === "string" && o[k].length < 5000) &&
-    categories.some((c) => c.id === o.category) &&
     ["published", "draft", "archived"].includes(o.status) &&
     Array.isArray(o.days) &&
     o.days.length > 0 &&
@@ -120,7 +128,7 @@ export async function POST(req: Request) {
     const data = JSON.parse(raw),
       db = getSupabase();
     if (data.action === "save") {
-      if (!valid(data.offer))
+      if (!valid(data.offer) || !(await listCategories()).some((c) => c.id === data.offer.category))
         return Response.json(
           { error: "Sprawdź pola, adres URL, daty i dni." },
           { status: 400 },
@@ -132,6 +140,27 @@ export async function POST(req: Request) {
           { status: 400 },
         );
       await saveOffer(data.offer);
+    } else if (data.action === "deleteOffer") {
+      const offer = (await listOffers(true)).find((o) => o.id === data.id);
+      if (!offer) return Response.json({ ok: true });
+      if (offer.sponsored)
+        return Response.json({ error: "Płatną ofertę możesz zarchiwizować." }, { status: 409 });
+      await saveOffer({ ...offer, status: "deleted" });
+    } else if (data.action === "verifyOffer") {
+      const offer = (await listOffers(true)).find((o) => o.id === data.id);
+      if (!offer) return Response.json({ error: "Oferta niedostępna." }, { status: 404 });
+      await saveOffer({ ...offer, verified: today() });
+    } else if (data.action === "moveOffers") {
+      if (!Array.isArray(data.ids) || !data.ids.length || data.ids.length > 100 ||
+        !(await listCategories()).some((c) => c.id === data.category))
+        return Response.json({ error: "Zaznacz oferty i wybierz kategorię docelową." }, { status: 400 });
+      const offers = (await listOffers(true)).filter((o) => data.ids.includes(o.id));
+      if (offers.length) {
+        const { error } = await db.from("bnp_offers").upsert(offers.map((o) => ({
+          id: o.id, data: { ...o, category: data.category },
+        })));
+        if (error) throw error;
+      }
     } else if (data.action === "bulk") {
       if (
         !Array.isArray(data.ids) ||

@@ -16,7 +16,10 @@ export async function listOffers(admin = false): Promise<Offer[]> {
         (error.code || "połączenie"),
     );
   }
-  for (const row of data || []) map.set(row.id, row.data as Offer);
+  for (const row of data || []) {
+    if (row.data.status === "deleted") map.delete(row.id);
+    else map.set(row.id, row.data as Offer);
+  }
   if (admin) return [...map.values()];
   const counts = await getSupabase().rpc("bnp_heart_counts");
   for (const row of counts.data || []) {
