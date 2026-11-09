@@ -2027,3 +2027,115 @@ td small {
 .hero-picture .offer-brand { background:#262923; color:#fff; }
 .hero-picture-overlay { pointer-events:none; }
 @media(max-width:600px) { .detail-image > .offer-brand { min-height:280px; } .offer-brand .brand-name { font-size:23px; } }
+.holiday-links {
+  margin: 2rem 0;
+}
+.holiday-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+.holiday-grid a {
+  display: grid;
+  gap: .4rem;
+  margin: 0;
+  color: inherit;
+  text-decoration: none;
+}
+.holiday-grid a:hover strong,
+.holiday-grid a:focus-visible strong {
+  text-decoration: underline;
+}
+
+.admin-panel {
+  width: min(96%, 1480px);
+  max-width: 1480px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.admin-panel .lead,
+.admin-panel .field,
+.admin-panel .check-label,
+.admin-panel .message,
+.admin-panel .submission,
+.admin-panel .detail-box p,
+.admin-panel .detail-box li {
+  font-size: 16px;
+}
+.admin-panel .eyebrow,
+.admin-panel .stat,
+.admin-panel small,
+.admin-panel .form-note {
+  font-size: 14px;
+  color: #505848;
+}
+.admin-panel .button,
+.admin-panel .filter-button,
+.admin-panel .table-action {
+  min-height: 42px;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+.admin-panel .table-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #31462c;
+}
+.admin-panel .filter-button[aria-pressed="true"] {
+  background: var(--dark);
+  color: white;
+}
+.admin-panel input:not([type="checkbox"]),
+.admin-panel select,
+.admin-panel textarea {
+  font-size: 16px;
+}
+.admin-panel input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+}
+.admin-panel table {
+  font-size: 15px;
+}
+.admin-panel th {
+  font-size: 14px;
+  font-weight: 700;
+  color: #46513d;
+}
+.admin-panel .modal {
+  width: min(100%, 880px);
+}
+@media (max-width: 640px) {
+  .admin-panel {
+    width: 94%;
+  }
+  .admin-panel .panel-top {
+    flex-wrap: wrap;
+  }
+}
+
+.holiday-links[aria-labelledby] {
+  padding: clamp(16px, 3vw, 34px);
+  border: 1px solid #e9d9bb;
+  border-radius: 20px;
+  background: #fffaf0;
+}
+.holiday-heading { margin-bottom: 1rem; }
+.holiday-heading h2 { font-size: clamp(24px, 3vw, 36px); margin: .25rem 0; }
+.holiday-grid .holiday-card {
+  padding: 1.15rem;
+  border-radius: 14px;
+  min-height: 175px;
+  align-content: start;
+  border: 1px solid #0002;
+}
+.holiday-card strong { font-size: 18px; }
+.holiday-card b { display: flex; gap: .35rem; align-items: center; margin-top: .45rem; }
+.holiday-card:hover, .holiday-card:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.holiday-gifts { background: #f8e5e8; }
+.holiday-food { background: #ffe8b6; }
+.holiday-grid .holiday-trees { background: #23473c; color: #fff; }
+.category-admin-list { list-style: none; padding: 0; margin: 1rem 0; }
+.category-admin-list li { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .35rem 0; border-bottom: 1px solid var(--line); }
+.category-admin-list strong { flex: 1; }

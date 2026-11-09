@@ -3,20 +3,22 @@ import OfferVisual from "../../components/OfferVisual";
 import { notFound } from "next/navigation";
 import { Header, Footer } from "../../components/Shell";
 import { listOffers } from "../../lib/repository";
-import { categories, isActive, dateLabel, Offer } from "../../lib/data";
+import { listCategories } from "../../lib/categories";
+import { holiday } from "../../lib/holiday";
+import { isActive, dateLabel, Offer } from "../../lib/data";
 import { ArrowUpRight, MapPin, CalendarDays, Check } from "lucide-react";
 import TrackView from "../../components/TrackView";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: any) {
   const { slug } = await params;
   const o = (await listOffers()).find((o) => o.slug === slug);
+  const title = o?.metaTitle?.trim() || (o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna");
+  const description = o?.metaDescription?.trim() || (o ? `${o.company}: ${o.summary} ${o.address}, Białystok. ${o.end ? "Do " + dateLabel(o.end) + "." : "Sprawdź dni i warunki."}` : undefined);
   return {
-    title: o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna",
-    description: o
-      ? `${o.company}: ${o.summary} ${o.address}, Białystok. ${o.end ? "Do " + dateLabel(o.end) + "." : "Sprawdź dni i warunki."}`
-      : undefined,
+    title,
+    description,
     alternates: { canonical: `/promocja/${slug}` },
-    openGraph: { title: o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna", description: o?.summary, url: `/promocja/${slug}` },
+    openGraph: o ? { title, description, url: `/promocja/${slug}`, type: "website" as const } : undefined,
     robots:
       o && isActive(o)
         ? { index: true, follow: true }
@@ -28,7 +30,7 @@ export default async function Detail({ params }: any) {
   const offers = await listOffers();
   const o = offers.find((o) => o.slug === slug);
   if (!o || o.status !== "published") notFound();
-  const cat = categories.find((c) => c.id === o.category);
+  const cat = (await listCategories()).find((c) => c.id === o.category);
   const active = isActive(o);
   return (
     <>
@@ -177,6 +179,14 @@ export default async function Detail({ params }: any) {
           ))}
           <a className="text-link" href={"/kategoria/" + o.category}>Wszystkie okazje: {cat?.name} →</a>
         </section>
+        {o.fulfillment && <p>Zakup lub odbiór: {o.fulfillment}</p>}
+        {!!o.guides?.length && (
+          <nav className="admin-tools" aria-label="Powiązane przewodniki">
+            {Object.values(holiday).filter((g) => o.guides?.includes(g.slug)).map((g) =>
+              <a key={g.slug} href={"/" + g.slug} className="text-link">{g.label} ↗</a>
+            )}
+          </nav>
+        )}
       </main>
       <Footer />
     </>

@@ -1,6 +1,6 @@
 import { Header, Footer } from "../components/Shell";
 import { listCompanies } from "../lib/companies";
-import { categories } from "../lib/data";
+import { listCategories } from "../lib/categories";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
@@ -15,6 +15,7 @@ export default async function Companies({
 }) {
   const { kategoria } = await searchParams;
   const companies = await listCompanies().catch(() => null);
+  const categories = await listCategories();
   const selected = categories.find((c) => c.id === kategoria);
   const visible = companies?.filter(
     (c) => !selected || c.category === selected.id,

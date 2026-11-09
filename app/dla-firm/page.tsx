@@ -1,3 +1,4 @@
+import { listCategories } from "../lib/categories";
 import { Header, Footer } from "../components/Shell";
 import Billing from "../components/Billing";
 import { billingReady, vatPercent } from "../lib/billing";
@@ -8,7 +9,7 @@ export const metadata = {
     "Promuj firmę: pakiety promocji od 50 zł netto i wizytówka lokalna za 199 zł netto za rok.",
   referrer: "no-referrer",
 };
-export default function Business() {
+export default async function Business() {
   return (
     <>
       <Header />
@@ -41,6 +42,7 @@ export default function Business() {
           </a>
         </section>
         <Billing
+          categories={await listCategories()}
           enabled={billingReady()}
           vat={vatPercent()}
           email={process.env.SELLER_CONTACT_EMAIL || ""}

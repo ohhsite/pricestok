@@ -1,4 +1,4 @@
-import { categories } from "../../lib/data";
+import { listCategories } from "../../lib/categories";
 import { getSupabase } from "../../lib/supabase";
 import { databaseConfigured, sameOrigin } from "../../lib/config";
 export async function POST(request: Request) {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       data.company.length < 2 ||
       data.company.length > 150 ||
       (kind !== "offer" && data.company.length > 120) ||
-      !categories.some((category) => category.id === data.category) ||
+      !(await listCategories()).some((category) => category.id === data.category) ||
       typeof data.source !== "string" ||
       data.source.length > (kind === "offer" ? 1000 : 500) ||
       (kind === "company" &&

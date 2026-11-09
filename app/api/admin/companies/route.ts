@@ -1,5 +1,5 @@
 import { adminAllowed } from "../../../lib/admin";
-import { categories } from "../../../lib/data";
+import { listCategories } from "../../../lib/categories";
 import { listCompanies } from "../../../lib/companies";
 import { getSupabase } from "../../../lib/supabase";
 import { sameOrigin } from "../../../lib/config";
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     typeof name !== "string" ||
     !name.trim() ||
     name.length > 120 ||
-    !categories.some((c) => c.id === category) ||
+    !(await listCategories()).some((c) => c.id === category) ||
     typeof description !== "string" ||
     description.length > 2000 ||
     typeof address !== "string" ||

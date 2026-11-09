@@ -24,6 +24,11 @@ export type Offer = {
   oldPrice: string;
   sponsored?: boolean;
   hearts?: number;
+  metaTitle?: string;
+  metaDescription?: string;
+  guides?: string[];
+  guideKind?: "offer" | "idea";
+  fulfillment?: string;
 };
 export const categories = [
   { id: "jedzenie", name: "Jedzenie", icon: "Utensils", color: "#fff0e6" },
