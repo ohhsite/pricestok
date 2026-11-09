@@ -1,0 +1,55 @@
+import { Header, Footer } from "../components/Shell";
+import HolidayBrand from "../components/HolidayBrand";
+import { HolidayLinks } from "../components/Holiday";
+import { siteUrl } from "../lib/config";
+import { checkedOn, comparisonPath } from "../lib/christmas-catering";
+export const dynamic = "force-dynamic";
+const title = "Catering wigilijny Białystok 2026 — porównanie cen";
+const description = "Ile kosztuje catering na Wigilię 2026 w Białymstoku? Zestawy rodzinne, finger food i ceny potraw z przeliczeniem na osobę, sztukę i litr.";
+export const metadata = { title, description, alternates: { canonical: comparisonPath }, openGraph: { title, description, type: "article", url: comparisonPath, publishedTime: "2026-11-09T20:00:00+01:00", modifiedTime: "2026-11-09T20:00:00+01:00" } };
+const traugutta = "https://butik.hoteltraugutta3.pl/pl/p/Zestaw-12-dan-wigilijnych-dla-4-5-osob/269";
+const box = "https://butik.hoteltraugutta3.pl/pl/p/Swiateczny-BOX-FINGERFOOD-/395";
+const dwor = "https://www.dworczarneckiego.pl/aktualnosci/wigilia-firmowa-bialystok-2026-w-dworze-czarneckiego";
+const faqs = [
+  { q: "Ile kosztuje catering wigilijny w Białymstoku w 2026 roku?", a: "W opublikowanych ofertach zestaw Traugutta3 dla 4–5 osób kosztuje 690 zł. Osobno dostępne są przekąski finger food: box Traugutta3 za 249 zł oraz warianty Dworu Czarneckiego po 69 lub 85 zł na osobę. To różne rodzaje zamówień, dlatego nie tworzą jednego przedziału cen pełnej Wigilii." },
+  { q: "Do kiedy można zamówić catering Traugutta3 na święta 2026?", a: "Hotel podaje termin zamówień do 20 grudnia 2026. Odbiór osobisty odbywa się 23 grudnia w godzinach 14:00–20:00, a dowóz 24 grudnia w godzinach 8:00–12:00. Dostępność i koszt dostawy sprawdź przed zakupem." },
+  { q: "Czy cenniki z 2025 roku obowiązują na Wigilię 2026?", a: "Nie można tego zakładać. W zestawieniu firm wskazujemy, które strony nadal pokazują poprzedni sezon. Cena jest aktualna na grudzień 2026 dopiero po potwierdzeniu jej przez sprzedawcę." },
+];
+export default function Comparison() {
+  const base = siteUrl();
+  const jsonLd = [
+    { "@context": "https://schema.org", "@type": "Article", headline: title, description, datePublished: "2026-11-09T20:00:00+01:00", dateModified: "2026-11-09T20:00:00+01:00", mainEntityOfPage: base + comparisonPath, author: { "@type": "Organization", name: "Redakcja PriceStok", url: base + "/o-nas" }, publisher: { "@type": "Organization", name: "PriceStok", url: base, logo: { "@type": "ImageObject", url: base + "/pricestok-logo.svg" } } },
+    { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
+    { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "PriceStok", item: base }, { "@type": "ListItem", position: 2, name: "Catering wigilijny", item: base + "/catering-wigilijny-bialystok" }, { "@type": "ListItem", position: 3, name: "Porównanie cen 2026", item: base + comparisonPath }] },
+  ];
+  return <><Header /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+    <main className="container inner-main holiday-article">
+      <nav className="breadcrumbs"><a href="/">PriceStok</a> / <a href="/catering-wigilijny-bialystok">Catering wigilijny</a> / Porównanie cen 2026</nav>
+      <header className="article-header"><p className="eyebrow">CENY · BIAŁYSTOK I OKOLICE · BOŻE NARODZENIE 2026</p><h1>{title}</h1><p className="lead">Gotowy zestaw na rodzinny stół, kilka potraw na wagę czy przekąski do biura? Sprawdziliśmy publiczne oferty i przeliczyliśmy ceny, żeby łatwiej zaplanować świąteczny budżet.</p><p className="article-byline">Redakcja PriceStok · aktualizacja: {checkedOn}</p></header>
+      <nav className="article-toc" aria-label="Spis treści"><a href="#ceny">Ceny zestawów</a><a href="#potrawy">Pojedyncze potrawy</a><a href="#koszty">Dodatkowe koszty</a><a href="#terminy">Terminy</a><a href="#pytania">Pytania i odpowiedzi</a></nav>
+      <article>
+        <section id="ceny"><h2>Ile kosztuje catering na Wigilię 2026?</h2><p>W zestawieniu cen uwzględniamy oferty powiązane z tegorocznym sezonem: Traugutta3 i Dwór Czarneckiego. To stan publicznych publikacji na dzień sprawdzenia, a nie pełna lista dostępnych kuchni. Pozostałe miejsca oraz status ich menu znajdziesz w <a href="/catering-wigilijny-bialystok">katalogu cateringu wigilijnego w Białymstoku</a>.</p>
+          <p><strong>Pełne menu i finger food porównuj osobno.</strong> Zestaw rodzinny składa się z wielu potraw; pudełko przekąsek może służyć jako poczęstunek podczas spotkania. Różnica w cenie nie oznacza automatycznie różnicy w opłacalności tej samej kolacji.</p>
+          <div className="holiday-table-scroll"><table className="holiday-table price-comparison"><caption>Opublikowane ceny — stan na {checkedOn}. Koszty na osobę są obliczeniem redakcji.</caption><thead><tr><th>Firma i zamówienie</th><th>Cena</th><th>Zakres</th><th>Przeliczenie</th></tr></thead><tbody>
+            <tr><td><HolidayBrand slug="traugutta3" name="Traugutta3" /><a href={traugutta} target="_blank" rel="noopener noreferrer">Traugutta3: zestaw wigilijny ↗</a></td><td><strong>690 zł</strong> / zestaw</td><td>Rekomendowany dla 4–5 osób</td><td>138–172,50 zł / osobę</td></tr>
+            <tr><td><HolidayBrand slug="traugutta3" name="Traugutta3" /><a href={box} target="_blank" rel="noopener noreferrer">Traugutta3: box finger food ↗</a></td><td><strong>249 zł</strong> / box</td><td>36 przekąsek, rekomendacja dla 5–6 osób</td><td>41,50–49,80 zł / osobę; ok. 6,92 zł / szt.</td></tr>
+            <tr><td><HolidayBrand slug="dwor-czarneckiego" name="Dwór Czarneckiego" /><a href={dwor} target="_blank" rel="noopener noreferrer">Dwór Czarneckiego: finger food ↗</a></td><td><strong>69 zł</strong> / osobę</td><td>6 przekąsek / osobę</td><td>11,50 zł / przekąskę</td></tr>
+            <tr><td><a href={dwor} target="_blank" rel="noopener noreferrer">Dwór Czarneckiego: większy wariant ↗</a></td><td><strong>85 zł</strong> / osobę</td><td>8 przekąsek / osobę</td><td>ok. 10,63 zł / przekąskę</td></tr>
+          </tbody></table></div>
+          <p>Przeliczenia nie uwzględniają dostawy, ewentualnych dopłat i różnic w wielkości poszczególnych przekąsek. Przy zamówieniu dla większej grupy potwierdź z firmą, ile porcji potrzebujesz.</p>
+        </section>
+        <section><h2>Zestaw dla czterech czy pięciu osób — skąd różnica w koszcie?</h2><p>Przy cenie 690 zł dzielenie przez cztery osoby daje 172,50 zł na osobę, a przez pięć — 138 zł. Całkowity koszt i ilość jedzenia pozostają takie same. Dlatego sama etykieta „od 138 zł na osobę” nie powinna decydować o wyborze. Sprawdź gramaturę, liczbę pierogów i uszek oraz to, które dania rzeczywiście zjecie.</p><p>Gdy część potraw przygotowujesz w domu, porównaj koszyk pojedynczych produktów z ceną całego zestawu. Do planu wpisz liczbę gości, potrawy domowe i pozycje do zamówienia. Łatwiej wtedy uniknąć dublowania dań.</p></section>
+        <section id="potrawy"><h2>Barszcz i pierogi na zamówienie: porównuj te same jednostki</h2><p>Małe opakowanie może wyglądać taniej niż większe, choć koszt litra lub sztuki będzie wyższy. Przykłady z tegorocznej oferty sklepu Traugutta3:</p>
+          <div className="holiday-table-scroll"><table className="holiday-table"><thead><tr><th>Potrawa</th><th>Opakowanie</th><th>Cena opakowania</th><th>Cena jednostkowa</th></tr></thead><tbody>
+            <tr><td><a href="https://butik.hoteltraugutta3.pl/pl/p/Barszcz-czerwony-na-jesiotrze-wedzonym/166" target="_blank" rel="noopener noreferrer">Barszcz czerwony na jesiotrze ↗</a></td><td>900 ml</td><td>49 zł</td><td>ok. 54,44 zł / litr</td></tr>
+            <tr><td><a href="https://butik.hoteltraugutta3.pl/cateringwigilijny/3" target="_blank" rel="noopener noreferrer">Pierogi z kapustą i grzybami ↗</a></td><td>10 sztuk</td><td>45 zł</td><td>4,50 zł / szt.</td></tr>
+          </tbody></table></div><p>Przy pierogach cena za sztukę nie zastępuje informacji o gramaturze. Przy zupach sprawdź, czy dodatki są w cenie. Barszcz z tego przykładu powstaje na wywarze rybnym — nie jest odpowiednikiem barszczu roślinnego.</p>
+        </section>
+        <section id="koszty"><h2>Co doliczyć do ceny cateringu?</h2><p>Przed opłaceniem zamówienia poproś o pełną kwotę obejmującą potrawy, opakowania i dowóz pod konkretny adres. Dopytaj o minimalną wartość koszyka, minimalną liczbę porcji oraz ewentualną kaucję za naczynia. Jeśli odbierasz jedzenie samodzielnie, sprawdź miejsce i przedział godzinowy odbioru.</p><p>Ustal też sposób wydawania posiłków: schłodzone, do podgrzania czy gotowe do podania. Instrukcja przechowywania i podgrzewania pomoże zaplanować miejsce w lodówce oraz czas przed kolacją.</p></section>
+        <section id="terminy"><h2>Do kiedy zamawiać catering wigilijny w Białymstoku?</h2><p>Traugutta3 przyjmuje zamówienia do <strong>20 grudnia 2026</strong>. Hotel wskazuje odbiór 23 grudnia, 14:00–20:00, oraz dowóz 24 grudnia, 8:00–12:00. <a href="https://www.hoteltraugutta3.pl/szczegoly-aktualnosci?NewsID=101755" target="_blank" rel="noopener noreferrer">Źródło terminów ↗</a></p><p>W Dworze Czarneckiego szczegóły cateringu ustala dział organizacji wydarzeń. Terminu oferty firmowej nie należy traktować jako gwarancji wolnej dostawy w Wigilię. U pozostałych firm zapytaj o sezon 2026 — data publikacji starego menu nie potwierdza tegorocznych zapisów.</p></section>
+        <section><h2>Jak powstało zestawienie?</h2><p>Korzystamy z publicznych stron restauracji i sklepów, a źródła są podlinkowane przy cenach. Przeliczenia zaokrąglamy do dwóch miejsc po przecinku. Nie porównujemy cen z 2025 jako ofert na 2026 i nie włączamy kolacji w restauracji do tabeli cateringu na wynos. Ceny oraz dostępność mogą się zmienić; wiążące warunki otrzymasz od sprzedawcy.</p><p><a className="text-link" href="/catering-wigilijny-bialystok">Zobacz osiem miejsc z cateringiem i status ich oferty →</a></p></section>
+        <section id="pytania"><h2>Catering świąteczny — pytania i odpowiedzi</h2>{faqs.map(({ q, a }) => <details className="holiday-faq" key={q}><summary>{q}</summary><p>{a}</p></details>)}</section>
+      </article>
+      <HolidayLinks current="catering-wigilijny-bialystok" />
+    </main><Footer /></>;
+}

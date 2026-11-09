@@ -11,7 +11,7 @@ export default async function Panel() {
   return (
     <>
       <Header />
-      <main className="container inner-main">
+      <main className="container inner-main admin-panel">
         {(await adminAllowed()) ? (
           <AdminPanel />
         ) : (

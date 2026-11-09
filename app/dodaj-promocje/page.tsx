@@ -1,10 +1,11 @@
+import { listCategories } from "../lib/categories";
 import { Header, Footer } from "../components/Shell";
 import SubmissionForm from "../components/SubmissionForm";
 export const metadata = {
   title: "Dodaj promocję swojej firmy",
   robots: { index: false, follow: true },
 };
-export default function Add() {
+export default async function Add() {
   return (
     <>
       <Header />
@@ -15,7 +16,7 @@ export default function Add() {
           Znasz lokalną firmę albo ofertę, o której warto wiedzieć? Prześlij
           szczegóły. Sprawdzimy warunki i zdecydujemy o publikacji.
         </p>
-        <SubmissionForm />
+        <SubmissionForm categories={await listCategories()} />
       </main>
       <Footer />
     </>

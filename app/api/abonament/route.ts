@@ -4,7 +4,7 @@ import { getSupabase } from "../../lib/supabase";
 import { getStripe } from "../../lib/stripe";
 import { sameOrigin, siteUrl } from "../../lib/config";
 import { packages } from "../../lib/packages";
-import { categories } from "../../lib/data";
+import { listCategories } from "../../lib/categories";
 import {
   billingPlans,
   billingAmount,
@@ -228,7 +228,7 @@ export async function POST(req: Request) {
         Number(nip[9])
     )
       throw new Error("Podaj poprawny polski NIP.");
-    if (!categories.some((c) => c.id === payload.category))
+    if (!(await listCategories()).some((c) => c.id === payload.category))
       throw new Error("Wybierz kategorię.");
     const source = new URL(payload.source);
     if (
