@@ -2004,3 +2004,26 @@ td small {
 }
 
 
+
+
+/* Company identity replaces unrelated stock photography. */
+.offer-brand { width:100%; height:100%; min-height:210px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:48px 28px 22px; background:#f5f2ed; color:#272621; text-align:center; }
+.offer-brand .brand-location { font-size:9px; letter-spacing:1.8px; font-weight:600; opacity:.62; }
+.card-image .offer-brand .brand-logo, .detail-image .offer-brand .brand-logo, .hero-picture .offer-brand .brand-logo { width:72%; height:82px; max-height:100px; object-fit:contain; }
+.offer-brand .brand-caption { font-size:11px; opacity:.6; }
+.offer-brand .brand-name { font-size:26px; line-height:1.15; max-width:100%; overflow-wrap:anywhere; letter-spacing:-.8px; }
+.offer-brand.brand-chilli-pizza, .offer-brand.brand-na-lipowej, .offer-brand.brand-magic-gym { background:#262923; color:#f7f2e9; }
+.offer-brand.brand-beauty-bar { background:#35312e; color:#f7f2e9; }
+.offer-brand.brand-fito-gym { background:#eceee9; }
+.offer-brand.brand-house-of-beauty { background:#f5eee9; }
+.offer-price { display:block; font-size:22px; letter-spacing:-.6px; margin:2px 0 10px; color:#242620; }
+.offer-address { display:flex; align-items:center; gap:6px; color:#68675f; font-size:12px; margin:8px 0 14px; }
+.card-body .card-bottom { margin-top:auto; }
+.card-body { display:flex; flex-direction:column; }
+.detail-image > .offer-brand { min-height:400px; border-radius:inherit; }
+.detail-price { font-size:30px; }
+.hero-picture > .offer-brand { min-height:430px; padding-bottom:180px; }
+.hero-picture .offer-brand .brand-location, .hero-picture .offer-brand .brand-caption { display:none; }
+.hero-picture .offer-brand { background:#262923; color:#fff; }
+.hero-picture-overlay { pointer-events:none; }
+@media(max-width:600px) { .detail-image > .offer-brand { min-height:280px; } .offer-brand .brand-name { font-size:23px; } }

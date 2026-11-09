@@ -967,8 +967,13 @@ export default function AdminPanel() {
                     ))}
                   </select>
                 </label>
+                <label className="field full">
+                  Logo firmy — bezpośredni link HTTPS do oficjalnego logo
+                  <input type="url" placeholder="https://strona-firmy.pl/logo.png" value={edit.logo || ""} onChange={(e) => field("logo", e.target.value)} />
+                  <small>Bez własnego zdjęcia pokażemy logo. Jeśli go brakuje, pojawi się nazwa firmy.</small>
+                </label>
                 <label className="field">
-                  Zdjęcie ilustracyjne
+                  Zdjęcie oferty (opcjonalne)
                   <select
                     value={photoName.test(edit.image) ? "custom" : edit.image}
                     onChange={(e) => field("image", e.target.value)}
@@ -1147,3 +1152,4 @@ export default function AdminPanel() {
     </>
   );
 }
+

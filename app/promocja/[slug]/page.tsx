@@ -1,5 +1,5 @@
 import { siteUrl } from "../../lib/config";
-import { offerPhoto, photoName } from "../../lib/photos";
+import OfferVisual from "../../components/OfferVisual";
 import { notFound } from "next/navigation";
 import { Header, Footer } from "../../components/Shell";
 import { listOffers } from "../../lib/repository";
@@ -13,9 +13,10 @@ export async function generateMetadata({ params }: any) {
   return {
     title: o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna",
     description: o
-      ? `${o.summary} Sprawdź warunki promocji w Białymstoku.`
+      ? `${o.company}: ${o.summary} ${o.address}, Białystok. ${o.end ? "Do " + dateLabel(o.end) + "." : "Sprawdź dni i warunki."}`
       : undefined,
     alternates: { canonical: `/promocja/${slug}` },
+    openGraph: { title: o ? `${o.title} — ${o.company}, Białystok` : "Oferta niedostępna", description: o?.summary, url: `/promocja/${slug}` },
     robots:
       o && isActive(o)
         ? { index: true, follow: true }
@@ -24,8 +25,9 @@ export async function generateMetadata({ params }: any) {
 }
 export default async function Detail({ params }: any) {
   const { slug } = await params;
-  const o = (await listOffers()).find((o) => o.slug === slug);
-  if (!o || o.status === "draft" || o.status === "archived") notFound();
+  const offers = await listOffers();
+  const o = offers.find((o) => o.slug === slug);
+  if (!o || o.status !== "published") notFound();
   const cat = categories.find((c) => c.id === o.category);
   const active = isActive(o);
   return (
@@ -57,7 +59,7 @@ export default async function Detail({ params }: any) {
                 item: siteUrl() + "/promocja/" + o.slug,
               },
             ],
-          }).replace(/</g, "\u003c"),
+          }).replace(/</g, "\\u003c"),
         }}
       />
       <TrackView id={o.id} />
@@ -69,20 +71,8 @@ export default async function Detail({ params }: any) {
         </nav>
         <div className="detail-grid">
           <div className="detail-image">
-            <img
-              src={offerPhoto(o.image)}
-              alt={
-                photoName.test(o.image)
-                  ? o.title
-                  : "Zdjęcie ilustracyjne: " + cat?.name
-              }
-            />
+            <OfferVisual offer={o} />
             <span className="discount">{o.badge}</span>
-            {!photoName.test(o.image) && (
-              <span className="photo-label">
-                Zdjęcie ilustracyjne — nie przedstawia oferty firmy
-              </span>
-            )}
           </div>
           <div className="detail-content">
             <div className="eyebrow">
@@ -93,6 +83,7 @@ export default async function Detail({ params }: any) {
               {o.company} ↗
             </a>
             <p>{o.summary}</p>
+            {o.price && <strong className="offer-price detail-price">{o.price}</strong>}
             {!active && (
               <div className="message error">
                 Ta promocja już się zakończyła lub jeszcze nie wystartowała.
@@ -165,8 +156,8 @@ export default async function Detail({ params }: any) {
           </div>
         </div>
         <section className="detail-long">
-          <h2>Co warto wiedzieć?</h2>
-          <p>{o.conditions}</p>
+          <h2>Warunki promocji w {o.company}</h2>
+          <p style={{ whiteSpace: "pre-line" }}>{o.conditions.replaceAll("\\n", "\n")}</p>
           <div className="detail-box">
             <strong>Przed skorzystaniem sprawdź dostępność</strong>
             <p>
@@ -179,8 +170,16 @@ export default async function Detail({ params }: any) {
             Zgłoś zmianę lub nieaktualną ofertę →
           </a>
         </section>
+        <section className="detail-long">
+          <h2>Więcej lokalnych okazji</h2>
+          {offers.filter((other) => other.id !== o.id && other.category === o.category && isActive(other)).slice(0, 3).map((other) => (
+            <a key={other.id} className="detail-box" style={{ display: "block" }} href={"/promocja/" + other.slug}><strong>{other.title}</strong><p>{other.company} · {other.address}</p></a>
+          ))}
+          <a className="text-link" href={"/kategoria/" + o.category}>Wszystkie okazje: {cat?.name} →</a>
+        </section>
       </main>
       <Footer />
     </>
   );
 }
+

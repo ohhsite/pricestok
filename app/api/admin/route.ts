@@ -88,6 +88,7 @@ function valid(o: any): o is Offer {
       "image",
       "source",
     ].every((k) => typeof o[k] === "string" && o[k].length < 5000) &&
+    (!o.logo || (typeof o.logo === "string" && o.logo.length < 2000 && /^https:\/\//.test(o.logo))) &&
     categories.some((c) => c.id === o.category) &&
     ["published", "draft", "archived"].includes(o.status) &&
     Array.isArray(o.days) &&
@@ -281,3 +282,4 @@ export async function POST(req: Request) {
     );
   }
 }
+

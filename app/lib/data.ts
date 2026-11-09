@@ -1,3 +1,4 @@
+import reviewedOffers from "./reviewed-offers.json" with { type: "json" };
 export type Offer = {
   id: string;
   slug: string;
@@ -12,6 +13,7 @@ export type Offer = {
   area: string;
   source: string;
   image: string;
+  logo?: string;
   days: number[];
   start: string;
   end: string;
@@ -82,7 +84,7 @@ function offer(
     ...extra,
   };
 }
-export const seeds: Offer[] = [
+const legacySeeds: Offer[] = [
   offer(
     "chilli-druga-pizza",
     "Druga pizza za połowę ceny",
@@ -253,6 +255,12 @@ export const seeds: Offer[] = [
     "cinema",
   ),
 ];
+// Keep old URLs in the editor, but publish only offers checked against a direct source.
+const reviewedIds = new Set(reviewedOffers.map((o) => o.id));
+export const seeds: Offer[] = [
+  ...legacySeeds.filter((o) => !reviewedIds.has(o.id)).map((o) => ({ ...o, status: "archived", featured: false })),
+  ...reviewedOffers,
+];
 export function today() {
   return new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Warsaw" }).format(
     new Date(),
@@ -276,3 +284,4 @@ export function dateLabel(v: string) {
       })
     : "Oferta cykliczna";
 }
+

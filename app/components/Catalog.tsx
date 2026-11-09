@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { offerPhoto, photoName } from "../lib/photos";
+import OfferVisual from "./OfferVisual";
 import {
   Search,
   MapPin,
@@ -61,15 +61,7 @@ export function OfferCard({
     <article className="offer-card">
       <div className="card-image">
         <a href={"/promocja/" + o.slug}>
-          <img
-            src={offerPhoto(o.image)}
-            alt={
-              photoName.test(o.image)
-                ? o.title
-                : "Zdjęcie ilustracyjne: " + cat?.name
-            }
-            loading="lazy"
-          />
+          <OfferVisual offer={o} />
         </a>
         <span className="discount">{o.badge}</span>
         <button
@@ -82,9 +74,7 @@ export function OfferCard({
           <span>{o.hearts || 0}</span>
         </button>
         {o.sponsored && <span className="sponsored-label">Sponsorowane</span>}
-        {!photoName.test(o.image) && (
-          <span className="photo-label">Zdjęcie ilustracyjne</span>
-        )}
+
       </div>
       <div className="card-body">
         <div className="card-meta">
@@ -101,6 +91,8 @@ export function OfferCard({
           {o.company}
         </a>
         <p>{o.summary}</p>
+        {o.price && <strong className="offer-price">{o.price}</strong>}
+        <div className="offer-address"><MapPin size={13} />{o.address}</div>
         <div className="card-bottom">
           <span>
             <Clock size={13} />
@@ -115,12 +107,10 @@ export function OfferCard({
                     .join(", ")}
           </span>
           <a
-            href={"/api/out?id=" + o.id}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={"Sprawdź u firmy: " + o.title}
+            href={"/promocja/" + o.slug}
+            aria-label={"Szczegóły promocji: " + o.title}
           >
-            Sprawdź <ArrowUpRight size={15} />
+            Szczegóły <ArrowUpRight size={15} />
           </a>
         </div>
       </div>
@@ -283,14 +273,11 @@ export default function Catalog({
           </div>
           <div className="hero-visual">
             <div className="hero-picture">
-              <img
-                src={offerPhoto(heroOffer?.image || "pizza")}
-                alt="Zdjęcie ilustracyjne lokalnych okazji"
-              />
+              {heroOffer && <OfferVisual offer={heroOffer} />}
               <div className="hero-picture-overlay" />
               <div className="visual-caption">
                 <span>NA MIEŚCIE SMAKUJE LEPIEJ</span>
-                <strong>Dobry plan na wieczór?</strong>
+                <strong>{heroOffer?.title || "Odkryj lokalne okazje"}</strong>
                 <a
                   href={heroOffer ? "/promocja/" + heroOffer.slug : "/#okazje"}
                 >
@@ -606,3 +593,4 @@ export default function Catalog({
     </>
   );
 }
+
