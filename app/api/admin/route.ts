@@ -97,7 +97,7 @@ function valid(o: any): o is Offer {
       "image",
       "source",
     ].every((k) => typeof o[k] === "string" && o[k].length < 5000) &&
-    (!o.logo || (typeof o.logo === "string" && o.logo.length < 2000 && /^https:\/\//.test(o.logo))) &&
+    (!o.logo || (typeof o.logo === "string" && o.logo.length < 2000 && (/^https:\/\//.test(o.logo) || /^\/brands\/[a-zA-Z0-9_.-]+$/.test(o.logo)))) &&
     ["published", "draft", "archived"].includes(o.status) &&
     Array.isArray(o.days) &&
     o.days.length > 0 &&

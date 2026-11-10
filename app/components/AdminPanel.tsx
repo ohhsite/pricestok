@@ -1,7 +1,8 @@
 "use client";
+import OfferShare from "./OfferShare";
 import NewsletterAdmin from "./NewsletterAdmin";
 import { useState, useEffect } from "react";
-import { Plus, X, RefreshCw, Search } from "lucide-react";
+import { Plus, X, RefreshCw, Search, Grid2X2, Utensils, Sparkles, Dumbbell, Ticket, ShoppingBag, Wrench, Baby } from "lucide-react";
 import { Offer, categories as defaultCategories, today, isActive } from "../lib/data";
 import { holiday } from "../lib/holiday";
 import CategoryAdmin from "./CategoryAdmin";
@@ -9,6 +10,7 @@ import type { Category } from "../lib/categories";
 import { BillingAdmin } from "./Billing";
 import { offerPhoto, photoName } from "../lib/photos";
 import type { Company } from "../lib/companies";
+const categoryIcons: Record<string, typeof Grid2X2> = {Utensils, Sparkles, Dumbbell, Ticket, ShoppingBag, Wrench, Baby};
 const blank = (): Offer => ({
   id: "oferta-" + Date.now(),
   slug: "oferta-" + Date.now(),
@@ -43,6 +45,7 @@ function slugify(t: string) {
     .slice(0, 90);
 }
 export default function AdminPanel() {
+  const [shareOffer, setShareOffer] = useState<Offer | null>(null);
   const [moveTo, setMoveTo] = useState("");
   const [tab, setTab] = useState("oferty");
   const [categories, setCategories] = useState<Category[]>(defaultCategories);
@@ -188,9 +191,12 @@ export default function AdminPanel() {
   const categoryName = (id: string) =>
     categories.find((c) => c.id === id)?.name || id;
   const isArchived = (o: Offer) => o.status === "archived" || (o.status === "published" && !!o.end && o.end < today());
+  const matchesCategory = (o: Offer, id: string) => !id || o.category === id || categories.some(c => c.id === o.category && c.parent === id);
+  const categoryOffers = offers.filter(o => tab === "archiwum" ? isArchived(o) : !isArchived(o));
+  function chooseCategory(id: string) {setCategory(id);setPage(1);setSelected([]);}
   const results = offers.filter(
     (o) =>
-      (!category || o.category === category) &&
+      matchesCategory(o, category) &&
       (tab === "archiwum" ? isArchived(o) : !isArchived(o) && (status === "all" || o.status === status)) &&
       `${o.title} ${o.company}`.toLowerCase().includes(query.toLowerCase()),
   );
@@ -286,6 +292,7 @@ export default function AdminPanel() {
         <button className="table-action" onClick={() => duplicate(o)}>
           Duplikuj
         </button>
+        {isActive(o) && <button className="table-action" onClick={() => setShareOffer(o)}>Facebook · tekst i grafika</button>}
         {isActive(o) && (
           <a
             className="table-action"
@@ -364,6 +371,23 @@ export default function AdminPanel() {
           <strong>{metrics.reduce((s, r) => s + r.clicks, 0)}</strong>
         </div>
       </div>
+      <nav className="admin-category-picker" aria-label="Kategorie ofert">
+        <div className="categories">
+          <button type="button" className={"category " + (!category ? "selected" : "")} aria-pressed={!category} onClick={() => chooseCategory("")}>
+            <span className="category-icon all"><Grid2X2 size={24}/></span><strong>Wszystkie</strong><small>{categoryOffers.length} ofert</small>
+          </button>
+          {categories.filter(c => !c.parent).map(c => {
+            const Icon = categoryIcons[c.icon] || ShoppingBag;
+            const selectedCategory = category === c.id || categories.some(child => child.id === category && child.parent === c.id);
+            return <button type="button" key={c.id} className={"category " + (selectedCategory ? "selected" : "")} aria-pressed={selectedCategory} onClick={() => chooseCategory(c.id)}>
+              <span className="category-icon" style={{background:c.color}}><Icon size={24}/></span><strong>{c.name}</strong><small>{categoryOffers.filter(o => matchesCategory(o,c.id)).length} ofert</small>
+            </button>;
+          })}
+        </div>
+        {categories.some(c => c.parent === category || c.id === category && c.parent) && <div className="admin-tools" aria-label="Podkategorie ofert">
+          {categories.filter(c => c.parent === category || c.parent && c.parent === categories.find(parent => parent.id === category)?.parent).map(c => <button className="filter-button" key={c.id} aria-pressed={category === c.id} onClick={() => chooseCategory(c.id)}>{c.name}</button>)}
+        </div>}
+      </nav>
       <div className="admin-tools" id="panel-oferty">
         <input
           value={query}
@@ -385,21 +409,6 @@ export default function AdminPanel() {
           <option value="all">Wszystkie statusy</option>
           <option value="published">Opublikowane</option>
           <option value="draft">Szkice</option>
-        </select>
-        <select
-          value={category}
-          aria-label="Kategoria"
-          onChange={(event) => {
-            setCategory(event.target.value);
-            setPage(1);
-          }}
-        >
-          <option value="">Wszystkie kategorie</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
         </select>
         <select
           value={sort}
@@ -884,6 +893,12 @@ export default function AdminPanel() {
           ))}
         </ul>
       </section>}
+      {shareOffer && <div className="modal-backdrop" onClick={event => {if(event.target === event.currentTarget)setShareOffer(null);}} onKeyDown={event => {if(event.key === "Escape")setShareOffer(null);}}>
+        <section className="modal admin-share-modal" role="dialog" aria-modal="true" aria-labelledby="share-title">
+          <div className="modal-heading"><h2 id="share-title">Materiały do publikacji</h2><button type="button" autoFocus onClick={() => setShareOffer(null)} aria-label="Zamknij materiały"><X/></button></div>
+          <OfferShare key={shareOffer.id} offer={shareOffer} expanded origin={window.location.origin}/>
+        </section>
+      </div>}
       {edit && (
         <div
           className="modal-backdrop"
@@ -1012,7 +1027,7 @@ export default function AdminPanel() {
                 </label>
                 <label className="field full">
                   Logo firmy — bezpośredni link HTTPS do oficjalnego logo
-                  <input type="url" placeholder="https://strona-firmy.pl/logo.png" value={edit.logo || ""} onChange={(e) => field("logo", e.target.value)} />
+                  <input type="text" placeholder="https://strona-firmy.pl/logo.png" value={edit.logo || ""} onChange={(e) => field("logo", e.target.value)} />
                   <small>Bez własnego zdjęcia pokażemy logo. Jeśli go brakuje, pojawi się nazwa firmy.</small>
                 </label>
                 <label className="field">

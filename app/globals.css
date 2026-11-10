@@ -2405,3 +2405,6 @@ td small {
 .analytics-consent p{line-height:1.5;margin:10px 0 16px}.analytics-consent a{text-decoration:underline}.analytics-consent>div{display:flex;gap:10px}.analytics-consent button{flex:1;justify-content:center;cursor:pointer;font:inherit}
 .analytics-settings{display:block;margin:0 auto 20px;background:transparent;border:0;text-decoration:underline;font:inherit;font-size:12px;color:#756958;cursor:pointer}
 @media(max-width:600px){.offer-share{padding:18px}.share-actions>*{width:100%;justify-content:center;text-align:center;box-sizing:border-box;white-space:normal}.share-modes>*{flex:1}.offer-share h2{font-size:25px}.analytics-consent{padding:16px}.analytics-consent button{padding:12px}}
+
+.admin-category-picker{margin:24px 0}.admin-category-picker .category{font:inherit;cursor:pointer;min-width:115px}.admin-category-picker .categories{padding-bottom:8px}.admin-share-modal{width:min(800px,calc(100vw - 32px));max-height:90dvh;overflow:auto}.admin-share-modal .offer-share{margin:0;max-width:none}.admin-share-modal .share-preview{max-width:100%}.admin-share-modal .modal-heading{gap:16px}.admin-share-modal .modal-heading button{flex-shrink:0}
+@media(max-width:600px){.admin-share-modal{padding:16px}.admin-share-modal .modal-heading h2{font-size:23px}.admin-category-picker .category{min-width:105px}}
