@@ -28,7 +28,7 @@ export function HolidayLinks({ current }: { current?: string }) {
           </a>
         ))}
       </div>
-      <a className="holiday-comparison-link" href="/porownanie-cen-cateringu-wigilijnego-bialystok-2026">Catering wigilijny 2026 — porównaj opublikowane ceny →</a>
+      <a className="holiday-comparison-link" href="/porownanie-cen-cateringu-wigilijnego-bialystok-2026">Catering wigilijny 2026 — porównaj ceny →</a>
     </section>
   );
 }
@@ -43,7 +43,7 @@ export async function HolidayPage({ guide, children }: {
   return (
     <>
       <Header />
-      <main className="container inner-main">
+      <main className="container inner-main holiday-guide">
         <p className="eyebrow">PRICESTOK · ŚWIĘTA W BIAŁYMSTOKU</p>
         <h1 className="page-title">{guide.title}</h1>
         <p className="lead">{guide.description}</p>

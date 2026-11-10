@@ -23,14 +23,14 @@ export default function Trees() {
       </div>
     </section>
     <section className="holiday-editorial-intro"><h2>Gdzie jeszcze szukać choinek w Białymstoku i okolicach?</h2>
-      <p>Poniżej zestawiamy lokalizacje wskazywane w publicznych informacjach sprzedawców. Część komunikatów dotyczy sezonu 2025 — potwierdź tegoroczny termin sprzedaży przed wyjazdem. Nie przenosimy zeszłorocznych cen ani godzin na grudzień 2026.</p>
-      <div className="holiday-table-scroll"><table className="holiday-table"><thead><tr><th>Miejsce</th><th>Lokalizacja</th><th>Status informacji</th></tr></thead><tbody>
-        <tr><td>Nadleśnictwo Dojlidy</td><td>Białystok, al. Tysiąclecia Państwa Polskiego 75</td><td>Odnaleziony komunikat dotyczy 2025; terminy 2026 do potwierdzenia.</td></tr>
-        <tr><td>Skibiccy — punkty sezonowe</td><td>m.in. ul. 42 Pułku Piechoty, Mieszka I i Hugona Kołłątaja</td><td>Lokalizacje podane na stronie szkółki; cennik świąteczny opisany jako 2025.</td></tr>
-        <tr><td>Szkółka Skibiccy</td><td>Kuriany 127, okolice Białegostoku</td><td>Stała lokalizacja; dostępność drzewek świątecznych i aktualne ceny do sprawdzenia.</td></tr>
-        <tr><td>Nadleśnictwo Żednia</td><td>Żednia 5; w poprzednim sezonie również Zabłudów, ul. Mickiewicza 25</td><td>Opublikowany harmonogram dotyczy zimy 2025/2026, a nie grudnia 2026.</td></tr>
+      <p>Inne miejsca w mieście i okolicy. Przed wyjazdem sprawdź otwarcie punktu w sezonie 2026.</p>
+      <div className="holiday-table-scroll"><table className="holiday-table"><thead><tr><th>Miejsce</th><th>Lokalizacja</th><th>Przed wizytą</th></tr></thead><tbody>
+        <tr><td data-label="Miejsce">Nadleśnictwo Dojlidy</td><td data-label="Lokalizacja">Białystok, al. Tysiąclecia Państwa Polskiego 75</td><td data-label="Przed wizytą">Sprawdź terminy sprzedaży na 2026.</td></tr>
+        <tr><td data-label="Miejsce">Skibiccy — punkty sezonowe</td><td data-label="Lokalizacja">m.in. ul. 42 Pułku Piechoty, Mieszka I i Hugona Kołłątaja</td><td data-label="Przed wizytą">Sprawdź, które punkty będą otwarte w sezonie 2026.</td></tr>
+        <tr><td data-label="Miejsce">Szkółka Skibiccy</td><td data-label="Lokalizacja">Kuriany 127, okolice Białegostoku</td><td data-label="Przed wizytą">Zapytaj o dostępne drzewka i ceny.</td></tr>
+        <tr><td data-label="Miejsce">Nadleśnictwo Żednia</td><td data-label="Lokalizacja">Żednia 5; w poprzednim sezonie również Zabłudów, ul. Mickiewicza 25</td><td data-label="Przed wizytą">Sprawdź miejsca i terminy sprzedaży na 2026.</td></tr>
       </tbody></table></div>
-      <p className="holiday-source-list">Źródła lokalizacji: <a href="https://dojlidy.bialystok.lasy.gov.pl/sprzedaz-choinek" rel="nofollow noopener noreferrer" target="_blank">Dojlidy</a> · <a href="https://skibiccy.pl/choinki-bialystok/" rel="nofollow noopener noreferrer" target="_blank">Skibiccy</a> · <a href="https://zednia.bialystok.lasy.gov.pl/sprzedaz-drewna-choinek-i-sadzonek" rel="nofollow noopener noreferrer" target="_blank">Żednia</a>. Weryfikacja: 9 listopada 2026.</p>
+      <p className="holiday-source-list">Informacje o punktach: <a href="https://dojlidy.bialystok.lasy.gov.pl/sprzedaz-choinek" rel="nofollow noopener noreferrer" target="_blank">Dojlidy</a> · <a href="https://skibiccy.pl/choinki-bialystok/" rel="nofollow noopener noreferrer" target="_blank">Skibiccy</a> · <a href="https://zednia.bialystok.lasy.gov.pl/sprzedaz-drewna-choinek-i-sadzonek" rel="nofollow noopener noreferrer" target="_blank">Żednia</a>.</p>
     </section>
     <section className="holiday-editorial-intro"><h2>Choinka cięta czy w donicy?</h2><p>Cięte drzewko dobierz do wysokości pokoju, zostawiając miejsce na stojak i czubek. Jeśli planujesz późniejsze sadzenie, zapytaj, czy choinka rosła w pojemniku i ma zachowaną bryłę korzeniową. Sama doniczka nie oznacza, że drzewko przyjmie się w ogrodzie.</p><h2>Odbiór czy dostawa?</h2><p>Przy dostawie sprawdź obszar dowozu, opłatę, dostępne terminy i możliwość wniesienia. Przy odbiorze osobistym upewnij się, że wybrany rozmiar zmieści się w samochodzie i czy punkt zapewnia pakowanie.</p></section>
   </HolidayPage>;
