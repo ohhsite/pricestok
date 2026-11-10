@@ -2272,3 +2272,13 @@ td small {
   .holiday-faq summary { font-size:15px; }
   .holiday-source-list { line-height:1.7; }
 }
+@media(max-width:600px) {
+  .holiday-table { min-width:0; table-layout:auto; }
+  .holiday-table caption { width:100%; }
+}
+@media(max-width:360px) {
+  .header .brand img { width:112px; }
+  .header nav { gap:7px; }
+  .header .button.small { padding:10px 9px; font-size:11px; }
+  .header .saved-link { min-width:28px; }
+}
