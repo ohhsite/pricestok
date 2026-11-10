@@ -6,7 +6,7 @@ import { checkedOn, comparisonPath } from "../lib/christmas-catering";
 export const dynamic = "force-dynamic";
 const title = "Catering wigilijny Białystok 2026 — porównanie cen";
 const description = "Ile kosztuje catering na Wigilię 2026 w Białymstoku? Zestawy rodzinne, finger food i ceny potraw z przeliczeniem na osobę, sztukę i litr.";
-export const metadata = { title, description, alternates: { canonical: comparisonPath }, openGraph: { title, description, type: "article", url: comparisonPath, publishedTime: "2026-11-09T20:00:00+01:00", modifiedTime: "2026-11-09T20:00:00+01:00" } };
+export const metadata = { title, description, alternates: { canonical: comparisonPath }, openGraph: { title, description, type: "article", url: comparisonPath, publishedTime: "2026-11-09T20:00:00+01:00", modifiedTime: "2026-11-10T18:00:00+01:00" } };
 const traugutta = "https://butik.hoteltraugutta3.pl/pl/p/Zestaw-12-dan-wigilijnych-dla-4-5-osob/269";
 const box = "https://butik.hoteltraugutta3.pl/pl/p/Swiateczny-BOX-FINGERFOOD-/395";
 const dwor = "https://www.dworczarneckiego.pl/aktualnosci/wigilia-firmowa-bialystok-2026-w-dworze-czarneckiego";
@@ -18,7 +18,7 @@ const faqs = [
 export default function Comparison() {
   const base = siteUrl();
   const jsonLd = [
-    { "@context": "https://schema.org", "@type": "Article", headline: title, description, datePublished: "2026-11-09T20:00:00+01:00", dateModified: "2026-11-09T20:00:00+01:00", mainEntityOfPage: base + comparisonPath, author: { "@type": "Organization", name: "Redakcja PriceStok", url: base + "/o-nas" }, publisher: { "@type": "Organization", name: "PriceStok", url: base, logo: { "@type": "ImageObject", url: base + "/pricestok-logo.svg" } } },
+    { "@context": "https://schema.org", "@type": "Article", headline: title, description, datePublished: "2026-11-09T20:00:00+01:00", dateModified: "2026-11-10T18:00:00+01:00", mainEntityOfPage: base + comparisonPath, author: { "@type": "Organization", name: "Redakcja PriceStok", url: base + "/o-nas" }, publisher: { "@type": "Organization", name: "PriceStok", url: base, logo: { "@type": "ImageObject", url: base + "/pricestok-logo.svg" } } },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "PriceStok", item: base }, { "@type": "ListItem", position: 2, name: "Catering wigilijny", item: base + "/catering-wigilijny-bialystok" }, { "@type": "ListItem", position: 3, name: "Porównanie cen 2026", item: base + comparisonPath }] },
   ];
@@ -45,6 +45,7 @@ export default function Comparison() {
             <tr><td data-label="Potrawa"><a href="https://butik.hoteltraugutta3.pl/cateringwigilijny/3" target="_blank" rel="noopener noreferrer">Pierogi z kapustą i grzybami ↗</a></td><td data-label="Opakowanie">10 sztuk</td><td data-label="Cena opakowania">45 zł</td><td data-label="Cena jednostkowa">4,50 zł / szt.</td></tr>
           </tbody></table></div><p>Przy pierogach cena za sztukę nie zastępuje informacji o gramaturze. Przy zupach sprawdź, czy dodatki są w cenie. Barszcz z tego przykładu powstaje na wywarze rybnym — nie jest odpowiednikiem barszczu roślinnego.</p>
         </section>
+        <section><h2>Catering ibis Styles: ile kosztuje dostawa?</h2><p>Restauracja QuQułka w ibis Styles przy al. Piłsudskiego 25 przyjmuje zamówienia na Wigilię 2026 do <strong>18 grudnia, godz. 12:00</strong>. Dowóz w Białymstoku kosztuje <strong>50 zł przy zamówieniu do 600 zł</strong>; powyżej 600 zł jest bez opłaty. Możliwy jest również odbiór osobisty w Wigilię. <a href="https://ibisstylesbialystok.pl/catering-swiateczny-2026" target="_blank" rel="noopener noreferrer">Sprawdź menu i zamówienia ibis Styles ↗</a></p></section>
         <section id="koszty"><h2>Co doliczyć do ceny cateringu?</h2><p>Przed opłaceniem zamówienia poproś o pełną kwotę obejmującą potrawy, opakowania i dowóz pod konkretny adres. Dopytaj o minimalną wartość koszyka, minimalną liczbę porcji oraz ewentualną kaucję za naczynia. Jeśli odbierasz jedzenie samodzielnie, sprawdź miejsce i przedział godzinowy odbioru.</p><p>Ustal też sposób wydawania posiłków: schłodzone, do podgrzania czy gotowe do podania. Instrukcja przechowywania i podgrzewania pomoże zaplanować miejsce w lodówce oraz czas przed kolacją.</p></section>
         <section id="terminy"><h2>Do kiedy zamawiać catering wigilijny w Białymstoku?</h2><p>Traugutta3 przyjmuje zamówienia do <strong>20 grudnia 2026</strong>. Hotel wskazuje odbiór 23 grudnia, 14:00–20:00, oraz dowóz 24 grudnia, 8:00–12:00. <a href="https://www.hoteltraugutta3.pl/szczegoly-aktualnosci?NewsID=101755" target="_blank" rel="noopener noreferrer">Sprawdź terminy ↗</a></p><p>W Dworze Czarneckiego termin i dostawę ustalisz z działem organizacji wydarzeń. W pozostałych restauracjach zapytaj o dostępne terminy przy składaniu zamówienia.</p></section>
         <p><a className="text-link" href="/catering-wigilijny-bialystok">Zobacz restauracje i menu świąteczne →</a></p>

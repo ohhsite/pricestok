@@ -288,7 +288,7 @@ export default function Catalog({
               {heroOffer && <OfferVisual offer={heroOffer} />}
               <div className="hero-picture-overlay" />
               <div className="visual-caption">
-                <span>NA MIEŚCIE SMAKUJE LEPIEJ</span>
+                <span>LOKALNA OKAZJA</span>
                 <strong>{heroOffer?.title || "Odkryj lokalne okazje"}</strong>
                 <a
                   href={heroOffer ? "/promocja/" + heroOffer.slug : "/#okazje"}

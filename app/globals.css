@@ -2284,3 +2284,30 @@ td small {
   .header .button.small { padding:10px 9px; font-size:11px; }
   .header .saved-link { min-width:28px; }
 }
+
+.hero-picture > .offer-brand { min-height:0; height:100%; padding:35px 28px 180px; }
+.seasonal-highlight { display:grid; grid-template-columns:150px minmax(0,1fr); gap:24px; padding:24px; border:1px solid var(--line); border-radius:16px; background:#fff; margin-top:20px; }
+.seasonal-highlight h3 { font-size:23px; line-height:1.35; margin:8px 0 12px; }
+.seasonal-highlight p { margin:12px 0; }
+.seasonal-highlight .text-link { display:inline-block; margin-top:10px; font-weight:600; }
+.seasonal-gift .eyebrow { margin-top:16px; }
+.seasonal-gift h2 { margin:10px 0; }
+.seasonal-gift .catering-price { display:block; margin-bottom:12px; }
+@media(max-width:600px) {
+  .hero-visual { display:flex; flex-direction:column; height:auto; margin:0; border:1px solid #3e4439; border-radius:18px; background:#262923; overflow:hidden; }
+  .hero-picture { height:auto; border-radius:0; transform:none; display:flex; flex-direction:column; }
+  .hero-picture > .offer-brand { height:155px; min-height:0; padding:24px; flex-shrink:0; }
+  .hero-picture .offer-brand .brand-logo { width:72%; height:86px; max-height:86px; flex-shrink:0; filter:none; }
+  .hero-picture > img { height:175px; flex-shrink:0; filter:none; }
+  .hero-picture-overlay { display:none; }
+  .visual-caption { position:static; transform:none; padding:18px 20px 22px; border-top:1px solid #ffffff20; }
+  .visual-caption strong { font-size:22px; line-height:1.35; margin:8px 0 16px; }
+  .visual-caption a { min-height:44px; padding:11px 14px; justify-content:space-between; background:#fffaf1; color:#302518; border-radius:8px; font-size:14px; font-weight:600; }
+  .floating-discount { order:-1; position:static; transform:none; width:auto; height:auto; min-height:64px; flex-direction:row; justify-content:space-between; gap:12px; padding:14px 20px; border-radius:0; box-shadow:none; }
+  .floating-discount > span:first-child { font-size:14px; text-align:left; max-width:65%; }
+  .floating-discount strong { font-size:32px; letter-spacing:-1px; margin:0; line-height:1.1; }
+  .floating-discount > span:last-child,.floating-location,.hero-deco { display:none; }
+  .seasonal-highlight { grid-template-columns:1fr; padding:20px; gap:12px; }
+  .seasonal-highlight > .holiday-brand { height:86px; }
+  .seasonal-highlight h3 { font-size:22px; }
+}

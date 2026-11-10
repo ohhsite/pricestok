@@ -19,6 +19,9 @@ export default function Catering() {
       <p>Zestawy na rodzinny stół, pierogi na wynos i przekąski na spotkanie firmowe.</p>
       <CateringCards />
     </section>
+    <section className="holiday-editorial-intro"><h2>Wigilia w restauracji</h2>
+      <article className="seasonal-highlight"><div className="holiday-brand holiday-brand-dark"><img src="/brands/na-lipowej.svg" alt="Logo Restauracja Na Lipowej" loading="lazy" /></div><div><p className="eyebrow">24 GRUDNIA 2026 · GODZ. 18:00</p><h3>Kolacja wigilijna Na Lipowej / Hotel Cristal</h3><strong className="catering-price">349 zł / osobę dorosłą</strong><p>Bufet świąteczny, desery, napoje i wizyta Mikołaja dla najmłodszych. Dzieci 4–12 lat: 175 zł; dzieci do 4 lat bez opłaty. Kolacja na miejscu przy ul. Lipowej 3/5.</p><p>Rezerwacje do 22 grudnia: 695 302 508 lub 695 802 114.</p><a className="text-link" href="https://www.nalipowej.pl/kolacja-wigilijna" target="_blank" rel="noopener noreferrer">Sprawdź kolację wigilijną ↗</a></div></article>
+    </section>
     <section className="holiday-editorial-intro"><h2>Przed złożeniem zamówienia</h2><p>Sprawdź jednostkę ceny: kilogram, litr, sztuka, porcja czy cały zestaw. Do kosztu potraw mogą dojść opakowania i dowóz. Ustal termin odbioru, sposób przechowywania oraz instrukcję podgrzewania.</p><a href={comparisonPath} className="text-link">Zobacz zestawienie cen i koszt na osobę →</a></section>
   </HolidayPage>;
 }
