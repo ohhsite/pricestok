@@ -1,3 +1,4 @@
+import SiteMenu from "./SiteMenu";
 import { MapPin, Plus, ArrowUpRight, Heart } from "lucide-react";
 function Brand() {
   return (
@@ -14,12 +15,7 @@ export function Header() {
         <span className="location">
           <MapPin size={15} /> Lokalnie. W Białymstoku.
         </span>
-        <nav>
-          <a href="/#okazje">Odkrywaj promocje</a>
-          <a href="/firmy">Lokalne firmy</a>
-          <a href="/dla-firm">
-            Dla firm <ArrowUpRight size={14} />
-          </a>
+        <nav className="header-actions">
           <a
             className="saved-link"
             href="/?zapisane=1#okazje"
@@ -27,7 +23,8 @@ export function Header() {
           >
             <Heart size={19} />
           </a>
-          <a className="button small" href="/dodaj-promocje">
+          <SiteMenu />
+          <a className="button small header-submit" href="/dodaj-promocje">
             <Plus size={17} /> Zgłoś okazję
           </a>
         </nav>
