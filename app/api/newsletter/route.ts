@@ -1,3 +1,4 @@
+import { newsletterBackendUrl, newsletterPublicKey } from "../../lib/newsletter-backend";
 import { randomBytes } from "node:crypto";
 import { sameOrigin, databaseConfigured, siteUrl } from "../../lib/config";
 import { getSupabase } from "../../lib/supabase";
@@ -11,7 +12,12 @@ export async function POST(req: Request) {
   let d;
   try { d = JSON.parse(raw); } catch { return Response.json({error:"Nieprawidłowe dane."},{status:400,headers}); }
   if (!d || typeof d !== "object") return Response.json({error:"Nieprawidłowe dane."},{status:400,headers});
-  if (!databaseConfigured()) return Response.json({error:"Zapis jest chwilowo niedostępny. Spróbuj później."},{status:503,headers});
+  if (!databaseConfigured()) {
+    try {
+      const result = await fetch(newsletterBackendUrl, {method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+newsletterPublicKey,Origin:siteUrl()},body:raw,signal:AbortSignal.timeout(20000),cache:"no-store"});
+      return new Response(await result.text(),{status:result.status,headers:{...headers,"Content-Type":"application/json"}});
+    } catch { return Response.json({error:"Zapis jest chwilowo niedostępny. Spróbuj później."},{status:503,headers}); }
+  }
   try {
     const db = getSupabase();
     if (d.action === "unsubscribe") {

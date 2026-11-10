@@ -218,8 +218,10 @@ export default function Catalog({
           b.verified.localeCompare(a.verified),
   );
   function choose(v: string) {
+    if (pageTitle) { location.href = v === "all" ? "/#okazje" : "/kategoria/" + v; return; }
     setCategory(v);
     setLimit(6);
+    requestAnimationFrame(() => document.querySelector(".category-section")?.scrollIntoView({ behavior: "instant", block: "start" }));
     if (typeof history !== "undefined")
       history.replaceState(null, "", v === "all" ? "/" : "/kategoria/" + v);
   }
