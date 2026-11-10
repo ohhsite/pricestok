@@ -1,4 +1,8 @@
 export const brands: Record<string, string> = {
+  "rukola":"rukola.webp",
+  "aleja-piekna":"aleja-piekna.webp",
+  "u-mlanka":"u-mlanka.webp",
+  "kunegunda":"kunegunda.webp",
   "rowerowa": "rowerowa.webp",
   "fabryczna-bistro": "fabryczna-bistro.webp",
   "krokospoko": "krokospoko.webp",

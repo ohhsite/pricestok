@@ -1,4 +1,5 @@
 "use client";
+import OfferVisual from "./OfferVisual";
 import OfferShare from "./OfferShare";
 import NewsletterAdmin from "./NewsletterAdmin";
 import { useState, useEffect } from "react";
@@ -525,14 +526,7 @@ export default function AdminPanel() {
                     <td>{selectOffer(o)}</td>
                     <td>
                       <div className="admin-offer-title">
-                        <img
-                          className="admin-offer-thumb"
-                          src={offerPhoto(o.image)}
-                          alt=""
-                          width={64}
-                          height={46}
-                          loading="lazy"
-                        />
+                        <div className="admin-offer-thumb"><OfferVisual offer={o}/></div>
                         <div>
                           <strong>{o.title}</strong>
                           <small>
@@ -561,12 +555,7 @@ export default function AdminPanel() {
             const metric = metricsById.get(o.id);
             return (
               <article key={o.id} className="admin-offer-card">
-                <img
-                  className="admin-card-photo"
-                  src={offerPhoto(o.image)}
-                  alt=""
-                  loading="lazy"
-                />
+                <div className="admin-card-photo"><OfferVisual offer={o}/></div>
                 <div className="admin-card-body">
                   <div className="admin-card-heading">
                     {selectOffer(o)} <strong>{o.title}</strong>
