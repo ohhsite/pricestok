@@ -1,3 +1,5 @@
+import Analytics from "./components/Analytics";
+import { Suspense } from "react";
 import { siteUrl } from "./lib/config";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pl">
-      <body>{children}</body>
+      <body>{children}<Suspense fallback={null}><Analytics /></Suspense></body>
     </html>
   );
 }

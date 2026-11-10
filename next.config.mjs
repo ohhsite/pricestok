@@ -1,5 +1,6 @@
 const nextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {"/api/share/*": ["./public/brands/**/*"]},
   async headers() {
     return [
       {

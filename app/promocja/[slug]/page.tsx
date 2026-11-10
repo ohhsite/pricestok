@@ -1,4 +1,5 @@
 import { siteUrl } from "../../lib/config";
+import OfferShare from "../../components/OfferShare";
 import OfferVisual from "../../components/OfferVisual";
 import { notFound } from "next/navigation";
 import { Header, Footer } from "../../components/Shell";
@@ -18,7 +19,8 @@ export async function generateMetadata({ params }: any) {
     title,
     description,
     alternates: { canonical: `/promocja/${slug}` },
-    openGraph: o ? { title, description, url: `/promocja/${slug}`, type: "website" as const } : undefined,
+    openGraph: o ? { title, description, url: `/promocja/${slug}`, type: "website" as const, images: [{url:`/api/share/${encodeURIComponent(slug)}`,width:1200,height:630,alt:o.title}] } : undefined,
+    twitter: o ? {card:"summary_large_image",title,description,images:[`/api/share/${encodeURIComponent(slug)}`]} : undefined,
     robots:
       o && isActive(o)
         ? { index: true, follow: true }
@@ -172,6 +174,7 @@ export default async function Detail({ params }: any) {
             Zgłoś zmianę lub nieaktualną ofertę →
           </a>
         </section>
+        {active && <OfferShare offer={o} origin={siteUrl()} />}
         <section className="detail-long">
           <h2>Więcej lokalnych okazji</h2>
           {offers.filter((other) => other.id !== o.id && other.category === o.category && isActive(other)).slice(0, 3).map((other) => (
