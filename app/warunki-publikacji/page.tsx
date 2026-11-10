@@ -1,68 +1,12 @@
 import { Header, Footer } from "../components/Shell";
-export const metadata = { title: "Warunki płatnej publikacji" };
+export const metadata = { title: "Warunki publikacji dla firm" };
 export default function Terms() {
-  const seller = process.env.SELLER_NAME;
-  return (
-    <>
-      <Header />
-      <main className="container inner-main prose">
-        <h1 className="page-title">Warunki płatnej publikacji</h1>
-        {!seller && (
-          <div className="message">
-            Przed uruchomieniem sprzedaży właściciel serwisu musi uzupełnić dane
-            sprzedawcy i zatwierdzić warunki usługi.
-          </div>
-        )}
-        <h2>Usługodawca</h2>
-        <p>
-          {seller || "Dane wymagają uzupełnienia"}
-          <br />
-          {process.env.SELLER_ADDRESS}
-          <br />
-          {process.env.SELLER_TAX_ID ? "NIP: " + process.env.SELLER_TAX_ID : ""}
-          <br />
-          Kontakt: {process.env.SELLER_CONTACT_EMAIL || "do uzupełnienia"}
-        </p>
-        <h2>Przedmiot zamówienia</h2>
-        <p>
-          Pakiety dla firm kosztują 50 zł netto za 30 dni, 139 zł netto za 3 miesiące, 249 zł netto za 6 miesięcy lub 449 zł netto za 12 miesięcy. Wizytówka firmy kosztuje 199 zł netto za 12 miesięcy. Kwotę do zapłaty pokazujemy przed zakupem. Nowe zamówienia są opłacane jednorazowo.
-        </p>
-        <h2>Weryfikacja i okres publikacji</h2>
-        <p>
-          Okres zaczyna się w dniu akceptacji redakcji. Pakiet obejmuje jedną wyróżnioną promocję. Korekty treści są w cenie. W pakietach od 3 miesięcy redakcja może wymienić promocję raz na 30 dni od rozpoczęcia pakietu lub ostatniej wymiany. Wymiana zachowuje termin końca pakietu. Promocja może wygasnąć wcześniej, zgodnie z jej warunkami.
-        </p>
-        <p>
-          Wizytówka obejmuje osobną stronę firmy, opis usług, adres, link i aktualizacje danych przez redakcję. Płatne publikacje oznaczamy jako sponsorowane. Widoczność w wyszukiwarkach i odpowiedziach AI zależy od ich algorytmów.
-        </p>
-        <h2>Odrzucenie i zwroty</h2>
-        <p>
-          Nie publikujemy ofert niezgodnych z opisem serwisu, niejasnych,
-          nieaktualnych lub bez konkretnej korzyści dla użytkownika. Przy
-          odrzuceniu opłaconej oferty zlecamy zwrot ostatniej wpłaty przez
-          Stripe i kończymy abonament. Jeśli pobrano kilka wpłat przed decyzją,
-          pozostałe zwroty redakcja rozlicza w Stripe. Termin zaksięgowania
-          zwrotu zależy od metody płatności i banku.
-        </p>
-        <h2>Reklamacje i kontakt</h2>
-        <p>
-          Odnowienie wcześniej zakupionego abonamentu można anulować w panelu Stripe z linku do
-          zarządzania zakupem. Publikacja trwa do końca opłaconego okresu.
-          Anulowanie nie zwraca automatycznie opłaty za rozpoczęty okres. Przy
-          nieudanej płatności, sporze lub pełnym zwrocie publikacja zostaje
-          wstrzymana. Faktury i zmiana metody płatności są dostępne w panelu
-          Stripe. Dokumenty wymagają poprawnych danych sprzedawcy i konfiguracji
-          podatkowej; rozliczenia księgowe oraz ewentualną obsługę KSeF zapewnia
-          usługodawca.
-        </p>
-        <p>
-          Uwagi do publikacji, prośby o korektę oraz reklamacje kieruj na podany
-          wyżej adres kontaktowy, wskazując nazwę firmy i numer zamówienia.
-          Przed rozpoczęciem sprzedaży usługodawca powinien uzupełnić procedurę
-          reklamacji, zasady rezygnacji oraz politykę prywatności odpowiednie do
-          swojej działalności.
-        </p>
-      </main>
-      <Footer />
-    </>
-  );
+  return <><Header/><main className="container inner-main prose"><h1 className="page-title">Warunki publikacji dla firm</h1>
+    <h2>Kontakt i zamówienie</h2><p>Publikacje zamawiasz mailowo: <a href="mailto:kontakt@pricestok.pl">kontakt@pricestok.pl</a>. Przed wpłatą potwierdzamy dane usługodawcy, zakres, cenę, termin i treść publikacji. Płatność odbywa się zwykłym przelewem na rachunek wskazany w korespondencji.</p>
+    <h2>Zakres i cena</h2><p>Ceny pakietów znajdują się na <a href="/dla-firm">stronie dla firm</a>. Są podane netto; pełną kwotę do zapłaty potwierdzamy przed zamówieniem. Wizytówka obejmuje osobną stronę z opisem działalności i danymi firmy. Pakiet promocji obejmuje jedną wyróżnioną ofertę. Inne świadczenia, w tym baner, wymagają osobnego ustalenia.</p>
+    <h2>Publikacja i aktualizacje</h2><p>Termin publikacji ustalamy po akceptacji treści i zaksięgowaniu wpłaty. Okres pakietu liczymy od uruchomienia publikacji. Korekty treści są w cenie. W pakietach od 3 miesięcy promocję można wymienić raz na 30 dni, z zachowaniem daty końca pakietu.</p>
+    <h2>Jasne warunki dla odbiorców</h2><p>Oferty powinny zawierać prawdziwe ceny, ograniczenia i terminy. Płatne publikacje oznaczamy jako sponsorowane. Nie publikujemy materiałów nieaktualnych, wprowadzających w błąd lub niezgodnych z charakterem serwisu. Odrzuconej oferty nie uruchamiamy; sposób rozliczenia ewentualnej wpłaty ustalamy z zamawiającym.</p>
+    <h2>Widoczność w internecie</h2><p>Przygotowanie treści zgodnie z podstawami SEO ułatwia wyszukiwarkom odczytanie informacji. Nie gwarantuje indeksacji, pozycji w Google, obecności w odpowiedziach AI ani określonej liczby klientów.</p>
+    <h2>Korekty i reklamacje</h2><p>Prośby o zmianę treści, zakończenie publikacji i reklamacje wyślij na kontakt@pricestok.pl, podając nazwę firmy oraz opis sprawy. Wcześniej zamówione pakiety również obsługujemy przez ten adres.</p>
+  </main><Footer/></>;
 }

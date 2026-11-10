@@ -1,4 +1,5 @@
 "use client";
+import NewsletterAdmin from "./NewsletterAdmin";
 import { useState, useEffect } from "react";
 import { Plus, X, RefreshCw, Search } from "lucide-react";
 import { Offer, categories as defaultCategories, today, isActive } from "../lib/data";
@@ -338,11 +339,12 @@ export default function AdminPanel() {
         </button>
       </div>
       <nav className="admin-tools" aria-label="Sekcje panelu">
-        {Object.entries({ oferty: "Oferty", archiwum: "Archiwum ofert", zgloszenia: "Zgłoszenia", firmy: "Firmy", platnosci: "Płatności", kategorie: "Kategorie" }).map(([id, name]) => (
+        {Object.entries({ oferty: "Oferty", archiwum: "Archiwum ofert", zgloszenia: "Zgłoszenia", firmy: "Firmy", platnosci: "Płatności", kategorie: "Kategorie", newsletter: "Newsletter" }).map(([id, name]) => (
           <button key={id} className="filter-button" aria-pressed={tab === id} onClick={() => { setTab(id); setPage(1); setSelected([]); }}>{name}</button>
         ))}
       </nav>
       {message && <p className="message" role="status">{message}</p>}
+      {tab === "newsletter" && <NewsletterAdmin />}
       {tab === "kategorie" && <CategoryAdmin categories={categories} reload={reload} />}
       {(tab === "oferty" || tab === "archiwum") && <>
       <div className="panel-stats">

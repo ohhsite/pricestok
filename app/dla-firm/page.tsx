@@ -1,54 +1,23 @@
-import { listCategories } from "../lib/categories";
 import { Header, Footer } from "../components/Shell";
-import Billing from "../components/Billing";
-import { billingReady, vatPercent } from "../lib/billing";
-export const dynamic = "force-dynamic";
+import { packages } from "../lib/packages";
 export const metadata = {
-  title: "Pakiety dla firm — promocje Białystok",
-  description:
-    "Promuj firmę: pakiety promocji od 50 zł netto i wizytówka lokalna za 199 zł netto za rok.",
-  referrer: "no-referrer",
+  title: "Reklama lokalna i wizytówka firmy w Białymstoku",
+  description: "Pokaż firmę mieszkańcom Białegostoku. Wizytówka z opisem usług, lokalne promocje i treści przygotowane dla wyszukiwarek. Kontakt: kontakt@pricestok.pl.",
+  alternates: { canonical: "/dla-firm" },
 };
-export default async function Business() {
-  return (
-    <>
-      <Header />
-      <main className="container inner-main">
-        <div className="eyebrow">PRICESTOK · DLA FIRM</div>
-        <h1 className="page-title">Daj się odkryć mieszkańcom.</h1>
-        <p className="lead">
-          Regularna promocja Twojej firmy lub własna podstrona. Wybierz usługę
-          dopasowaną do swojego biznesu.
-        </p>
-        <section className="detail-box" id="reklama">
-          <div className="eyebrow">REKLAMA LOKALNA</div>
-          <h2>Baner nad kategoriami</h2>
-          <p>
-            Pokaż swoją ofertę osobom, które szukają okazji w Białymstoku. Podaj
-            interesujący Cię termin i link do firmy. Ustalimy dostępność, cenę i
-            format reklamy.
-          </p>
-          <a className="button" href="/dodaj-promocje?typ=reklama">
-            Zapytaj o wynajem
-          </a>
-        </section>
-        <section className="detail-box">
-          <h2>Pomóż mieszkańcom znaleźć Twoją firmę</h2>
-          <p>
-            Na wizytówce publikujemy opis usług, adres w Białymstoku i link do Twojej strony. Czytelna treść i dane strukturalne pomagają wyszukiwarkom oraz narzędziom AI zrozumieć, czym zajmuje się firma i gdzie działa.
-          </p>
-          <a className="text-link" href="/dodaj-promocje?typ=firma">
-            Zgłoś firmę do katalogu ↗
-          </a>
-        </section>
-        <Billing
-          categories={await listCategories()}
-          enabled={billingReady()}
-          vat={vatPercent()}
-          email={process.env.SELLER_CONTACT_EMAIL || ""}
-        />
-      </main>
-      <Footer />
-    </>
-  );
+const contact = "mailto:kontakt@pricestok.pl";
+export default function Business() {
+  return <><Header /><main className="container inner-main business-page">
+    <header className="business-intro"><p className="eyebrow">PRICESTOK · DLA LOKALNYCH FIRM</p><h1 className="page-title">Twoja firma tam, gdzie mieszkańcy szukają okazji.</h1><p className="lead">Pokaż, co oferujesz, dlaczego warto Cię odwiedzić i jak się z Tobą skontaktować. Zadbamy o opis, czytelną publikację i obecność w odpowiedniej kategorii.</p><a className="button" href={contact + "?subject=Publikacja%20firmy%20na%20PriceStok"}>Zapytaj o publikację</a><a className="business-email" href={contact}>kontakt@pricestok.pl</a></header>
+    <section className="business-benefits" aria-label="Korzyści dla firmy">
+      <article><span>01</span><h2>Docierasz lokalnie</h2><p>Twoja oferta pojawia się w serwisie o Białymstoku, obok promocji i miejsc, które interesują mieszkańców. Kategoria pomaga trafić do osób szukających właśnie takich usług.</p></article>
+      <article><span>02</span><h2>Masz własny adres w internecie</h2><p>Wizytówka to osobna podstrona z opisem działalności, adresem, kontaktem i linkiem do Twojej strony. Możesz przesłać ją klientowi lub udostępnić w swoich mediach społecznościowych.</p></article>
+      <article><span>03</span><h2>Treść przygotowana pod wyszukiwanie</h2><p>Opis usług i lokalizacji, odpowiedni tytuł oraz uporządkowane informacje pomagają wyszukiwarkom zrozumieć Twoją ofertę. Wizytówkę przygotowujemy zgodnie z podstawami lokalnego SEO.</p></article>
+      <article><span>04</span><h2>Czytelna także dla narzędzi AI</h2><p>Konkretne informacje o firmie, ofercie i miejscu działania ułatwiają odczytanie treści narzędziom korzystającym z internetu. To dodatkowe źródło informacji o Twojej działalności.</p></article>
+    </section>
+    <section className="business-value"><p className="eyebrow">ROZSĄDNY START Z WIDOCZNOŚCIĄ</p><h2>Nie musisz zaczynać od dużego budżetu na pozycjonowanie.</h2><p>Jeśli potrzebujesz prostej prezentacji firmy i miejsca na aktualną ofertę, zacznij od konkretnej publikacji. Za wizytówkę płacisz 199 zł netto za cały rok — bez zamawiania przebudowy strony i comiesięcznej obsługi SEO.</p><p>To niedrogi sposób na dodatkową obecność w internecie, szczególnie dla małego lokalnego biznesu. Nie zastępuje pełnej strategii pozycjonowania. O pozycji w Google i wykorzystaniu treści w odpowiedziach AI decydują ich algorytmy; nie gwarantujemy konkretnego miejsca ani liczby klientów.</p></section>
+    <section id="pakiety"><h2>Wybierz formę obecności</h2><div className="manual-packages">{Object.entries(packages).map(([id, p]) => <article key={id} className={"manual-package" + (id === "company" ? " is-company" : "")}><p className="eyebrow">{id === "company" ? "WŁASNA PODSTRONA" : "WYRÓŻNIONA PROMOCJA"}</p><h3>{p.name}</h3><strong>{p.net / 100} zł <small>netto / {p.period}</small></strong><p>{id === "company" ? "Opis usług, adres, kontakt, link do strony i aktualizacje danych przez redakcję." : "Jedna wyróżniona oferta z warunkami, lokalizacją i linkiem. Przy dłuższych pakietach możliwość wymiany oferty raz na 30 dni."}</p><a className="button" href={contact + "?subject=" + encodeURIComponent("PriceStok — " + p.name)}>Napisz w sprawie pakietu</a></article>)}</div><p className="form-note">Ceny netto. Pełną kwotę do zapłaty i zakres publikacji potwierdzimy mailowo przed zamówieniem.</p></section>
+    <section className="business-transfer"><h2>Jak zamówić?</h2><ol><li>Napisz na <a href={contact}>kontakt@pricestok.pl</a>. Podaj nazwę firmy, link do strony i wybrany pakiet.</li><li>Ustalimy treść, termin i kwotę. Otrzymasz dane do przelewu.</li><li>Po zaksięgowaniu wpłaty i akceptacji treści uruchomimy publikację.</li></ol><p><strong>Płatność zwykłym przelewem bankowym.</strong> Wszystkie szczegóły ustalamy mailowo.</p></section>
+    <section className="business-value" id="reklama"><p className="eyebrow">REKLAMA LOKALNA</p><h2>Chcesz być bardziej widoczna lub widoczny?</h2><p>Zapytaj o baner nad kategoriami. Dobierzemy termin, format i miejsce do Twojej oferty.</p><a className="button" href={contact + "?subject=Baner%20reklamowy%20PriceStok"}>Zapytaj o baner</a></section>
+  </main><Footer /></>;
 }

@@ -26,7 +26,7 @@ export default function SiteMenu() {
         <div className="menu-categories">{categories.filter(c => !c.parent).map(c => <a key={c.id} href={"/kategoria/" + c.id}>{c.name}<ChevronRight size={15} /></a>)}</div>
         <span className="menu-label">Święta w Białymstoku</span>
         <a href="/catering-wigilijny-bialystok">Catering wigilijny</a><a href="/prezenty-swiateczne-bialystok">Prezenty i warsztaty</a><a href="/choinki-bialystok">Gdzie kupić choinkę?</a>
-        <div className="menu-secondary"><a href="/firmy">Lokalne firmy</a><a href="/?zapisane=1#okazje">Zapisane promocje</a><a href="/dla-firm">Dla firm</a><a href="/dodaj-promocje">Zgłoś okazję</a></div>
+        <a href="/#newsletter">Imprezy — newsletter</a><div className="menu-secondary"><a href="/firmy">Lokalne firmy</a><a href="/?zapisane=1#okazje">Zapisane promocje</a><a href="/dla-firm">Dla firm</a><a href="/dodaj-promocje">Zgłoś okazję</a></div>
       </nav>
     </div>
   </details>;

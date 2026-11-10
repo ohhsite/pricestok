@@ -192,6 +192,7 @@ export default function Catalog({
   const heroOffer = active.find((o) => o.category === "jedzenie") || active[0];
   const areas = [...new Set(active.map((o) => o.area))].sort();
   const day = weekday();
+  const SectionTitle = category !== "all" || pageTitle || savedOnly ? "h1" : "h2";
   let filtered = active.filter(
     (o) =>
       (category === "all" || matchesCategory(o, category)) &&
@@ -225,7 +226,8 @@ export default function Catalog({
   return (
     <>
       <Header />
-      <main>
+      <main className={category !== "all" || pageTitle ? "category-mode" : undefined}>
+        {category === "all" && !pageTitle && !savedOnly && <>
         <section className="hero container">
           <div className="hero-copy">
             <div className="eyebrow">
@@ -337,8 +339,9 @@ export default function Catalog({
             )}
           </div>
         </aside>
+        </>}
         <section className="category-section container" aria-label="Kategorie">
-          {beforeCategories}
+          {category === "all" && !pageTitle && !savedOnly && beforeCategories}
           <div className="section-mini">
             <span>Znajdź coś dla siebie</span>
             <span>Małe oszczędności, wielka przyjemność.</span>
@@ -403,7 +406,7 @@ export default function Catalog({
           <div className="section-heading">
             <div>
               <div className="eyebrow">ODKRYWAJ LOKALNIE</div>
-              <h2>
+              <SectionTitle>
                 {savedOnly
                   ? "Twoje zapisane okazje"
                   : category === "all"
@@ -411,7 +414,7 @@ export default function Catalog({
                     : categories.find((c) => c.id === category)?.name +
                       " w Białymstoku"}
                 <span className="heading-dot">.</span>
-              </h2>
+              </SectionTitle>
               <p>
                 {savedOnly
                   ? "Ulubione promocje zapisane w tej przeglądarce."

@@ -96,9 +96,9 @@ export async function POST(req: Request) {
     const raw = await req.text();
     if (raw.length > 14000)
       return new Response("Za dużo danych", { status: 413 });
-    const d = JSON.parse(raw),
-      db = getSupabase(),
-      stripe = getStripe();
+    const d = JSON.parse(raw);
+    if (d.action === "buy") return Response.json({ error: "Publikację i płatność przelewem ustalisz mailowo: kontakt@pricestok.pl." }, { status: 410, headers: noStore });
+    const db = getSupabase(), stripe = getStripe();
     if (["approve", "reject", "refresh"].includes(d.action)) {
       if (!(await adminAllowed()))
         return new Response("Forbidden", { status: 403 });

@@ -1,3 +1,4 @@
+import Newsletter from "./Newsletter";
 import SiteMenu from "./SiteMenu";
 import { MapPin, Plus, ArrowUpRight, Heart } from "lucide-react";
 function Brand() {
@@ -34,6 +35,8 @@ export function Header() {
 }
 export function Footer() {
   return (
+    <>
+    <Newsletter />
     <footer>
       <div className="container footer-top">
         <div>
@@ -44,6 +47,7 @@ export function Footer() {
           <a href="/#okazje">Promocje</a>
           <a href="/dla-firm">Dla firm</a>
           <a href="/zasady">Jak sprawdzamy oferty</a>
+          <a href="/polityka-prywatnosci">Prywatność</a>
           <a href="/o-nas">Kim jesteśmy</a>
           <a href="/dodaj-promocje?typ=firma">Zgłoś firmę</a>
         </div>
@@ -53,5 +57,6 @@ export function Footer() {
         <span>Odkrywaj miasto. Wydawaj mniej.</span>
       </div>
     </footer>
+    </>
   );
 }
