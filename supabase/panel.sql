@@ -1,4 +1,8 @@
 begin;
+alter table public.bnp_offers
+  add column if not exists added_at timestamptz,
+  add column if not exists facebook_shared_at timestamptz;
+alter table public.bnp_offers alter column added_at set default now();
 alter table public.bnp_submissions add column if not exists archived_at timestamptz;
 create table if not exists public.bnp_companies (
   slug text primary key,

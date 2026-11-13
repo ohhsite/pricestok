@@ -4,7 +4,7 @@ import OfferShare from "./OfferShare";
 import NewsletterAdmin from "./NewsletterAdmin";
 import { useState, useEffect } from "react";
 import { Plus, X, RefreshCw, Search, Grid2X2, Utensils, Sparkles, Dumbbell, Ticket, ShoppingBag, Wrench, Baby } from "lucide-react";
-import { Offer, categories as defaultCategories, today, isActive } from "../lib/data";
+import { type AdminOffer, Offer, categories as defaultCategories, today, isActive } from "../lib/data";
 import { holiday } from "../lib/holiday";
 import CategoryAdmin from "./CategoryAdmin";
 import type { Category } from "../lib/categories";
@@ -45,6 +45,12 @@ function slugify(t: string) {
     .replace(/^-|-$/g, "")
     .slice(0, 90);
 }
+const editorialDate = new Intl.DateTimeFormat("pl-PL", {
+  dateStyle: "short",
+  timeStyle: "short",
+  timeZone: "Europe/Warsaw",
+});
+
 export default function AdminPanel() {
   const [shareOffer, setShareOffer] = useState<Offer | null>(null);
   const [moveTo, setMoveTo] = useState("");
@@ -62,13 +68,14 @@ export default function AdminPanel() {
   const [companyBusy, setCompanyBusy] = useState(false);
   const [view, setView] = useState<"list" | "grid">("list");
   const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("category");
+  const [sort, setSort] = useState("added");
+  const [facebook, setFacebook] = useState("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [archive, setArchive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [orders, setOrders] = useState<any[]>([]),
-    [offers, setOffers] = useState<Offer[]>([]),
+    [offers, setOffers] = useState<AdminOffer[]>([]),
     [subs, setSubs] = useState<any[]>([]),
     [metrics, setMetrics] = useState<any[]>([]),
     [selected, setSelected] = useState<string[]>([]),
@@ -199,12 +206,17 @@ export default function AdminPanel() {
   const results = offers.filter(
     (o) =>
       matchesCategory(o, category) &&
+      (facebook === "all" || Boolean(o.facebookSharedAt) === (facebook === "shared")) &&
       (tab === "archiwum" ? isArchived(o) : !isArchived(o) && (status === "all" || o.status === status)) &&
       `${o.title} ${o.company}`.toLowerCase().includes(query.toLowerCase()),
   );
   results.sort((a, b) => {
     const byTitle = a.title.localeCompare(b.title, "pl");
     if (sort === "title") return byTitle;
+    if (sort === "start")
+      return (a.start || "9999").localeCompare(b.start || "9999") || byTitle;
+    if (sort === "added")
+      return (b.addedAt || "").localeCompare(a.addedAt || "") || byTitle;
     if (sort === "end")
       return (a.end || "9999").localeCompare(b.end || "9999") || byTitle;
     if (sort === "verified")
@@ -285,7 +297,21 @@ export default function AdminPanel() {
       </div>
     );
   }
-  function offerActions(o: Offer) {
+  function editorialDetails(o: AdminOffer) {
+    return (
+      <>
+        <small className="admin-offer-dates">
+          Dodano: {o.addedAt ? editorialDate.format(new Date(o.addedAt)) : "brak zapisanej daty"}
+        </small>
+        <small className="admin-offer-dates">
+          {o.facebookSharedAt
+            ? "Facebook: opublikowano · " + editorialDate.format(new Date(o.facebookSharedAt))
+            : "Facebook: brak oznaczenia"}
+        </small>
+      </>
+    );
+  }
+  function offerActions(o: AdminOffer) {
     return (
       <div className="admin-offer-actions">
         <button className="table-action" onClick={() => setEdit({ ...o })}>
@@ -295,6 +321,13 @@ export default function AdminPanel() {
           Duplikuj
         </button>
         {isActive(o) && <button className="table-action" onClick={() => setShareOffer(o)}>Facebook · tekst i grafika</button>}
+        <button
+          className="table-action"
+          disabled={busy}
+          onClick={() => action({ action: "setFacebookShared", id: o.id, shared: !o.facebookSharedAt })}
+        >
+          {o.facebookSharedAt ? "Cofnij oznaczenie na FB" : "Oznacz jako opublikowaną na FB"}
+        </button>
         {isActive(o) && (
           <a
             className="table-action"
@@ -422,10 +455,24 @@ export default function AdminPanel() {
             setPage(1);
           }}
         >
+          <option value="added">Ostatnio dodane</option>
+          <option value="start">Data rozpoczęcia – od najwcześniejszej</option>
           <option value="category">Sortuj według kategorii</option>
           <option value="title">Tytuł A–Z</option>
           <option value="end">Termin zakończenia</option>
           <option value="verified">Ostatnio sprawdzone</option>
+        </select>
+        <select
+          value={facebook}
+          aria-label="Status publikacji na Facebooku"
+          onChange={(event) => {
+            setFacebook(event.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="all">Facebook: wszystkie</option>
+          <option value="shared">Facebook: opublikowane</option>
+          <option value="unmarked">Facebook: bez oznaczenia</option>
         </select>
         <button className="filter-button" onClick={reload}>
           <RefreshCw size={14} /> Odśwież
@@ -539,7 +586,7 @@ export default function AdminPanel() {
                       </div>
                     </td>
                     <td>{categoryName(o.category)}</td>
-                    <td>{offerState(o)}</td>
+                    <td>{offerState(o)}{editorialDetails(o)}</td>
                     <td>{o.verified || "—"}</td>
                     <td>
                       {metric?.views || 0} / {metric?.clicks || 0}
@@ -566,7 +613,7 @@ export default function AdminPanel() {
                   <p>
                     {o.company} · {categoryName(o.category)} · {o.badge}
                   </p>
-                  {offerState(o)}
+                  <div>{offerState(o)}{editorialDetails(o)}</div>
                   <small>
                     Sprawdzono: {o.verified || "—"} · Odsłony:{" "}
                     {metric?.views || 0} · Kliknięcia: {metric?.clicks || 0}

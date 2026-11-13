@@ -1,6 +1,6 @@
 import { holiday } from "../../lib/holiday";
 import { adminAllowed } from "../../lib/admin";
-import { listOffers, saveOffer } from "../../lib/repository";
+import { listOffers, offerRecord, saveOffer, setFacebookShared } from "../../lib/repository";
 import { getSupabase } from "../../lib/supabase";
 import { getStripe } from "../../lib/stripe";
 import { validPaidSession } from "../../lib/plans";
@@ -122,12 +122,14 @@ function valid(o: any): o is Offer {
 export async function POST(req: Request) {
   if (!sameOrigin(req) || !(await adminAllowed()))
     return new Response("Brak dostępu", { status: 403 });
+  let action: string | undefined;
   try {
     const raw = await req.text();
     if (raw.length > 100000)
       return new Response("Za dużo danych", { status: 413 });
     const data = JSON.parse(raw),
       db = getSupabase();
+    action = data.action;
     if (data.action === "save") {
       if (!valid(data.offer) || !(await listCategories()).some((c) => c.id === data.offer.category))
         return Response.json(
@@ -151,15 +153,20 @@ export async function POST(req: Request) {
       const offer = (await listOffers(true)).find((o) => o.id === data.id);
       if (!offer) return Response.json({ error: "Oferta niedostępna." }, { status: 404 });
       await saveOffer({ ...offer, verified: today() });
+    } else if (data.action === "setFacebookShared") {
+      if (typeof data.id !== "string" || typeof data.shared !== "boolean")
+        return Response.json({ error: "Nieprawidłowy status Facebooka." }, { status: 400 });
+      const offer = (await listOffers(true)).find((o) => o.id === data.id);
+      if (!offer) return Response.json({ error: "Oferta niedostępna." }, { status: 404 });
+      if ((data.shared || offer.facebookSharedAt) && !(await setFacebookShared(offer, data.shared)))
+        return Response.json({ error: "Oferta niedostępna." }, { status: 404 });
     } else if (data.action === "moveOffers") {
       if (!Array.isArray(data.ids) || !data.ids.length || data.ids.length > 100 ||
         !(await listCategories()).some((c) => c.id === data.category))
         return Response.json({ error: "Zaznacz oferty i wybierz kategorię docelową." }, { status: 400 });
       const offers = (await listOffers(true)).filter((o) => data.ids.includes(o.id));
       if (offers.length) {
-        const { error } = await db.from("bnp_offers").upsert(offers.map((o) => ({
-          id: o.id, data: { ...o, category: data.category },
-        })));
+        const { error } = await db.from("bnp_offers").upsert(offers.map((o) => offerRecord({ ...o, category: data.category })));
         if (error) throw error;
       }
     } else if (data.action === "bulk") {
@@ -305,7 +312,9 @@ export async function POST(req: Request) {
     return Response.json(
       {
         error:
-          "Operacja nie została potwierdzona. Odśwież panel i sprawdź status w Stripe przed ponowieniem.",
+          action === "approveOrder" || action === "refundOrder"
+            ? "Operacja nie została potwierdzona. Odśwież panel i sprawdź status w Stripe przed ponowieniem."
+            : "Zapis nie został potwierdzony. Odśwież panel i sprawdź stan przed ponowieniem.",
       },
       { status: 500 },
     );
