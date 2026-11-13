@@ -106,73 +106,6 @@ h3 {
     sans-serif;
   letter-spacing: -0.7px;
 }
-.admin-offers-table table {
-  min-width: 760px;
-}
-.admin-offer-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 180px;
-}
-.admin-offer-title img.admin-offer-thumb {
-  width: 64px;
-  height: 46px;
-  flex: 0 0 64px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-.admin-offer-title small,
-.admin-offer-dates {
-  display: block;
-  margin-top: 4px;
-}
-.admin-offer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.admin-offers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-  gap: 16px;
-}
-.admin-offer-card {
-  overflow: hidden;
-  border: 1px solid #dfe5da;
-  border-radius: 12px;
-  background: #fff;
-}
-.admin-offer-card img.admin-card-photo {
-  display: block;
-  width: 100%;
-  height: 138px;
-  object-fit: cover;
-}
-.admin-card-body {
-  display: grid;
-  gap: 9px;
-  padding: 14px;
-}
-.admin-card-body p {
-  margin: 0;
-}
-.admin-card-heading {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-}
-.admin-offer-view button[aria-pressed="true"] {
-  background: #8f4907;
-  color: #fff;
-}
-.admin-pagination button:disabled {
-  opacity: .45;
-  cursor: default;
-}
-#panel-oferty, #panel-platnosci, #panel-zgloszenia, #panel-firmy {
-  scroll-margin-top: 100px;
-}
 .brand img {
   display: block;
   width: clamp(140px, 22vw, 184px);
@@ -2108,12 +2041,148 @@ td small {
 .admin-panel .modal {
   width: min(100%, 880px);
 }
-@media (max-width: 640px) {
+/* Panel redakcji */
+.panel-top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.admin-panel .panel-top > div:first-child,
+.admin-panel .field,
+.admin-panel .form-grid > *,
+.admin-card-body > * {
+  min-width: 0;
+}
+.admin-panel .panel-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.admin-panel .admin-tools input,
+.admin-panel .admin-tools select {
+  min-width: 0;
+  max-width: 100%;
+}
+.admin-panel .form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.admin-category-picker {
+  margin: 24px 0;
+}
+.admin-category-picker .categories {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr));
+}
+.admin-category-picker .category {
+  min-width: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.admin-offers-table table {
+  min-width: 920px;
+}
+.admin-offers-table td {
+  vertical-align: top;
+}
+.admin-offer-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+}
+.admin-offer-title > div:last-child,
+.admin-card-body {
+  overflow-wrap: anywhere;
+}
+.admin-offer-title small,
+.admin-offer-dates {
+  display: block;
+  margin-top: 4px;
+}
+.admin-offer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.admin-offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 16px;
+}
+.admin-offer-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+}
+.admin-offer-thumb {
+  flex: 0 0 64px;
+  height: 46px;
+  border-radius: 6px;
+}
+.admin-card-photo {
+  height: 138px;
+}
+.admin-offer-thumb,
+.admin-card-photo {
+  overflow: hidden;
+  background: #f6f2ec;
+}
+.admin-offer-thumb .offer-brand,
+.admin-card-photo .offer-brand {
+  height: 100%;
+  min-height: 0;
+  padding: 8px;
+  gap: 0;
+}
+.admin-offer-thumb :is(.brand-location, .brand-caption),
+.admin-card-photo :is(.brand-location, .brand-caption) {
+  display: none;
+}
+.admin-offer-thumb .brand-name {
+  font-size: 9px;
+  letter-spacing: 0;
+}
+.admin-offer-thumb img,
+.admin-card-photo .brand-logo {
+  object-fit: contain;
+}
+.admin-card-body {
+  display: grid;
+  gap: 9px;
+  padding: 14px;
+}
+.admin-card-heading {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.admin-panel .admin-share-modal {
+  width: min(100%, 800px);
+}
+.admin-share-modal .offer-share {
+  margin: 0;
+}
+.admin-panel .modal-heading {
+  gap: 16px;
+}
+.admin-panel .modal-heading button {
+  flex-shrink: 0;
+}
+#panel-oferty, #panel-platnosci, #panel-zgloszenia, #panel-firmy {
+  scroll-margin-top: 100px;
+}
+@media (max-width: 760px) {
   .admin-panel {
     width: 94%;
   }
   .admin-panel .panel-top {
     flex-wrap: wrap;
+    gap: 12px;
+  }
+  .admin-panel .panel-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .admin-panel .form-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -2405,10 +2474,5 @@ td small {
 .analytics-consent p{line-height:1.5;margin:10px 0 16px}.analytics-consent a{text-decoration:underline}.analytics-consent>div{display:flex;gap:10px}.analytics-consent button{flex:1;justify-content:center;cursor:pointer;font:inherit}
 .analytics-settings{display:block;margin:0 auto 20px;background:transparent;border:0;text-decoration:underline;font:inherit;font-size:12px;color:#756958;cursor:pointer}
 @media(max-width:600px){.offer-share{padding:18px}.share-actions>*{width:100%;justify-content:center;text-align:center;box-sizing:border-box;white-space:normal}.share-modes>*{flex:1}.offer-share h2{font-size:25px}.analytics-consent{padding:16px}.analytics-consent button{padding:12px}}
-
-.admin-category-picker{margin:24px 0}.admin-category-picker .category{font:inherit;cursor:pointer;min-width:115px}.admin-category-picker .categories{padding-bottom:8px}.admin-share-modal{width:min(800px,calc(100vw - 32px));max-height:90dvh;overflow:auto}.admin-share-modal .offer-share{margin:0;max-width:none}.admin-share-modal .share-preview{max-width:100%}.admin-share-modal .modal-heading{gap:16px}.admin-share-modal .modal-heading button{flex-shrink:0}
-@media(max-width:600px){.admin-share-modal{padding:16px}.admin-share-modal .modal-heading h2{font-size:23px}.admin-category-picker .category{min-width:105px}}
-
-.admin-offer-thumb{display:block;flex-shrink:0;overflow:hidden;background:#f6f2ec}.admin-offer-thumb .offer-brand{width:100%;height:100%;min-height:0;padding:5px;box-sizing:border-box;gap:0}.admin-offer-thumb .brand-location,.admin-offer-thumb .brand-caption{display:none}.admin-offer-thumb .brand-name{font-size:9px;line-height:1.15;letter-spacing:0;text-align:center}.admin-offer-thumb img,.admin-offer-thumb .brand-logo{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}.admin-card-photo{overflow:hidden}.admin-card-photo>.offer-brand{height:100%;min-height:0}.admin-card-photo>img{height:100%;width:100%;object-fit:cover}
 
 .brand-aleja-piekna{background:#39342f;color:#fff}.brand-aleja-piekna .brand-location,.brand-aleja-piekna .brand-caption{color:#dfd6c9}
