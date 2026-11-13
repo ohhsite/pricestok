@@ -1,6 +1,7 @@
-import HolidayBrand from "../components/HolidayBrand";
+import { ArrowUpRight, ChefHat } from "lucide-react";
 import { HolidayPage } from "../components/Holiday";
 import { holiday } from "../lib/holiday";
+import "./gifts.css";
 
 const guide = holiday.gifts;
 export const dynamic = "force-dynamic";
@@ -10,33 +11,71 @@ export const metadata = {
   alternates: { canonical: "/" + guide.slug },
 };
 
+const gifts = [
+  {
+    label: "Bali Organic Spa · Pogodna 4C",
+    title: "Voucher na masaż balijski",
+    description: "Wybierz papierową kartę podarunkową lub voucher wirtualny, który salon wysyła SMS-em lub e-mailem.",
+    image: "bali-organic-spa-voucher.webp",
+    href: "https://www.baliorganicspa.pl/vouchery",
+    action: "Sprawdź vouchery",
+  },
+  {
+    label: "Workshop Art",
+    title: "Voucher na ceramikę lub malarstwo",
+    price: "Od 100 zł",
+    description: "Voucher w formie PDF lub papierowej. Przez 6 miesięcy można go wykorzystać na warsztaty lub zakup prac w pracowni.",
+    image: "workshop-art.webp",
+    imageStyle: "logo",
+    href: "https://workshopart.pl/produkt/voucher/",
+    action: "Sprawdź kartę podarunkową",
+  },
+  {
+    label: "Gastro Strefa · Lipowa 37",
+    title: "Voucher na wspólne gotowanie",
+    price: "250 zł",
+    description: "Do wykorzystania na wybrane warsztaty w ciągu 6 miesięcy. Kod otrzymasz e-mailem po zaksięgowaniu wpłaty.",
+    image: "gastro-strefa.webp",
+    imageStyle: "voucher",
+    href: "https://studio.gastrostrefa.pl/produkt/voucher-na-warsztaty-kulinarne/",
+    action: "Sprawdź voucher",
+  },
+  {
+    label: "9 grudnia 2026 · godz. 17:30",
+    title: "Świąteczne wypieki z Panią K",
+    price: "330 zł / osobę",
+    description: "Około czterech godzin wspólnego pieczenia z Katarzyną Korolczuk w Studiu Kulinarnym Gastro Strefa przy Lipowej 37.",
+    imageStyle: "workshop",
+    href: "https://studio.gastrostrefa.pl/produkt/slodki-grudzien-warsztaty-z-pania-k-09-12-2026-godz-1730/",
+    action: "Zobacz program i dostępność",
+  },
+];
+
 export default function Gifts() {
   return (
     <HolidayPage guide={guide}>
-      <section className="detail-box">
-        <HolidayBrand slug="bali-organic-spa" name="Bali Organic Spa" />
-        <h2>Voucher na masaż lub wspólne wyjście</h2>
-        <p>Na prezent dla kogoś, kto woli przeżycia, sprawdź voucher na masaż, kolację albo warsztaty. Przed zakupem sprawdź ważność i sposób rezerwacji.</p>
-        <a className="text-link" href="https://www.baliorganicspa.pl/vouchery">Sprawdź vouchery Bali Organic Spa ↗</a>
-      </section>
-      <section className="detail-box">
-        <HolidayBrand slug="workshop-art" name="Workshop Art" dark />
-        <h2>Voucher na ceramikę lub malarstwo</h2>
-        <p>Workshop Art w Białymstoku oferuje voucher od 100 zł, w formie PDF lub papierowej. Można go wykorzystać na warsztaty lub zakup prac w pracowni. Ważność to 6 miesięcy.</p>
-        <a className="text-link" href="https://workshopart.pl/produkt/voucher/">Sprawdź kartę podarunkową Workshop Art ↗</a>
-      </section>
-      <section className="detail-box seasonal-gift">
-        <div className="holiday-brand"><img src="/brands/gastro-strefa.webp" alt="Studio Kulinarne Gastro Strefa — voucher" loading="lazy" /></div>
-        <p className="eyebrow">STUDIO KULINARNE · LIPOWA 37</p><h2>Voucher na wspólne gotowanie</h2><strong className="catering-price">250 zł</strong>
-        <p>Prezent dla osoby, która lubi poznawać nowe smaki. Voucher Gastro Strefy obniża koszt wybranych warsztatów o 250 zł i jest ważny przez 6 miesięcy. Kod otrzymasz e-mailem po zaksięgowaniu wpłaty.</p>
-        <a className="text-link" href="https://studio.gastrostrefa.pl/produkt/voucher-na-warsztaty-kulinarne/" target="_blank" rel="noopener noreferrer">Sprawdź voucher ↗</a>
-      </section>
-      <section className="detail-box seasonal-gift">
-        <div className="holiday-brand"><img src="/brands/gastro-strefa.webp" alt="Studio Kulinarne Gastro Strefa" loading="lazy" /></div>
-        <p className="eyebrow">9 GRUDNIA 2026 · GODZ. 17:30</p><h2>Świąteczne wypieki z Panią K</h2><strong className="catering-price">330 zł / osobę</strong>
-        <p>Około czterech godzin wspólnego pieczenia w Studiu Kulinarnym Gastro Strefa przy Lipowej 37. Warsztaty prowadzi Katarzyna Korolczuk. Pomysł na grudniowe wyjście lub prezent dla miłośnika wypieków.</p>
-        <a className="text-link" href="https://studio.gastrostrefa.pl/produkt/slodki-grudzien-warsztaty-z-pania-k-09-12-2026-godz-1730/" target="_blank" rel="noopener noreferrer">Zobacz program i dostępne miejsca ↗</a>
-      </section>
+      <div className="gift-guide-grid">
+        {gifts.map((gift) => (
+          <article className="gift-guide-card" key={gift.title}>
+            <div className={["gift-guide-media", gift.imageStyle].filter(Boolean).join(" ")}>
+              {gift.image ? (
+                <img src={"/brands/" + gift.image} alt="" loading="lazy" />
+              ) : (
+                <ChefHat size={64} strokeWidth={1.35} aria-hidden="true" />
+              )}
+            </div>
+            <div className="gift-guide-content">
+              <p className="gift-guide-label">{gift.label}</p>
+              <h2>{gift.title}</h2>
+              {gift.price && <strong className="gift-guide-price">{gift.price}</strong>}
+              <p className="gift-guide-description">{gift.description}</p>
+              <a className="gift-guide-action" href={gift.href}>
+                {gift.action} <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
       <section className="detail-box">
         <h2>Prezent na ostatnią chwilę</h2>
         <p>Przy zakupie vouchera sprawdź, czy firma wysyła go e-mailem. Jeśli wolisz odebrać prezent osobiście, zapytaj o dostępność i godziny odbioru przed wyjściem z domu.</p>

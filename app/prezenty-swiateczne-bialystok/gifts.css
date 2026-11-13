@@ -1,0 +1,104 @@
+.gift-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 26px 0;
+}
+
+.gift-guide-card {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.gift-guide-media {
+  display: grid;
+  place-items: center;
+  min-height: 170px;
+  position: relative;
+  background: #f2e9da;
+}
+
+.gift-guide-media img {
+  position: absolute;
+  inset: 0;
+}
+
+.gift-guide-media.logo {
+  background: #31332d;
+}
+
+.gift-guide-media.workshop {
+  background: #f6e1d7;
+  color: #8b4833;
+}
+
+.gift-guide-media.logo img,
+.gift-guide-media.voucher img {
+  object-fit: contain;
+  padding: 18px;
+}
+
+.gift-guide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  padding: clamp(16px, 2vw, 26px);
+}
+
+.gift-guide-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.gift-guide-content h2 {
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.2;
+}
+
+.gift-guide-price {
+  font-size: 17px;
+}
+
+.gift-guide-description {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.gift-guide-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--green);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gift-guide-action svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .gift-guide-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .gift-guide-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gift-guide-media {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}

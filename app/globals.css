@@ -2359,9 +2359,6 @@ td small {
 .seasonal-highlight h3 { font-size:23px; line-height:1.35; margin:8px 0 12px; }
 .seasonal-highlight p { margin:12px 0; }
 .seasonal-highlight .text-link { display:inline-block; margin-top:10px; font-weight:600; }
-.seasonal-gift .eyebrow { margin-top:16px; }
-.seasonal-gift h2 { margin:10px 0; }
-.seasonal-gift .catering-price { display:block; margin-bottom:12px; }
 @media(max-width:600px) {
   .hero-visual { display:flex; flex-direction:column; height:auto; margin:0; border:1px solid #3e4439; border-radius:18px; background:#262923; overflow:hidden; }
   .hero-picture { height:auto; border-radius:0; transform:none; display:flex; flex-direction:column; }
