@@ -63,7 +63,7 @@ W Vercel → Project → Settings → Environment Variables ustaw:
 
 Sekret Supabase wpisz bezpośrednio w Vercel. Nie przesyłaj go na czacie ani do GitHub. Nie dodawaj prefiksu `NEXT_PUBLIC_`. Dostępne połączenie nie udostępnia klucza sekretnego ani ustawień Vercel, dlatego tych dwóch kroków nie wykonano automatycznie.
 
-W Supabase → Authentication → Users → Add user utwórz administratora z własnym e-mailem i hasłem; zaznacz potwierdzenie e-maila. Taki sam e-mail wpisz w `ADMIN_EMAIL`. Potem zrób **Redeploy w Vercel** i zaloguj się na `/panel`.
+W Supabase → Authentication → Users → Add user utwórz administratora z własnym e-mailem i hasłem; zaznacz potwierdzenie e-maila. Taki sam e-mail wpisz w `ADMIN_EMAIL`. Potem zrób **Redeploy w Vercel** i zaloguj się na `/redakcja-k7m4q9`.
 
 ## Stripe — po utworzeniu osobnego konta
 
@@ -85,7 +85,7 @@ Portal płatności jest tworzony z anulowaniem **na koniec okresu**, historią f
 
 ## Moderacja i zwroty
 
-`/panel` → „Abonamenty i płatne podstrony”. Sprawdź dane i źródło, następnie zatwierdź. Do momentu zatwierdzenia zakup nie jest publikowany. Odrzucenie anuluje abonament i zleca zwrot ostatniej wpłaty. Jeśli redakcja zwlekała do kolejnych odnowień, dodatkowe starsze wpłaty trzeba zwrócić w Stripe. Dlatego zgłoszenia powinny być oceniane przed następnym odnowieniem. Spory, pełne zwroty i wczesne sygnały oszustwa blokują publikację oraz wyłączają dalsze odnowienie; te stany wymagają sprawdzenia przez właścicielkę.
+`/redakcja-k7m4q9` → „Abonamenty i płatne podstrony”. Sprawdź dane i źródło, następnie zatwierdź. Do momentu zatwierdzenia zakup nie jest publikowany. Odrzucenie anuluje abonament i zleca zwrot ostatniej wpłaty. Jeśli redakcja zwlekała do kolejnych odnowień, dodatkowe starsze wpłaty trzeba zwrócić w Stripe. Dlatego zgłoszenia powinny być oceniane przed następnym odnowieniem. Spory, pełne zwroty i wczesne sygnały oszustwa blokują publikację oraz wyłączają dalsze odnowienie; te stany wymagają sprawdzenia przez właścicielkę.
 
 Podstrona firmy ma adres `/wizytowka/ID`, osobne metadane, canonical i dane LocalBusiness. Trafia do mapy strony po opłaceniu i akceptacji. Jest utrzymywana w działającym serwisie bez miesięcznych opłat; ta wersja nie wyłącza jej automatycznie.
 

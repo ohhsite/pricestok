@@ -104,6 +104,7 @@ export default function AdminPanel() {
   useEffect(() => {
     const saved = Number(localStorage.getItem("pricestok-admin-page-size"));
     if ([10, 20, 50, 100].includes(saved)) setPageSize(saved);
+    if (window.matchMedia("(max-width: 760px)").matches) setView("grid");
     reload();
     loadCompanies();
   }, []);
@@ -333,18 +334,20 @@ export default function AdminPanel() {
             Dodawaj, aktualizuj i porządkuj oferty w jednym miejscu.
           </p>
         </div>
-        <button
-          className="button outline"
-          onClick={async () => {
-            await fetch("/api/auth/logout", { method: "POST" });
-            location.reload();
-          }}
-        >
-          Wyloguj
-        </button>
-        <button className="button" onClick={() => { setTab("oferty"); setEdit(blank()); }}>
-          <Plus size={17} /> Nowa promocja
-        </button>
+        <div className="panel-top-actions">
+          <button className="button" onClick={() => { setTab("oferty"); setEdit(blank()); }}>
+            <Plus size={17} /> Nowa promocja
+          </button>
+          <button
+            className="button outline"
+            onClick={async () => {
+              await fetch("/api/auth/logout", { method: "POST" });
+              location.reload();
+            }}
+          >
+            Wyloguj
+          </button>
+        </div>
       </div>
       <nav className="admin-tools" aria-label="Sekcje panelu">
         {Object.entries({ oferty: "Oferty", archiwum: "Archiwum ofert", zgloszenia: "Zgłoszenia", firmy: "Firmy", platnosci: "Płatności", kategorie: "Kategorie", newsletter: "Newsletter" }).map(([id, name]) => (

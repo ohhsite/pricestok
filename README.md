@@ -31,7 +31,7 @@ Otwórz http://localhost:3000. Bez skonfigurowanej bazy katalog pokazuje 11 ofer
 3. W `.env.local` wpisz `SUPABASE_URL` i `SUPABASE_SECRET_KEY`.
 4. `SUPABASE_SECRET_KEY` to serwerowy secret key lub starszy service_role. Nie dodawaj prefiksu `NEXT_PUBLIC_`.
 5. W Authentication → Users utwórz konto administratora z hasłem, zatwierdź jego e-mail i wpisz ten adres w `ADMIN_EMAIL`. Logowanie przez e-mail musi być włączone. Publiczna rejestracja kont nie jest potrzebna.
-6. Wejdź na `/panel` i zaloguj się tym kontem. Sesja administratora wygasa wraz z tokenem Supabase; wtedy zaloguj się ponownie.
+6. Wejdź na `/redakcja-k7m4q9` i zaloguj się tym kontem. Sesja administratora wygasa wraz z tokenem Supabase; wtedy zaloguj się ponownie.
 
 Tabele mają włączone RLS i zablokowany dostęp dla anon/authenticated. Serwer po weryfikacji uprawnień używa swojego klucza; przeglądarka nigdy go nie otrzymuje.
 

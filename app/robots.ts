@@ -4,7 +4,7 @@ export default function robots() {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/panel", "/api/", "/dodaj-promocje"],
+      disallow: ["/api/", "/dodaj-promocje"],
     },
     sitemap: siteUrl() + "/sitemap.xml",
   };

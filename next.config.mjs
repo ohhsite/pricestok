@@ -4,6 +4,10 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/:path(panel|redakcja-k7m4q9)",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
         source: "/:path*",
         headers: [
           { key: "Referrer-Policy", value: "no-referrer" },
