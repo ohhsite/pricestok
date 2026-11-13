@@ -1,13 +1,20 @@
 import "server-only";
 import { getSupabase } from "./supabase";
 import { databaseConfigured } from "./config";
-import { seeds, Offer } from "./data";
-export async function listOffers(admin = false): Promise<Offer[]> {
+import { seeds, type AdminOffer, type Offer } from "./data";
+type OfferRow = {
+  id: string;
+  data: Offer;
+  added_at?: string | null;
+  facebook_shared_at?: string | null;
+};
+
+export async function listOffers(admin = false): Promise<AdminOffer[]> {
   const map = new Map(seeds.map((o) => [o.id, o]));
   if (!databaseConfigured()) return [...map.values()];
-  const { data, error } = await getSupabase()
-    .from("bnp_offers")
-    .select("id,data");
+  const db = getSupabase();
+  const columns = admin ? "id,data,added_at,facebook_shared_at" : "id,data";
+  const { data, error } = await db.from("bnp_offers").select(columns).overrideTypes<OfferRow[]>();
   if (error) {
     console.error("Supabase bnp_offers", error.code || "network");
     if (!admin) return [...map.values()];
@@ -18,7 +25,14 @@ export async function listOffers(admin = false): Promise<Offer[]> {
   }
   for (const row of data || []) {
     if (row.data.status === "deleted") map.delete(row.id);
-    else map.set(row.id, row.data as Offer);
+    else {
+      const offer: AdminOffer = row.data;
+      if (admin) {
+        offer.addedAt = map.has(row.id) ? null : row.added_at;
+        offer.facebookSharedAt = row.facebook_shared_at;
+      }
+      map.set(row.id, offer);
+    }
   }
   if (admin) return [...map.values()];
   const counts = await getSupabase().rpc("bnp_heart_counts");
@@ -48,10 +62,31 @@ export async function listOffers(admin = false): Promise<Offer[]> {
     );
   });
 }
+export function offerRecord({ addedAt, facebookSharedAt, ...offer }: AdminOffer) {
+  return { id: offer.id, data: offer };
+}
+
+export async function setFacebookShared(offer: Offer, shared: boolean) {
+  const db = getSupabase();
+  if (shared && seeds.some((seed) => seed.id === offer.id)) {
+    const { error } = await db.from("bnp_offers").upsert(
+      offerRecord(offer), { onConflict: "id", ignoreDuplicates: true },
+    );
+    if (error) throw error;
+  }
+  const { data, error } = await db.from("bnp_offers")
+    .update({ facebook_shared_at: shared ? new Date().toISOString() : null })
+    .eq("id", offer.id)
+    .neq("data->>status", "deleted")
+    .select("id");
+  if (error) throw error;
+  return !!data?.length;
+}
+
 export async function saveOffer(o: Offer) {
   const { error } = await getSupabase()
     .from("bnp_offers")
-    .upsert({ id: o.id, data: o });
+    .upsert(offerRecord(o));
   if (error) throw new Error("Nie udało się zapisać oferty.");
 }
 

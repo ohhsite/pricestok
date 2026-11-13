@@ -30,6 +30,10 @@ export type Offer = {
   guideKind?: "offer" | "idea";
   fulfillment?: string;
 };
+export type AdminOffer = Offer & {
+  addedAt?: string | null;
+  facebookSharedAt?: string | null;
+};
 export const categories = [
   { id: "jedzenie", name: "Jedzenie", icon: "Utensils", color: "#fff0e6" },
   { id: "beauty", name: "Beauty", icon: "Sparkles", color: "#f5eafb" },
