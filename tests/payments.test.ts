@@ -39,6 +39,8 @@ test("oferta nie jest widoczna przed startem, po końcu ani jako szkic", () => {
     end: "2026-12-02",
   } as any;
   assert.equal(isActive(o, "2026-11-02"), false);
+  assert.equal(isActive({ ...o, kind: "event" }, "2026-11-02"), true);
+  assert.equal(isActive({ ...o, kind: "event" }, "2026-12-03"), false);
   assert.equal(isActive(o, "2026-11-03"), true);
   assert.equal(isActive(o, "2026-12-02"), true);
   assert.equal(isActive(o, "2026-12-03"), false);

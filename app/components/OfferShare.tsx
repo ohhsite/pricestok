@@ -45,7 +45,7 @@ export default function OfferShare({ offer, origin, expanded = false }: {
 
   return (
     <section className="offer-share detail-long">
-      <h2>{expanded ? "Przygotuj post na Facebooka" : "Udostępnij tę ofertę"}</h2>
+      <h2>{expanded ? "Przygotuj post na Facebooka" : offer.kind === "event" ? "Udostępnij wydarzenie" : "Udostępnij okazję"}</h2>
       {!expanded && <div className="share-actions">
         <a className="button" href={sharer} target="_blank" rel="noopener noreferrer" onClick={() => track("share_facebook")}>Udostępnij link na Facebooku ↗</a>
         <button type="button" className="button secondary" onClick={() => copy(url, "copy_link")}>Kopiuj link</button>

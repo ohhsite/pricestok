@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { listOffers } from "../../../lib/repository";
-import { dateLabel, isActive } from "../../../lib/data";
+import { dateLabel, eventDate, isActive } from "../../../lib/data";
 import { shareImage } from "../../../lib/share-image";
 
 export const runtime = "nodejs";
@@ -27,12 +27,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
       </div>
       <div style={{ display: "flex", flex: 1, alignItems: "center", gap: 34 }}>
         <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 12 }}>
-          <span style={{ display: "flex", alignSelf: "flex-start", background: "#ffdfad", borderRadius: 8, padding: "6px 14px", fontSize: 22, fontWeight: 700 }}>{active ? shorten(offer.badge || offer.company, 48) : "Oferta poza terminem"}</span>
+          <span style={{ display: "flex", alignSelf: "flex-start", background: "#ffdfad", borderRadius: 8, padding: "6px 14px", fontSize: 22, fontWeight: 700 }}>{active ? shorten(offer.badge || offer.company, 48) : offer.kind === "event" ? "Wydarzenie zakończone" : "Okazja poza terminem"}</span>
           <span style={{ fontSize: image ? (shortTitle ? 49 : 41) : (shortTitle ? 62 : 52), fontWeight: 700, lineHeight: 1.08 }}>{title}</span>
           <span style={{ fontSize: 24, color: "#6b5541" }}>{shorten(offer.address || offer.company, 74)}</span>
-          {offer.end && <span style={{ fontSize: 22 }}>Do {dateLabel(offer.end)}</span>}
+          {offer.end && <span style={{ fontSize: 22 }}>{offer.kind === "event" ? eventDate(offer) : "Do " + dateLabel(offer.end)}</span>}
         </div>
-        {image && <div style={{ display: "flex", width: 400, height: 320, flexShrink: 0, alignItems: "center", justifyContent: "center", overflow: "hidden", borderRadius: 22, background: image.photo ? "#ede2d3" : ["chilli-pizza", "na-lipowej", "magic-gym", "beauty-bar", "aleja-piekna"].includes(offer.companySlug) ? "#252a22" : "#ffffff" }}>
+        {image && <div style={{ display: "flex", width: 400, height: 320, flexShrink: 0, alignItems: "center", justifyContent: "center", overflow: "hidden", borderRadius: 22, background: image.photo ? "#ede2d3" : ["chilli-pizza", "na-lipowej", "magic-gym", "beauty-bar", "aleja-piekna", "polish-champs"].includes(offer.companySlug) ? "#252a22" : "#ffffff" }}>
           <img src={image.src} width={image.photo ? 405 : 350} height={image.photo ? 320 : 277} />
         </div>}
       </div>

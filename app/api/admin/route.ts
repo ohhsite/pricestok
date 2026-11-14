@@ -74,6 +74,7 @@ function valid(o: any): o is Offer {
     (o?.metaDescription === undefined || (typeof o.metaDescription === "string" && o.metaDescription.length <= 320)) &&
     (o?.guides === undefined || (Array.isArray(o.guides) && o.guides.length <= 3 &&
       o.guides.every((slug: unknown) => Object.values(holiday).some((g) => g.slug === slug)))) &&
+    (o?.kind === undefined || ["deal", "event"].includes(o.kind)) &&
     (o?.guideKind === undefined || ["offer", "idea"].includes(o.guideKind)) &&
     (o?.fulfillment === undefined || (typeof o.fulfillment === "string" && o.fulfillment.length <= 250)) &&
     typeof o?.id === "string" &&

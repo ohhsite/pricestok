@@ -9,6 +9,15 @@ import { photoName } from "./photos";
 import { getSupabase } from "./supabase";
 
 const imageHosts = new Set([
+  "biala.gcity.pl",
+  "galeria-arsenal.pl",
+  "jack-sparrow.pl",
+  "mwb.com.pl",
+  "polishchamps.com",
+  "www.bialystokonline.pl",
+  "www.ikea.com",
+  "www.oifp.eu",
+  "wzorytargi.pl",
   "a.storyblok.com",
   "galeriazielonewzgorze.pl",
   "pikpodlaskie.pl",
