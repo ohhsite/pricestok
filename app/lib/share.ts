@@ -7,3 +7,7 @@ export function shareLink(origin: string, slug: string, company = false) {
 export function sharePost(offer: Offer, url: string, company = false) {
   return [company ? `${offer.company} — poznaj naszą ofertę w Białymstoku!` : `Lokalna okazja w Białymstoku: ${offer.company}`, offer.title, offer.summary, `Gdzie: ${offer.address}`, offer.end ? `Do: ${offer.end}` : "Aktualną dostępność potwierdź u firmy.", `Warunki: ${offer.conditions.replaceAll("\\n", "\n")}`, `Szczegóły: ${url}`].join("\n\n");
 }
+
+export function shareGraphic(slug: string) {
+  return "/grafika-oferty/" + encodeURIComponent(slug) + "?v=2";
+}
