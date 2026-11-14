@@ -7,7 +7,7 @@ import { Header, Footer } from "../../components/Shell";
 import { listOffers } from "../../lib/repository";
 import { listCategories } from "../../lib/categories";
 import { holiday } from "../../lib/holiday";
-import { isActive, dateLabel, Offer } from "../../lib/data";
+import { isActive, dateLabel, eventDate, entryLabel } from "../../lib/data";
 import { ArrowUpRight, MapPin, CalendarDays, Check } from "lucide-react";
 import TrackView from "../../components/TrackView";
 export const dynamic = "force-dynamic";
@@ -35,6 +35,7 @@ export default async function Detail({ params }: any) {
   if (!o || o.status !== "published") notFound();
   const cat = (await listCategories()).find((c) => c.id === o.category);
   const active = isActive(o);
+  const event = o.kind === "event";
   return (
     <>
       <Header />
@@ -81,7 +82,7 @@ export default async function Detail({ params }: any) {
           </div>
           <div className="detail-content">
             <div className="eyebrow">
-              {cat?.name} · BIAŁYSTOK{o.sponsored ? " · SPONSOROWANE" : ""}
+              {entryLabel(o)}{cat && " · " + cat.name} · BIAŁYSTOK{o.sponsored ? " · SPONSOROWANE" : ""}
             </div>
             <h1>{o.title}</h1>
             <a className="company" href={"/firma/" + o.companySlug}>
@@ -91,8 +92,7 @@ export default async function Detail({ params }: any) {
             {o.price && <strong className="offer-price detail-price">{o.price}</strong>}
             {!active && (
               <div className="message error">
-                Ta promocja już się zakończyła lub jeszcze nie wystartowała.
-                Sprawdź inne aktualne okazje.
+                {event ? "To wydarzenie już się zakończyło." : "Ta okazja jest poza terminem."}
               </div>
             )}
             <div className="detail-box">
@@ -102,7 +102,7 @@ export default async function Detail({ params }: any) {
               </div>
               <div>
                 <CalendarDays size={15} />
-                {o.end ? "Do " + dateLabel(o.end) : "Bez podanej daty końcowej"}
+                {event ? eventDate(o) : o.end ? "Do " + dateLabel(o.end) : "Bez podanej daty końcowej"}
               </div>
               <p>
                 {o.days.length === 7
@@ -135,11 +135,11 @@ export default async function Detail({ params }: any) {
                     : "noopener noreferrer"
                 }
               >
-                Sprawdź ofertę u firmy <ArrowUpRight size={17} />
+                {event ? "Program i informacje u organizatora" : "Sprawdź okazję u firmy"} <ArrowUpRight size={17} />
               </a>
             ) : (
               <a className="button" href="/#okazje">
-                Zobacz aktualne promocje
+                Zobacz aktualne wpisy
               </a>
             )}
             <div className="detail-source">
@@ -155,33 +155,31 @@ export default async function Detail({ params }: any) {
                     : "noopener noreferrer"
                 }
               >
-                Źródło informacji o promocji ↗
+                Źródło informacji ↗
               </a>
             </div>
           </div>
         </div>
         <section className="detail-long">
-          <h2>Warunki promocji w {o.company}</h2>
+          <h2>{event ? "Program i informacje praktyczne" : "Warunki okazji"}</h2>
           <p style={{ whiteSpace: "pre-line" }}>{o.conditions.replaceAll("\\n", "\n")}</p>
           <div className="detail-box">
             <strong>Przed skorzystaniem sprawdź dostępność</strong>
             <p>
-              Podajemy informacje ze strony firmy lub organizatora. Warunki mogą
-              się zmienić, a brak daty końcowej nie oznacza bezterminowej
-              gwarancji. Ceny i dostępność potwierdź u organizatora.
+              {event ? "Sprawdź aktualny program i dostępność miejsc u organizatora." : "Aktualną cenę i dostępność potwierdź u firmy."}
             </p>
           </div>
           <a className="text-link" href={"/dodaj-promocje?zglos=" + o.slug}>
-            Zgłoś zmianę lub nieaktualną ofertę →
+            Zgłoś zmianę informacji →
           </a>
         </section>
         {active && <OfferShare offer={o} origin={siteUrl()} />}
         <section className="detail-long">
-          <h2>Więcej lokalnych okazji</h2>
-          {offers.filter((other) => other.id !== o.id && other.category === o.category && isActive(other)).slice(0, 3).map((other) => (
+          <h2>{event ? "Więcej wydarzeń" : "Więcej lokalnych okazji"}</h2>
+          {offers.filter((other) => other.id !== o.id && (other.kind === "event") === event && other.category === o.category && isActive(other)).slice(0, 3).map((other) => (
             <a key={other.id} className="detail-box" style={{ display: "block" }} href={"/promocja/" + other.slug}><strong>{other.title}</strong><p>{other.company} · {other.address}</p></a>
           ))}
-          <a className="text-link" href={"/kategoria/" + o.category}>Wszystkie okazje: {cat?.name} →</a>
+          <a className="text-link" href={"/kategoria/" + o.category}>Zobacz kategorię {cat?.name} →</a>
         </section>
         {o.fulfillment && <p>Zakup lub odbiór: {o.fulfillment}</p>}
         {!!o.guides?.length && (

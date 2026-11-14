@@ -991,7 +991,13 @@ export default function AdminPanel() {
                     </label>
                   ))}
                 </fieldset>
-                <label className="field">Typ wpisu
+                <label className="field">Rodzaj wpisu
+                  <select value={edit.kind || "deal"} onChange={(event) => field("kind", event.target.value)}>
+                    <option value="deal">Okazja</option>
+                    <option value="event">Wydarzenie</option>
+                  </select>
+                </label>
+                <label className="field">Typ w przewodniku
                   <select value={edit.guideKind || "offer"} onChange={(event) => field("guideKind", event.target.value)}>
                     <option value="offer">Promocja</option>
                     <option value="idea">Propozycja w regularnej cenie</option>

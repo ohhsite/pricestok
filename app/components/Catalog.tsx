@@ -29,6 +29,8 @@ import {
   today,
   weekday,
   dateLabel,
+  eventDate,
+  entryLabel,
 } from "../lib/data";
 import { Header, Footer } from "./Shell";
 const icons: any = {
@@ -82,7 +84,7 @@ export function OfferCard({
       </div>
       <div className="card-body">
         <div className="card-meta">
-          <span>{cat?.name}</span>
+          <span>{entryLabel(o)}{cat && " · " + cat.name}</span>
           <span>
             <MapPin size={12} />
             {o.area}
@@ -100,7 +102,7 @@ export function OfferCard({
         <div className="card-bottom">
           <span>
             <Clock size={13} />
-            {o.end
+            {o.kind === "event" ? eventDate(o) : o.end
               ? "Do " + dateLabel(o.end)
               : o.days.length === 7
                 ? "Bez daty końcowej"
@@ -112,7 +114,7 @@ export function OfferCard({
           </span>
           <a
             href={"/promocja/" + o.slug}
-            aria-label={"Szczegóły promocji: " + o.title}
+            aria-label={(o.kind === "event" ? "Szczegóły wydarzenia: " : "Szczegóły okazji: ") + o.title}
           >
             Szczegóły <ArrowUpRight size={15} />
           </a>
@@ -292,12 +294,12 @@ export default function Catalog({
               {heroOffer && <OfferVisual offer={heroOffer} />}
               <div className="hero-picture-overlay" />
               <div className="visual-caption">
-                <span>LOKALNA OKAZJA</span>
+                <span>{heroOffer ? entryLabel(heroOffer).toUpperCase() : "BIAŁYSTOK"}</span>
                 <strong>{heroOffer?.title || "Odkryj lokalne okazje"}</strong>
                 <a
                   href={heroOffer ? "/promocja/" + heroOffer.slug : "/#okazje"}
                 >
-                  Odkryj tę okazję <ArrowUpRight size={18} />
+                  {heroOffer?.kind === "event" ? "Zobacz wydarzenie" : "Zobacz okazję"} <ArrowUpRight size={18} />
                 </a>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import reviewedOffers from "./reviewed-offers.json" with { type: "json" };
 export type Offer = {
+  kind?: "deal" | "event";
   id: string;
   slug: string;
   title: string;
@@ -58,7 +59,7 @@ export function today() {
 export function isActive(o: Offer, date = today()) {
   return (
     o.status === "published" &&
-    (!o.start || o.start <= date) &&
+    (o.kind === "event" || !o.start || o.start <= date) &&
     (!o.end || o.end >= date)
   );
 }
@@ -74,3 +75,13 @@ export function dateLabel(v: string) {
     : "Oferta cykliczna";
 }
 
+
+export function eventDate(offer: Offer) {
+  if (!offer.start) return offer.end ? dateLabel(offer.end) : "Termin u organizatora";
+  if (!offer.end || offer.start === offer.end) return dateLabel(offer.start);
+  return dateLabel(offer.start) + " – " + dateLabel(offer.end);
+}
+
+export function entryLabel(offer: Offer) {
+  return offer.kind === "event" ? "Wydarzenie" : "Okazja";
+}
