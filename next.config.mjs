@@ -1,6 +1,9 @@
 const nextConfig = {
   poweredByHeader: false,
   outputFileTracingIncludes: {"/api/share/*": ["./public/brands/**/*"]},
+  async rewrites() {
+    return [{ source: "/grafika-oferty/:slug", destination: "/api/share/:slug" }];
+  },
   async headers() {
     return [
       {

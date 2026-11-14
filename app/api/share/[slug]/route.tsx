@@ -1,21 +1,49 @@
-import {ImageResponse} from "next/og";
-import {readFile} from "node:fs/promises";
-import path from "node:path";
-import sharp from "sharp";
-import {listOffers} from "../../../lib/repository";
-import {isActive} from "../../../lib/data";
-import {brands} from "../../../lib/brands";
-export const runtime="nodejs";
-export async function GET(req:Request,{params}:{params:Promise<{slug:string}>}){
- const {slug}=await params;const o=(await listOffers()).find(o=>o.slug===slug&&o.status==="published");
- if(!o)return new Response("Nie znaleziono oferty",{status:404});
- let logo="";const asset=o.logo || (brands[o.companySlug]?"/brands/"+brands[o.companySlug]:"");
- if(/^\/brands\/[a-zA-Z0-9_.-]+$/.test(asset)){
-  try{const bytes=await readFile(path.join(process.cwd(),"public",asset));const png=await sharp(bytes).resize({width:460,height:180,fit:"inside"}).png().toBuffer();logo="data:image/png;base64,"+png.toString("base64");}catch{}
- }
- const dark=["chilli-pizza","na-lipowej","magic-gym","beauty-bar","aleja-piekna"].includes(o.companySlug);
- const res=new ImageResponse(<div style={{display:"flex",width:"100%",height:"100%",background:"#fff9ef",padding:48,color:"#352b20",flexDirection:"column",fontFamily:"sans-serif"}}><div style={{display:"flex",justifyContent:"space-between",fontSize:25,fontWeight:700}}><span>PRICESTOK · BIAŁYSTOK</span><span>{isActive(o)?o.badge:"Oferta nieaktywna"}</span></div><div style={{display:"flex",gap:40,flex:1,alignItems:"center"}}><div style={{display:"flex",width:380,height:260,borderRadius:24,background:dark?"#252a22":"#f0e8dc",alignItems:"center",justifyContent:"center",padding:25,color:dark?"white":"#352b20"}}>{logo?<img src={logo} width={330} height={160} style={{objectFit:"contain"}}/>:<span style={{fontSize:40,textAlign:"center"}}>{o.company}</span>}</div><div style={{display:"flex",flexDirection:"column",width:640,gap:18}}><span style={{fontSize:25,color:"#995000"}}>{o.company}</span><span style={{fontSize:o.title.length>85?38:46,fontWeight:700,lineHeight:1.15}}>{o.title}</span><span style={{fontSize:23,color:"#756958"}}>{o.address}</span>{o.end&&<span style={{fontSize:23}}>Do {o.end}</span>}</div></div><div style={{display:"flex",justifyContent:"space-between",fontSize:23,borderTop:"1px solid #ddcdb5",paddingTop:22}}><span>Warunki i aktualność sprawdź na stronie</span><span>pricestok.pl ↗</span></div></div>,{width:1200,height:630});
- res.headers.set("Cache-Control","public, max-age=300, s-maxage=300");
- if(new URL(req.url).searchParams.get("download")==="1")res.headers.set("Content-Disposition",`attachment; filename="pricestok-${slug}.png"`);
- return res;
+import { ImageResponse } from "next/og";
+import { listOffers } from "../../../lib/repository";
+import { dateLabel, isActive } from "../../../lib/data";
+import { shareImage } from "../../../lib/share-image";
+
+export const runtime = "nodejs";
+
+function shorten(value: string, limit: number) {
+  if (value.length <= limit) return value;
+  return value.slice(0, limit).replace(/\s+\S*$/, "") + "…";
+}
+
+export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const offer = (await listOffers()).find((entry) => entry.slug === slug && entry.status === "published");
+  if (!offer) return new Response("Nie znaleziono oferty", { status: 404 });
+
+  const image = await shareImage(offer);
+  const active = isActive(offer);
+  const title = shorten(offer.title, 115);
+  const shortTitle = title.length < 65;
+  const res = new ImageResponse(
+    <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", background: "#fffaf1", color: "#25231f", padding: "36px 48px", fontFamily: "sans-serif" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 20, borderBottom: "2px solid #efdcc7" }}>
+        <span style={{ fontSize: 34, fontWeight: 700 }}>PriceStok<span style={{ color: "#e98108" }}>.</span></span>
+        <span style={{ fontSize: 23, fontWeight: 700, letterSpacing: 2 }}>BIAŁYSTOK</span>
+      </div>
+      <div style={{ display: "flex", flex: 1, alignItems: "center", gap: 34 }}>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 12 }}>
+          <span style={{ display: "flex", alignSelf: "flex-start", background: "#ffdfad", borderRadius: 8, padding: "6px 14px", fontSize: 22, fontWeight: 700 }}>{active ? shorten(offer.badge || offer.company, 48) : "Oferta poza terminem"}</span>
+          <span style={{ fontSize: image ? (shortTitle ? 49 : 41) : (shortTitle ? 62 : 52), fontWeight: 700, lineHeight: 1.08 }}>{title}</span>
+          <span style={{ fontSize: 24, color: "#6b5541" }}>{shorten(offer.address || offer.company, 74)}</span>
+          {offer.end && <span style={{ fontSize: 22 }}>Do {dateLabel(offer.end)}</span>}
+        </div>
+        {image && <div style={{ display: "flex", width: 400, height: 320, flexShrink: 0, alignItems: "center", justifyContent: "center", overflow: "hidden", borderRadius: 22, background: image.photo ? "#ede2d3" : ["chilli-pizza", "na-lipowej", "magic-gym", "beauty-bar", "aleja-piekna"].includes(offer.companySlug) ? "#252a22" : "#ffffff" }}>
+          <img src={image.src} width={image.photo ? 405 : 350} height={image.photo ? 320 : 277} />
+        </div>}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 17, borderTop: "2px solid #efdcc7", fontSize: 23, fontWeight: 700 }}>
+        <span>{shorten(offer.company, 54)}</span><span style={{ color: "#945006" }}>pricestok.pl</span>
+      </div>
+    </div>,
+    { width: 1200, height: 630 },
+  );
+  res.headers.set("Cache-Control", "public, max-age=300, s-maxage=3600");
+  if (new URL(req.url).searchParams.get("download") === "1")
+    res.headers.set("Content-Disposition", `attachment; filename="pricestok-${slug}.png"`);
+  return res;
 }

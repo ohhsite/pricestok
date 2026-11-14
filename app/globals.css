@@ -2473,3 +2473,14 @@ td small {
 @media(max-width:600px){.offer-share{padding:18px}.share-actions>*{width:100%;justify-content:center;text-align:center;box-sizing:border-box;white-space:normal}.share-modes>*{flex:1}.offer-share h2{font-size:25px}.analytics-consent{padding:16px}.analytics-consent button{padding:12px}}
 
 .brand-aleja-piekna{background:#39342f;color:#fff}.brand-aleja-piekna .brand-location,.brand-aleja-piekna .brand-caption{color:#dfd6c9}
+
+.offer-share .share-link {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+}
+.offer-share .share-preview + label {
+  margin-top: 15px;
+}

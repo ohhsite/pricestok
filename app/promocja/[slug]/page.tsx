@@ -1,3 +1,4 @@
+import { shareGraphic } from "../../lib/share";
 import { siteUrl } from "../../lib/config";
 import OfferShare from "../../components/OfferShare";
 import OfferVisual from "../../components/OfferVisual";
@@ -19,8 +20,8 @@ export async function generateMetadata({ params }: any) {
     title,
     description,
     alternates: { canonical: `/promocja/${slug}` },
-    openGraph: o ? { title, description, url: `/promocja/${slug}`, type: "website" as const, images: [{url:`/api/share/${encodeURIComponent(slug)}`,width:1200,height:630,alt:o.title}] } : undefined,
-    twitter: o ? {card:"summary_large_image",title,description,images:[`/api/share/${encodeURIComponent(slug)}`]} : undefined,
+    openGraph: o ? { title: o.title, description, siteName: "PriceStok", url: `/promocja/${slug}`, type: "website" as const, images: [{url:shareGraphic(slug),type:"image/png",width:1200,height:630,alt:o.title}] } : undefined,
+    twitter: o ? {card:"summary_large_image",title,description,images:[shareGraphic(slug)]} : undefined,
     robots:
       o && isActive(o)
         ? { index: true, follow: true }
