@@ -35,6 +35,7 @@ export default async function Detail({ params }: any) {
   if (!o || o.status !== "published") notFound();
   const cat = (await listCategories()).find((c) => c.id === o.category);
   const active = isActive(o);
+  const isEvent = o.kind === "event";
   return (
     <>
       <Header />
@@ -81,7 +82,7 @@ export default async function Detail({ params }: any) {
           </div>
           <div className="detail-content">
             <div className="eyebrow">
-              {cat?.name} · BIAŁYSTOK{o.sponsored ? " · SPONSOROWANE" : ""}
+              {isEvent && "Wydarzenie · "}{cat?.name} · BIAŁYSTOK{o.sponsored ? " · SPONSOROWANE" : ""}
             </div>
             <h1>{o.title}</h1>
             <a className="company" href={"/firma/" + o.companySlug}>
@@ -91,8 +92,7 @@ export default async function Detail({ params }: any) {
             {o.price && <strong className="offer-price detail-price">{o.price}</strong>}
             {!active && (
               <div className="message error">
-                Ta promocja już się zakończyła lub jeszcze nie wystartowała.
-                Sprawdź inne aktualne okazje.
+                {isEvent ? "To wydarzenie już się zakończyło." : "Ta promocja już się zakończyła lub jeszcze nie wystartowała. Sprawdź inne aktualne okazje."}
               </div>
             )}
             <div className="detail-box">
@@ -102,7 +102,9 @@ export default async function Detail({ params }: any) {
               </div>
               <div>
                 <CalendarDays size={15} />
-                {o.end ? "Do " + dateLabel(o.end) : "Bez podanej daty końcowej"}
+                {isEvent && o.start
+                  ? dateLabel(o.start) + (o.end && o.end !== o.start ? " – " + dateLabel(o.end) : "")
+                  : o.end ? "Do " + dateLabel(o.end) : "Bez podanej daty końcowej"}
               </div>
               <p>
                 {o.days.length === 7
@@ -135,7 +137,7 @@ export default async function Detail({ params }: any) {
                     : "noopener noreferrer"
                 }
               >
-                Sprawdź ofertę u firmy <ArrowUpRight size={17} />
+                {isEvent ? "Sprawdź u organizatora" : "Sprawdź ofertę u firmy"} <ArrowUpRight size={17} />
               </a>
             ) : (
               <a className="button" href="/#okazje">
@@ -155,13 +157,13 @@ export default async function Detail({ params }: any) {
                     : "noopener noreferrer"
                 }
               >
-                Źródło informacji o promocji ↗
+                {isEvent ? "Źródło informacji o wydarzeniu" : "Źródło informacji o promocji"} ↗
               </a>
             </div>
           </div>
         </div>
         <section className="detail-long">
-          <h2>Warunki promocji w {o.company}</h2>
+          <h2>{isEvent ? "Informacje o wydarzeniu" : "Warunki promocji w " + o.company}</h2>
           <p style={{ whiteSpace: "pre-line" }}>{o.conditions.replaceAll("\\n", "\n")}</p>
           <div className="detail-box">
             <strong>Przed skorzystaniem sprawdź dostępność</strong>

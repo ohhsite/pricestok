@@ -191,7 +191,12 @@ export default function Catalog({
     o.category === id || categories.some((c) => c.id === o.category && c.parent === id);
   const heroOffer = active.find((o) => o.category === "jedzenie") || active[0];
   const areas = [...new Set(active.map((o) => o.area))].sort();
-  const day = weekday();
+  const calendarDay = today();
+  const day = weekday(calendarDay);
+  const nextSaturday = new Date(calendarDay + "T12:00:00Z");
+  nextSaturday.setUTCDate(nextSaturday.getUTCDate() + (day === 0 ? -1 : 6 - day));
+  const saturday = nextSaturday.toISOString().slice(0, 10);
+  const sunday = new Date(nextSaturday.getTime() + 86400000).toISOString().slice(0, 10);
   const SectionTitle = category !== "all" || pageTitle || savedOnly ? "h1" : "h2";
   let filtered = active.filter(
     (o) =>
@@ -201,8 +206,15 @@ export default function Catalog({
       `${o.title} ${o.company} ${o.summary}`
         .toLocaleLowerCase("pl")
         .includes(query.toLocaleLowerCase("pl")) &&
-      (tab !== "today" || o.days.includes(day)) &&
-      (tab !== "weekend" || o.days.some((d) => d === 0 || d === 6)) &&
+      (tab !== "today" ||
+        (o.kind === "event"
+          ? (!o.start || o.start <= calendarDay) && o.days.includes(day)
+          : o.days.includes(day))) &&
+      (tab !== "weekend" ||
+        (o.kind === "event"
+          ? (!o.start || o.start <= sunday) && (!o.end || o.end >= saturday) &&
+            o.days.some((d) => d === 0 || d === 6)
+          : o.days.some((d) => d === 0 || d === 6))) &&
       (tab !== "ending" ||
         (!!o.end &&
           o.end <=
