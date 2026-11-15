@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import OfferVisual from "./OfferVisual";
+import "./home-discovery.css";
 import {
   Search,
   MapPin,
@@ -21,6 +22,8 @@ import {
   Clock,
   X,
   Bookmark,
+  CalendarDays,
+  TreePine,
 } from "lucide-react";
 import {
   Offer,
@@ -48,6 +51,65 @@ function countLabel(n: number) {
       : "ofert";
 }
 import type { Category } from "../lib/categories";
+
+const treeCampaignUrl =
+  "https://choinki.bialystok.pl/?utm_source=pricestok&utm_medium=referral&utm_campaign=choinki_2026&utm_content=homepage_strip";
+
+function eventOrder(a: Offer, b: Offer, date: string) {
+  const aDate = a.start && a.start < date && a.end >= date ? date : a.start || a.end || "9999";
+  const bDate = b.start && b.start < date && b.end >= date ? date : b.start || b.end || "9999";
+  return aDate.localeCompare(bDate) || a.title.localeCompare(b.title, "pl");
+}
+
+function eventDateLabel(offer: Offer, date: string) {
+  if (!offer.start) return offer.end ? "Do " + dateLabel(offer.end) : "Termin u organizatora";
+  if (offer.end && offer.end !== offer.start) return dateLabel(offer.start) + " – " + dateLabel(offer.end);
+  return offer.start === date ? "Dziś, " + dateLabel(date) : dateLabel(offer.start);
+}
+
+function homepageDeals(offers: Offer[], date: string) {
+  const dayNumber = Date.parse(date + "T00:00:00Z") / 86400000;
+  const sortGroups = new Map<number, Offer[]>();
+  const currentWeekday = weekday(date);
+  for (const offer of offers) {
+    const age = dayNumber - Date.parse(offer.verified + "T00:00:00Z") / 86400000;
+    const freshness = age <= 1 ? 0 : age <= 7 ? 1 : 2;
+    const rank = (offer.days.includes(currentWeekday) ? 0 : 3) + freshness;
+    if (!sortGroups.has(rank)) sortGroups.set(rank, []);
+    sortGroups.get(rank)!.push(offer);
+  }
+  const ordered = [...sortGroups].sort(([a], [b]) => a - b).flatMap(([, group]) => {
+    const categories = new Map<string, Offer[]>();
+    group.sort((a, b) => a.id.localeCompare(b.id));
+    for (const offer of group) {
+      if (!categories.has(offer.category)) categories.set(offer.category, []);
+      categories.get(offer.category)!.push(offer);
+    }
+    const rotate = (items: Offer[][]) => {
+      const offset = dayNumber % items.length;
+      return [...items.slice(offset), ...items.slice(0, offset)];
+    };
+    const queues = rotate([...categories.values()]).map((queue) => {
+      const offset = dayNumber % queue.length;
+      return [...queue.slice(offset), ...queue.slice(0, offset)];
+    });
+    return Array.from({ length: Math.max(...queues.map((queue) => queue.length)) },
+      (_, index) => queues.flatMap((queue) => queue[index] ? [queue[index]] : []),
+    ).flat();
+  });
+  const seen = new Set<string>();
+  const first: Offer[] = [];
+  const rest: Offer[] = [];
+  for (const offer of ordered) {
+    const company = offer.companySlug || offer.company;
+    if (seen.has(company)) rest.push(offer);
+    else {
+      seen.add(company);
+      first.push(offer);
+    }
+  }
+  return [...first, ...rest];
+}
 
 export function OfferCard({
   o,
@@ -82,7 +144,7 @@ export function OfferCard({
       </div>
       <div className="card-body">
         <div className="card-meta">
-          <span>{cat?.name}</span>
+          <span>{o.kind === "event" ? "Wydarzenie" : cat?.name}</span>
           <span>
             <MapPin size={12} />
             {o.area}
@@ -100,7 +162,9 @@ export function OfferCard({
         <div className="card-bottom">
           <span>
             <Clock size={13} />
-            {o.end
+            {o.kind === "event"
+              ? eventDateLabel(o, today())
+              : o.end
               ? "Do " + dateLabel(o.end)
               : o.days.length === 7
                 ? "Bez daty końcowej"
@@ -112,7 +176,7 @@ export function OfferCard({
           </span>
           <a
             href={"/promocja/" + o.slug}
-            aria-label={"Szczegóły promocji: " + o.title}
+            aria-label={"Szczegóły: " + o.title}
           >
             Szczegóły <ArrowUpRight size={15} />
           </a>
@@ -186,12 +250,15 @@ export default function Catalog({
   const adUrl = process.env.NEXT_PUBLIC_PRICESTOK_AD_URL || "";
   const adTitle = process.env.NEXT_PUBLIC_PRICESTOK_AD_TITLE || "";
   const hasAd = /^https?:\/\/[^\s]+$/i.test(adUrl) && !!adTitle.trim();
-  const active = offers.filter((o) => isActive(o));
+  const calendarDay = today();
+  const active = offers.filter((o) => isActive(o, calendarDay));
+  const isHomepage = !pageTitle;
+  const showDiscovery = isHomepage && category === "all" && !savedOnly;
+  const upcomingEvents = active.filter((o) => o.kind === "event" && (o.start || o.end))
+    .sort((a, b) => eventOrder(a, b, calendarDay));
   const matchesCategory = (o: Offer, id: string) =>
     o.category === id || categories.some((c) => c.id === o.category && c.parent === id);
-  const heroOffer = active.find((o) => o.category === "jedzenie") || active[0];
   const areas = [...new Set(active.map((o) => o.area))].sort();
-  const calendarDay = today();
   const day = weekday(calendarDay);
   const nextSaturday = new Date(calendarDay + "T12:00:00Z");
   nextSaturday.setUTCDate(nextSaturday.getUTCDate() + (day === 0 ? -1 : 6 - day));
@@ -203,6 +270,8 @@ export default function Catalog({
       (category === "all" || matchesCategory(o, category)) &&
       (area === "all" || o.area === area) &&
       (!savedOnly || saved.includes(o.id)) &&
+      (tab !== "events" || o.kind === "event") &&
+      (!showDiscovery || tab === "events" || !!query.trim() || o.kind !== "event") &&
       `${o.title} ${o.company} ${o.summary}`
         .toLocaleLowerCase("pl")
         .includes(query.toLocaleLowerCase("pl")) &&
@@ -220,7 +289,10 @@ export default function Catalog({
           o.end <=
             new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10))),
   );
-  filtered.sort((a, b) =>
+  if (sort === "recommended" && showDiscovery && tab !== "events" && !query.trim()) {
+    filtered = homepageDeals(filtered, calendarDay);
+  } else filtered.sort((a, b) =>
+    tab === "events" && sort === "recommended" ? eventOrder(a, b, calendarDay) :
     sort === "ending"
       ? (a.end || "9999").localeCompare(b.end || "9999")
       : sort === "newest"
@@ -232,6 +304,7 @@ export default function Catalog({
   function choose(v: string) {
     if (pageTitle) { location.href = v === "all" ? "/#okazje" : "/kategoria/" + v; return; }
     setCategory(v);
+    setTab("all");
     setLimit(6);
     requestAnimationFrame(() => document.querySelector(".category-section")?.scrollIntoView({ behavior: "instant", block: "start" }));
     if (typeof history !== "undefined")
@@ -241,124 +314,67 @@ export default function Catalog({
     <>
       <Header />
       <main className={category !== "all" || pageTitle ? "category-mode" : undefined}>
-        {category === "all" && !pageTitle && !savedOnly && <>
-        <section className="hero container">
-          <div className="hero-copy">
-            <div className="eyebrow">
-              <span className="live-dot" /> PRICESTOK · OKAZJE Z BIAŁEGOSTOKU
-            </div>
-            <h1>
-              {pageTitle || (
-                <>
-                  Twoje miasto.
-                  <br />
-                  Więcej{" "}
-                  <span>
-                    dobrych okazji
-                    <svg viewBox="0 0 500 18" preserveAspectRatio="none">
-                      <path d="M3 13Q230 -2 495 9" />
-                    </svg>
-                  </span>
-                  .
-                </>
-              )}
-            </h1>
-            <p>
-              Szukasz rabatu na obiad, trening albo zakupy? W PriceStok
-              znajdziesz promocje białostockich firm, ich warunki i adresy.
-            </p>
-            <form
-              className="search-box"
-              onSubmit={(e) => {
-                e.preventDefault();
-                document
-                  .getElementById("okazje")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <Search size={21} />
-              <input
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setLimit(6);
-                }}
-                placeholder="Na co masz dziś ochotę?"
-                aria-label="Szukaj promocji"
-              />
-              <button className="button">
-                Szukaj <ArrowRight size={17} />
-              </button>
-            </form>
-            <div className="hero-proof">
-              <span>
-                <Check size={15} /> Prawdziwe lokalne oferty
-              </span>
-              <span>
-                <Check size={15} /> Bez zakładania konta
-              </span>
-            </div>
-          </div>
-          <div className="hero-visual">
-            <div className="hero-picture">
-              {heroOffer && <OfferVisual offer={heroOffer} />}
-              <div className="hero-picture-overlay" />
-              <div className="visual-caption">
-                <span>LOKALNA OKAZJA</span>
-                <strong>{heroOffer?.title || "Odkryj lokalne okazje"}</strong>
-                <a
-                  href={heroOffer ? "/promocja/" + heroOffer.slug : "/#okazje"}
-                >
-                  Odkryj tę okazję <ArrowUpRight size={18} />
-                </a>
+        {showDiscovery && (
+          <>
+            <aside className="home-season" aria-label="Choinki">
+              <a className="container" href={treeCampaignUrl} target="_blank" rel="noopener noreferrer sponsored">
+                <TreePine size={18} aria-hidden="true" />
+                <span>Gdzie kupić lokalne żywe choinki online?</span>
+                <strong>choinki.bialystok.pl <ArrowUpRight size={15} aria-hidden="true" /></strong>
+              </a>
+            </aside>
+            <section className="home-discovery container" aria-labelledby="home-title">
+              <div className="home-intro">
+                <div>
+                  <h1 id="home-title">Co się dzieje w Białymstoku?</h1>
+                  <p>Najbliższe wydarzenia i aktualne promocje lokalnych firm.</p>
+                </div>
+                <form className="search-box" role="search" onSubmit={(e) => {
+                  e.preventDefault();
+                  setTab("all");
+                  document.getElementById("okazje")?.scrollIntoView({ behavior: "smooth" });
+                }}>
+                  <Search size={19} aria-hidden="true" />
+                  <input value={query} onChange={(e) => {
+                    setQuery(e.target.value);
+                    setLimit(6);
+                  }} placeholder="Szukaj w Białymstoku" aria-label="Szukaj wydarzeń i promocji" />
+                  <button className="button">Szukaj</button>
+                </form>
               </div>
-            </div>
-            <div className="floating-discount">
-              <span>{heroOffer?.company || "Białystok"}</span>
-              <strong>{heroOffer?.badge || "PLUS"}</strong>
-              <span>Sprawdź warunki promocji</span>
-            </div>
-            <div className="floating-location">
-              <MapPin size={16} /> Białystok, po sąsiedzku <span>♡</span>
-            </div>
-            <span className="hero-deco">✳</span>
-          </div>
-        </section>
-        <aside className="container" aria-label="Miejsce reklamowe">
-          <div className="local-ad">
-            <div>
-              <span className="eyebrow">
-                {hasAd ? "REKLAMA" : "MIEJSCE REKLAMOWE"}
-              </span>
-              <h2>{hasAd ? adTitle : "Twoja firma w centrum uwagi"}</h2>
-              <p>
-                {hasAd
-                  ? process.env.NEXT_PUBLIC_PRICESTOK_AD_TEXT
-                  : "Zaprezentuj ofertę mieszkańcom Białegostoku."}
-              </p>
-            </div>
-            {hasAd ? (
-              <a
-                className="button"
-                href={adUrl}
-                target="_blank"
-                rel="sponsored noopener noreferrer"
-              >
-                Zobacz ofertę ↗
-              </a>
-            ) : (
-              <a className="button" href="/dla-firm#reklama">
-                Zapytaj o wynajem ↗
-              </a>
-            )}
-          </div>
-        </aside>
-        </>}
+              {upcomingEvents.length > 0 && (
+                <section className="home-events" aria-labelledby="home-events-title">
+                  <div className="home-events-heading">
+                    <h2 id="home-events-title">Najbliższe wydarzenia</h2>
+                    <a className="text-link" href="#okazje" onClick={() => {
+                      setQuery("");
+                      setTab("events");
+                      setArea("all");
+                      setSort("recommended");
+                      setLimit(6);
+                    }}>Wszystkie wydarzenia <ArrowRight size={17} aria-hidden="true" /></a>
+                  </div>
+                  <div className="home-event-grid">
+                    {upcomingEvents.slice(0, 3).map((event) => (
+                      <a className="home-event" key={event.id} href={"/promocja/" + event.slug}>
+                        <span className="home-event-date"><CalendarDays size={17} aria-hidden="true" /> {eventDateLabel(event, calendarDay)}</span>
+                        <h3>{event.title}</h3>
+                        {event.address && <span className="home-event-address"><MapPin size={15} aria-hidden="true" />{event.address}</span>}
+                        <span className="home-event-footer">
+                          <span>{event.price || "Zobacz szczegóły"}</span>
+                          <ArrowUpRight size={19} aria-hidden="true" />
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </section>
+          </>
+        )}
         <section className="category-section container" aria-label="Kategorie">
-          {category === "all" && !pageTitle && !savedOnly && beforeCategories}
           <div className="section-mini">
-            <span>Znajdź coś dla siebie</span>
-            <span>Małe oszczędności, wielka przyjemność.</span>
+            <span>Przeglądaj kategorie</span>
           </div>
           <div className="categories">
             <a
@@ -374,10 +390,10 @@ export default function Catalog({
                 <Grid2X2 size={24} />
               </span>
               <strong>Wszystkie</strong>
-              <small>{active.length} okazji</small>
+              <small>{active.length} {countLabel(active.length)}</small>
             </a>
             {categories.filter((c) => !c.parent).map((c) => {
-              const Icon = icons[c.icon];
+              const Icon = icons[c.icon] || Ticket;
               return (
                 <a
                   key={c.id}
@@ -423,16 +439,17 @@ export default function Catalog({
               <SectionTitle>
                 {savedOnly
                   ? "Twoje zapisane okazje"
+                  : tab === "events"
+                    ? "Wydarzenia w Białymstoku"
                   : category === "all"
-                    ? "Dobre okazje są blisko"
+                    ? "Lokalne promocje"
                     : categories.find((c) => c.id === category)?.name +
                       " w Białymstoku"}
-                <span className="heading-dot">.</span>
               </SectionTitle>
               <p>
                 {savedOnly
                   ? "Ulubione promocje zapisane w tej przeglądarce."
-                  : "Wybierz coś dla siebie. Resztę zostaw na kolejny raz."}
+                  : tab === "events" ? "Terminy, miejsca i informacje o zapisach." : "Sprawdź warunki i terminy u lokalnych firm."}
               </p>
             </div>
             <a
@@ -447,13 +464,14 @@ export default function Catalog({
                 setLimit(1000);
               }}
             >
-              Wszystkie promocje <ArrowRight size={17} />
+              {tab === "events" ? "Przejdź do promocji" : "Wszystkie promocje"} <ArrowRight size={17} />
             </a>
           </div>
           <div className="filters">
             <div className="tabs">
               {[
                 ["all", "Wszystkie"],
+                ...(isHomepage ? [["events", "Wydarzenia"]] : []),
                 ["today", "Dzisiaj"],
                 ["weekend", "Na weekend"],
                 ["ending", "Kończą się wkrótce"],
@@ -461,6 +479,7 @@ export default function Catalog({
                 <button
                   key={v}
                   className={tab === v ? "active" : ""}
+                  aria-pressed={tab === v}
                   onClick={() => {
                     setTab(v);
                     setLimit(6);
@@ -499,7 +518,7 @@ export default function Catalog({
               <label>
                 Kolejność
                 <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                  <option value="recommended">Wybrane przez redakcję</option>
+                  <option value="recommended">{tab === "events" ? "Według daty wydarzenia" : showDiscovery ? "Polecane dziś" : "Polecane"}</option>
                   <option value="newest">Ostatnio sprawdzone</option>
                   <option value="ending">Najbliższy koniec</option>
                 </select>
@@ -587,6 +606,21 @@ export default function Catalog({
             </div>
           )}
         </section>
+        {showDiscovery && beforeCategories && <div className="container">{beforeCategories}</div>}
+        {showDiscovery && hasAd && (
+          <aside className="container" aria-label="Miejsce reklamowe">
+            <div className="local-ad">
+              <div>
+                <span className="eyebrow">REKLAMA</span>
+                <h2>{adTitle}</h2>
+                <p>{process.env.NEXT_PUBLIC_PRICESTOK_AD_TEXT}</p>
+              </div>
+              <a className="button" href={adUrl} target="_blank" rel="sponsored noopener noreferrer">
+                Zobacz ofertę ↗
+              </a>
+            </div>
+          </aside>
+        )}
         <section className="business-banner container">
           <div className="banner-art">
             <span>
