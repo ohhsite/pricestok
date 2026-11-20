@@ -1,3 +1,4 @@
+import { weekendOffers } from "./weekend.ts";
 import reviewedOffers from "./reviewed-offers.json" with { type: "json" };
 export type Offer = {
   kind?: "deal" | "event";
@@ -50,7 +51,7 @@ export const categories = [
   { id: "dla-dzieci", name: "Dla dzieci", icon: "Baby", color: "#fce9ed" },
 ];
 // Current source-checked offers; removed legacy entries remain recoverable in the database.
-export const seeds: Offer[] = [...reviewedOffers];
+export const seeds: Offer[] = [...reviewedOffers, ...weekendOffers];
 export function today() {
   return new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Warsaw" }).format(
     new Date(),

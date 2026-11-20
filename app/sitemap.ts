@@ -1,3 +1,4 @@
+import { weekendPath, weekendGroups } from "./lib/weekend";
 import { holiday } from "./lib/holiday";
 import type { MetadataRoute } from "next";
 import { siteUrl } from "./lib/config";
@@ -24,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     : { data: [], error: null };
   const companies = await listCompanies().catch(() => []);
   return [
+    ...[weekendPath, ...weekendGroups.map((group) => group.path)].map((path) => ({ url: base + path, lastModified: new Date("2026-11-20T19:00:00+01:00") })),
     { url: base + "/porownanie-cen-cateringu-wigilijnego-bialystok-2026", lastModified: new Date("2026-11-09T20:00:00+01:00"), changeFrequency: "weekly" as const, priority: 0.8 },
     ...Object.values(holiday).map(({ slug }) => ({ url: base + "/" + slug })),
     { url: base + "/o-nas", changeFrequency: "monthly" as const },

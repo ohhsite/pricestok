@@ -12,7 +12,7 @@ export function offerVisualAssets(offer: Offer) {
   const companyPhoto = companyPhotos[offer.companySlug];
   const brand = brands[offer.companySlug];
   return {
-    photo: photoName.test(offer.image) ? offerPhoto(offer.image) : companyPhoto ? "/brands/" + companyPhoto : "",
+    photo: /^\/weekend-2026-11-21\/(dzieci|warsztaty|koncerty|teatr|taniec|zwiedzanie)\.webp$/.test(offer.image) ? offer.image : photoName.test(offer.image) ? offerPhoto(offer.image) : companyPhoto ? "/brands/" + companyPhoto : "",
     logo: offer.logo === "https://a.storyblok.com/f/291574107277460/162x48/ec2a983fa8/logo-dark.png"
       ? "/brands/jumper-park.png"
       : offer.logo || (brand ? "/brands/" + brand : ""),

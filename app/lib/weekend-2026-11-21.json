@@ -1,0 +1,257 @@
+[
+  {
+    "id": "dzieci",
+    "name": "Dla dzieci i rodzin",
+    "category": "dla-dzieci",
+    "intro": "Gniotki, kino z konkursami, rodzinny teatr i eksperymenty na żywo. Zobacz propozycje na wspólny weekend.",
+    "events": [
+      {
+        "title": "Festiwal Squishy",
+        "when": "21–22 listopada, sobota i niedziela",
+        "address": "Hala Sportowa UwB, Świerkowa 20A, Białystok",
+        "price": "Wstęp wolny; zakupy osobno",
+        "description": "Market gniotków, gra z zadaniami i nagrodami oraz ścianka do zdjęć.",
+        "source": "https://www.bialystokonline.pl/festiwal-squishy,impreza,151432,10,1.html",
+        "note": ""
+      },
+      {
+        "title": "Świąteczna zabawa z Peppą",
+        "when": "21 i 22 listopada, godz. 10:30",
+        "address": "Helios Biała, Czesława Miłosza 2, Białystok",
+        "price": "Według cennika kina",
+        "description": "Rodzinne seanse z quizami i zagadkami przed pokazem.",
+        "source": "https://helios.pl/bialystok/kino-helios-biala/wydarzenie/swiateczna-zabawa-z-peppa-seanse-z-konkursami-hdd-2857",
+        "note": ""
+      },
+      {
+        "title": "Czerwony Kapturek",
+        "when": "21 listopada, sobota, godz. 15:00",
+        "address": "Białostocki Teatr Lalek, Kalinowskiego 1",
+        "price": "35–40 zł według zapowiedzi",
+        "description": "Familijny spektakl z udziałem publiczności, około 60 minut.",
+        "source": "https://www.btl.bialystok.pl/spektakle/czerwony-kapturek/",
+        "note": "Dostępność miejsc i cenę konkretnego biletu sprawdź w kasie teatru."
+      },
+      {
+        "title": "Szaleni Naukowcy",
+        "when": "22 listopada, niedziela, godz. 14:00",
+        "address": "Aula Koncertowa WANS, Ciepła 40, Białystok",
+        "price": "Od 75 zł",
+        "description": "Naukowo-muzyczne widowisko: doświadczenia chemiczne i fizyczne, kolorowa piana oraz lasery.",
+        "source": "https://hypeticket.pl/sn-bialystok/",
+        "note": ""
+      },
+      {
+        "title": "Rodzinna niedziela w skansenie",
+        "when": "22 listopada, niedziela, godz. 12:00",
+        "address": "Podlaskie Muzeum Kultury Ludowej, Leśna 7, Wasilków — okolice Białegostoku",
+        "price": "25 zł/os.; wymagane zapisy",
+        "description": "Warsztaty „Z wiejskiej spiżarni i zielnika”. Uczestnicy przygotują własną mieszankę do zabrania do domu.",
+        "source": "https://pmkl.pl/472-muzeumkulturaludowa-rodzinna-niedziela-w-skansenie-listopadowe-warsztaty-z-monika-sidorska",
+        "note": "Zapisy: edukacja.folklor@pmkl.pl, 509 336 816 lub 509 397 438; organizator przyjmuje je pn.–pt. 8:00–14:30. Dostępność wymaga potwierdzenia."
+      }
+    ],
+    "image": "/weekend-2026-11-21/dzieci.webp",
+    "path": "/weekend-bialystok-21-22-listopada-2026/dzieci",
+    "post": "Co robić z dziećmi w Białymstoku w weekend 21–22 listopada? 🧡\n\nFestiwal Squishy, świąteczne kino z Peppą, Czerwony Kapturek i Szaleni Naukowcy — zebraliśmy rodzinne propozycje w jednym miejscu! W zestawieniu jest też Rodzinna niedziela w skansenie w Wasilkowie.\n\nSprawdzisz godziny, ceny i informacje o zapisach. Wstęp na Festiwal Squishy jest wolny; pozostałe atrakcje mają własne zasady i cenniki.\n\nZobacz i zaplanuj wspólny weekend 👇\nhttps://pricestok.pl/weekend-bialystok-21-22-listopada-2026/dzieci"
+  },
+  {
+    "id": "warsztaty",
+    "name": "Warsztaty i targi",
+    "category": "warsztaty-i-zajecia",
+    "intro": "Rękodzieło, autorskie przedmioty, malowanie i wspólne tworzenie historii. Są też propozycje z bezpłatnym wstępem.",
+    "events": [
+      {
+        "title": "Artystok — targi artystyczne",
+        "when": "21 listopada, sobota, godz. 9:00–20:00",
+        "address": "Galeria Jurowiecka, Jurowiecka 1, Białystok",
+        "price": "Wstęp wolny; zakupy osobno",
+        "description": "Autorskie grafiki, biżuteria, ceramika, dekoracje i niezależne pracownie.",
+        "source": "https://galeriajurowiecka.com.pl/event/artystok-targi-artystyczne-w-bialymstoku/",
+        "note": ""
+      },
+      {
+        "title": "Fantasmagorie — sesje RPG",
+        "when": "21 listopada: 12:30–15:30 młodzież 13–18 lat; 16:00–19:00 dorośli",
+        "address": "PIKoteka, Jana Kilińskiego 8, Białystok",
+        "price": "Cena niepodana; wymagane zapisy",
+        "description": "Wspólna przygoda i tworzenie historii na żywo. Można przyjść bez doświadczenia.",
+        "source": "https://pikpodlaskie.pl/event/fantasmagorie-6/",
+        "note": "Formularze zapisów na stronie organizatora. Informacje: 85 740 37 15, p.gryko@pikpodlaskie.pl."
+      },
+      {
+        "title": "Mandala Mocy",
+        "when": "21 listopada, sobota, od godz. 17:00",
+        "address": "Namaste, Wielkopolska 8, Białystok",
+        "price": "70 zł; materiały w cenie",
+        "description": "Warsztaty twórcze z Agnieszką Juchnicką. Własną mandalę zabierzesz do domu; doświadczenie plastyczne nie jest wymagane.",
+        "source": "https://krajownik.pl/bialystok/wydarzenia/czula-przestrzen-tworcza-mandala-mocy-twoja-sila-twoje-swiatlo-twoja-mandala-435316",
+        "note": "Zapisy: 503 457 080. Ogłoszenie podaje różne godziny zakończenia (20:00 i 21:00) — potwierdź je przy zapisie."
+      },
+      {
+        "title": "Warsztaty malarstwa figurkowego",
+        "when": "22 listopada, niedziela, godz. 10:00–15:30",
+        "address": "Centrum Edukacji Muzeum Wojska, Sienkiewicza 26, Białystok",
+        "price": "Bezpłatnie",
+        "description": "Malowanie modelu żołnierza Armii Polskiej we Francji. Muzeum zapewnia figurkę i podstawowe narzędzia.",
+        "source": "https://mwb.com.pl/mwb2017/warsztaty-malarstwa-figurkowego-22-listopada/",
+        "note": ""
+      }
+    ],
+    "image": "/weekend-2026-11-21/warsztaty.webp",
+    "path": "/weekend-bialystok-21-22-listopada-2026/warsztaty",
+    "post": "Weekend w Białymstoku z pomysłem 🎨\n\nW sobotę Artystok w Galerii Jurowieckiej, sesje RPG w Pikotece i warsztaty Mandala Mocy. W niedzielę bezpłatne malowanie figurek w Centrum Edukacji Muzeum Wojska!\n\nRękodzieło, gry i tworzenie czegoś własnego — wybierz to, na co masz ochotę. Zebraliśmy terminy, ceny i zasady zapisów na 21–22 listopada.\n\nSprawdź szczegóły 👇\nhttps://pricestok.pl/weekend-bialystok-21-22-listopada-2026/warsztaty"
+  },
+  {
+    "id": "koncerty",
+    "name": "Koncerty",
+    "category": "rozrywka",
+    "intro": "Rock, autorskie piosenki i Jesień z Bluesem. Sprawdź godziny, miejsca i ceny poszczególnych koncertów.",
+    "events": [
+      {
+        "title": "Marcycha — Muzyczne Spodki",
+        "when": "21 listopada, sobota, godz. 18:00",
+        "address": "Spodki PIK, św. Rocha 14, Białystok",
+        "price": "72,66 zł z opłatą serwisową",
+        "description": "Koncert Marceliny „Marcychy” Ruczyńskiej w cyklu Muzyczne Spodki.",
+        "source": "https://pikpodlaskie.pl/event/muzyczne-spodki-marcelina-marcycha-ruczynska/",
+        "note": ""
+      },
+      {
+        "title": "Gloria & The Doctors / Carolyn Wonderland / Janiva Magness",
+        "when": "21 listopada, sobota, godz. 18:00",
+        "address": "Kino Forum, Legionowa 5, Białystok",
+        "price": "100 zł",
+        "description": "Trzy koncertowe propozycje podczas 41. Jesieni z Bluesem.",
+        "source": "https://bok.bialystok.pl/wydarzenie/41-jesien-z-bluesem-gloria-the-doctors-carolyn-wonderland-janiva-magness/",
+        "note": ""
+      },
+      {
+        "title": "T.Love — trasa „Orajt!”",
+        "when": "21 listopada, sobota: wejście 18:00, koncert 19:00",
+        "address": "Zmiana Klimatu, Warszawska 6, Białystok",
+        "price": "Pule 89–169 zł; dostępność do sprawdzenia",
+        "description": "Koncert z okazji 13. urodzin Zmiany Klimatu. Nowe utwory i przeboje zespołu.",
+        "source": "https://zmianaklimatu.eu/kalendarz/t-love-21-11-2026/",
+        "note": "Wstęp 18+. Podana rozpiętość obejmuje wszystkie ogłoszone pule, nie gwarantuje dostępności najtańszej."
+      },
+      {
+        "title": "Steve Marriner Trio",
+        "when": "21 listopada, sobota, godz. 23:30",
+        "address": "Klub Fama, Legionowa 5, Białystok",
+        "price": "50 zł",
+        "description": "Nocny koncert w ramach 41. Jesieni z Bluesem.",
+        "source": "https://bok.bialystok.pl/wydarzenie/41-jesien-z-bluesem-steve-marriner-trio/",
+        "note": ""
+      },
+      {
+        "title": "3 Card Monte",
+        "when": "22 listopada, niedziela, godz. 13:00",
+        "address": "Klub Fama, Legionowa 5, Białystok",
+        "price": "40 zł",
+        "description": "Akustyczny blues i muzyka korzeni: K. Walters, Frankie Owls oraz Roger William Smith.",
+        "source": "https://bok.bialystok.pl/wydarzenie/41-jesien-z-bluesem-3-card-monte-k-walters-frankie-owls-roger-william-smith/",
+        "note": ""
+      },
+      {
+        "title": "Chóralnystok — koncert muzyki sakralnej",
+        "when": "22 listopada, niedziela, po mszy rozpoczynającej się o 12:00",
+        "address": "Kościół św. Karola Boromeusza, Pułaskiego 94, Białystok",
+        "price": "Wstęp wolny",
+        "description": "Koncert trzech białostockich chórów. Godzina 12:00 dotyczy mszy, a koncert rozpocznie się po niej.",
+        "source": "https://www.bialystokonline.pl/koncert-muzyki-sakralnej-choralnystok-bialostocki-festiwal-choralny,impreza,151558,8,1.html",
+        "note": ""
+      }
+    ],
+    "image": "/weekend-2026-11-21/koncerty.webp",
+    "path": "/weekend-bialystok-21-22-listopada-2026/koncerty",
+    "post": "Na jaki koncert w Białymstoku w ten weekend? 🎸\n\nT.Love, Marcycha i 41. Jesień z Bluesem — 21–22 listopada będzie czego posłuchać! W programie m.in. Gloria & The Doctors, Carolyn Wonderland, Janiva Magness, Steve Marriner Trio oraz 3 Card Monte. Jest też bezpłatny koncert Chóralnystoku.\n\nZebraliśmy godziny, miejsca i ogłoszone ceny biletów. Dostępność miejsc i aktualną pulę sprawdzisz u organizatorów.\n\nWybierz swój koncert 👇\nhttps://pricestok.pl/weekend-bialystok-21-22-listopada-2026/koncerty"
+  },
+  {
+    "id": "teatr",
+    "name": "Teatr i opera",
+    "category": "rozrywka",
+    "intro": "Komedia Teatru Dramatycznego albo opera Moniuszki. Zwróć uwagę na miejsce spektaklu i dostępność biletów.",
+    "events": [
+      {
+        "title": "Pomoc domowa",
+        "when": "21 i 22 listopada, sobota i niedziela, godz. 17:00",
+        "address": "Aula Wydziału Nauk o Edukacji UwB, Świerkowa 20, Białystok",
+        "price": "Cena w systemie sprzedaży teatru",
+        "description": "Farsa Marca Camolettiego w reżyserii Witolda Mazurkiewicza.",
+        "source": "https://dramatyczny.pl/zapraszamy-na-widownie-repertuar-az-do-konca-grudnia/",
+        "note": "Spektakl odbywa się w auli UwB, nie w budynku Teatru Dramatycznego."
+      },
+      {
+        "title": "Halka Stanisława Moniuszki",
+        "when": "21 listopada, sobota, 19:00; 22 listopada, niedziela, 18:00",
+        "address": "Opera i Filharmonia Podlaska, Odeska 1, Białystok",
+        "price": "100–170 zł według cennika wydarzenia",
+        "description": "Opera w polskiej wersji językowej na Dużej Scenie.",
+        "source": "https://www.oifp.eu/repertuar/s-moniuszko-halka/",
+        "note": "Sobota: wyprzedane. Na niedzielę polska strona organizatora pokazywała pojedyncze miejsce, a angielska brak miejsc. Przed planowaniem wyjścia sprawdź bieżący stan sprzedaży w kasie."
+      }
+    ],
+    "image": "/weekend-2026-11-21/teatr.webp",
+    "path": "/weekend-bialystok-21-22-listopada-2026/teatr",
+    "post": "Pomysł na teatralny weekend w Białymstoku 🎭\n\n„Pomoc domowa” Teatru Dramatycznego: sobota i niedziela o 17:00 w auli UwB przy Świerkowej 20.\n\nW repertuarze Opery i Filharmonii Podlaskiej jest również „Halka”. Uwaga: sobota jest wyprzedana, a informacje o niedzielnych miejscach różnią się między wersjami strony organizatora — najpierw potwierdź dostępność w kasie.\n\nTerminy, adresy i linki do biletów zebraliśmy na PriceStok 👇\nhttps://pricestok.pl/weekend-bialystok-21-22-listopada-2026/teatr"
+  },
+  {
+    "id": "taniec",
+    "name": "Taniec i imprezy",
+    "category": "rozrywka",
+    "intro": "Warsztaty dla osób bez doświadczenia i noc z muzyką house. Dwa różne sposoby na sobotni wieczór.",
+    "events": [
+      {
+        "title": "Taniec romski solo — warsztaty dla dorosłych",
+        "when": "21 listopada, sobota, godz. 18:00",
+        "address": "Dom Kultury Śródmieście, Jana Kilińskiego 13, III piętro, Białystok",
+        "price": "20 zł/os.; zapisy",
+        "description": "Zajęcia z Elżbietą Lichanów. Doświadczenie taneczne nie jest wymagane; zapowiedziano też pokaz tańca orientalnego.",
+        "source": "https://krajownik.pl/bialystok/wydarzenia/taniec-romski-solo-warsztaty-2111-435381",
+        "note": "Zapisy i potwierdzenie miejsc: 500 136 195."
+      },
+      {
+        "title": "Home of House — DJ Rasco i DJ Finesee",
+        "when": "21 listopada, sobota, od godz. 22:30",
+        "address": "Zmiana Klimatu, Warszawska 6, Białystok",
+        "price": "30 zł; publiczność koncertu T.Love bez dopłaty",
+        "description": "Klubowe klasyki, nowości i remiksy house.",
+        "source": "https://zmianaklimatu.eu/kalendarz/home-of-house-high-quality-house-music-all-night-long-dj-rasco-dj-finesee/",
+        "note": "Organizator zastrzega możliwość zmiany godziny rozpoczęcia. Strefa piętro niżej jest niebiletowana."
+      }
+    ],
+    "image": "/weekend-2026-11-21/taniec.webp",
+    "path": "/weekend-bialystok-21-22-listopada-2026/taniec",
+    "post": "Sobota w Białymstoku? Może taniec? 💃\n\n21 listopada o 18:00 w Domu Kultury Śródmieście odbędą się warsztaty tańca romskiego solo dla dorosłych. Udział kosztuje 20 zł, obowiązują zapisy, a wcześniejsze doświadczenie nie jest wymagane.\n\nOd 22:30 Zmiana Klimatu zaprasza na Home of House z DJ-em Rasco i DJ-em Finesee. Wstęp 30 zł; dla publiczności koncertu T.Love bez dopłaty.\n\nAdresy, zapisy i szczegóły 👇\nhttps://pricestok.pl/weekend-bialystok-21-22-listopada-2026/taniec"
+  },
+  {
+    "id": "zwiedzanie",
+    "name": "Zwiedzanie i sport",
+    "category": "sport-i-relaks",
+    "intro": "Zajrzyj do nowoczesnej elektrociepłowni albo wybierz galę sportów walki. W obu przypadkach sprawdź zasady wejścia.",
+    "events": [
+      {
+        "title": "Nocne zwiedzanie ZUOK Białystok",
+        "when": "21 listopada, sobota: 16:00–17:30 lub 18:00–19:30",
+        "address": "ZUOK Białystok, Andersa 40F",
+        "price": "Wymagana rezerwacja online",
+        "description": "Zwiedzanie instalacji, w której z odpadów odzyskuje się energię. Wydarzeniu towarzyszy zbiórka na pomoc Olafowi.",
+        "source": "https://odpady.bialystok.pl/pl/aktualnosci/przyjdz-na-nocne-zwiedzanie-spalarni-wlacz-sie-do-akcji-pomocy-7-letniemu-olafowi.html",
+        "note": "Maksymalnie 4 miejsca na rezerwację; należy potwierdzić ją linkiem z e-maila. Osoby niepełnoletnie pod opieką dorosłych. Dostępność sprawdź w formularzu."
+      },
+      {
+        "title": "USWM 39 / A1-8 — gala sportów walki",
+        "when": "21 listopada, sobota, godz. 20:00–23:00",
+        "address": "Hotel Gołębiewski, Białystok",
+        "price": "80 zł parkiet; 100 zł pierwszy rząd; 150 zł VIP/balkon — według zapowiedzi",
+        "description": "MMA, K-1, muay thai, boks i karate kyokushin podczas jednej gali.",
+        "source": "https://echobialystok.pl/wydarzenie/uswm-39-a1-8-bialystok-2026-gala-sportow-walki",
+        "note": "Dostępność i cenę wybranej strefy potwierdź przed zakupem: 602 439 055. Informacje pochodzą z lokalnej zapowiedzi wydarzenia."
+      }
+    ],
+    "image": "/weekend-2026-11-21/zwiedzanie.webp",
+    "path": "/weekend-bialystok-21-22-listopada-2026/zwiedzanie",
+    "post": "Dwa niecodzienne pomysły na sobotę w Białymstoku 🔎\n\n21 listopada możesz wybrać nocne zwiedzanie ZUOK przy Andersa 40F — tury o 16:00 i 18:00, z obowiązkową rezerwacją online. Wydarzeniu towarzyszy zbiórka na pomoc Olafowi.\n\nWieczorem w Hotelu Gołębiewski zaplanowano galę sportów walki USWM 39 / A1-8. Start o 20:00, bilety według zapowiedzi od 80 zł.\n\nSprawdź warunki wejścia, rezerwacje i dostępność 👇\nhttps://pricestok.pl/weekend-bialystok-21-22-listopada-2026/zwiedzanie"
+  }
+]
