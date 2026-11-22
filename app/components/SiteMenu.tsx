@@ -24,6 +24,8 @@ export default function SiteMenu() {
         <a className="menu-all" href="/#okazje">Wszystkie promocje <ChevronRight size={17} /></a>
         <span className="menu-label">Kategorie</span>
         <div className="menu-categories">{categories.filter(c => !c.parent).map(c => <a key={c.id} href={"/kategoria/" + c.id}>{c.name}<ChevronRight size={15} /></a>)}</div>
+        <span className="menu-label">Mieszkania w Białymstoku</span>
+        <a href="/mieszkania-bialystok">Wszystkie mieszkania</a><a href="/mieszkania-do-400-tys-bialystok">Mieszkania do 400 tys. zł</a><a href="/mieszkania-do-500-tys-bialystok">Mieszkania do 500 tys. zł</a><a href="/mieszkania-do-600-tys-bialystok">Mieszkania do 600 tys. zł</a><a href="/mieszkania-powyzej-600-tys-bialystok">Mieszkania powyżej 600 tys. zł</a>
         <span className="menu-label">Święta w Białymstoku</span>
         <a href="/catering-wigilijny-bialystok">Catering wigilijny</a><a href="/prezenty-swiateczne-bialystok">Prezenty i warsztaty</a><a href="/choinki-bialystok">Gdzie kupić choinkę?</a>
         <a href="/weekend-bialystok-21-22-listopada-2026">Weekend 21–22 listopada</a>

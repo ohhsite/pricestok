@@ -45,6 +45,7 @@ export function Footer() {
         </div>
         <div>
           <a href="/#okazje">Promocje</a>
+          <a href="/mieszkania-bialystok">Mieszkania</a>
           <a href="/dla-firm">Dla firm</a>
           <a href="/zasady">Jak sprawdzamy oferty</a>
           <a href="/polityka-prywatnosci">Prywatność</a>
