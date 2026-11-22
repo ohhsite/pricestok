@@ -54,19 +54,24 @@ export default function HousingCatalog({ offers, pending }: { offers: HousingOff
   const [minArea, setMinArea] = useState("");
   const [maxArea, setMaxArea] = useState("");
   const reset = () => { setSort("price-asc"); setRooms("all"); setDeveloper("all"); setMinArea(""); setMaxArea(""); };
-  const visible = sortHousing(offers.filter(o => (rooms === "all" || (rooms === "4+" ? o.rooms >= 4 : o.rooms === Number(rooms))) && (developer === "all" || o.developer === developer) && (!minArea || o.area >= Number(minArea)) && (!maxArea || o.area <= Number(maxArea))), sort);
+  const matches = (o: HousingOffer) => (rooms === "all" || (rooms === "4+" ? o.rooms >= 4 : o.rooms === Number(rooms))) && (developer === "all" || o.developer === developer) && (!minArea || o.area >= Number(minArea)) && (!maxArea || o.area <= Number(maxArea));
+  const visible = sortHousing(offers.filter(matches), sort);
+  // Unknown extras do not count as zero. Sort this separate group by the disclosed apartment price.
+  const visiblePending = sortHousing(pending.filter(matches).map(o => ({ ...o, basis: "apartment-only" as const, parking: null, storage: null })), sort).map(o => pending.find(p => p.id === o.id)!);
+
   return <section id="oferty" className={styles.catalog} aria-label="Katalog mieszkań">
     <div className={styles.filterHeading}><div><p className={styles.kicker}>ZNAJDŹ SWÓJ UKŁAD</p><h2>Mieszkania w wybranym budżecie</h2></div><button onClick={reset} type="button" className={styles.reset}>Wyczyść filtry</button></div>
     <div className={styles.filters}>
       <label>Pokoje<select value={rooms} onChange={e => setRooms(e.target.value)}><option value="all">Dowolna liczba</option><option value="1">1 pokój</option><option value="2">2 pokoje</option><option value="3">3 pokoje</option><option value="4+">4 i więcej</option></select></label>
-      <label>Deweloper<select value={developer} onChange={e => setDeveloper(e.target.value)}><option value="all">Wszyscy deweloperzy</option>{Array.from(new Set(offers.map(o => o.developer))).sort().map(d => <option key={d} value={d}>{d}</option>)}</select></label>
+      <label>Deweloper<select value={developer} onChange={e => setDeveloper(e.target.value)}><option value="all">Wszyscy deweloperzy</option>{Array.from(new Set([...offers, ...pending].map(o => o.developer))).sort().map(d => <option key={d} value={d}>{d}</option>)}</select></label>
       <label>Metraż od (m²)<input type="number" min="0" step="0.01" inputMode="decimal" value={minArea} onChange={e => setMinArea(e.target.value)} placeholder="np. 30" /></label>
       <label>Metraż do (m²)<input type="number" min="0" step="0.01" inputMode="decimal" value={maxArea} onChange={e => setMaxArea(e.target.value)} placeholder="np. 60" /></label>
       <label>Sortowanie<select value={sort} onChange={e => setSort(e.target.value as HousingSort)}><option value="price-asc">Cena: od najniższej</option><option value="price-desc">Cena: od najwyższej</option><option value="area-asc">Metraż: rosnąco</option><option value="area-desc">Metraż: malejąco</option><option value="unit-price">Cena lokalu za m²: rosnąco</option><option value="rooms-desc">Liczba pokoi: malejąco</option></select></label>
     </div>
-    <p className={styles.resultCount} role="status" aria-live="polite">Wyniki: <strong>{visible.length}</strong> z {offers.length}. Sortowanie według ceny porównawczej; cena za m² dotyczy samego lokalu.</p>
+    <p className={styles.resultCount} role="status" aria-live="polite">Wyniki: <strong>{visible.length + visiblePending.length}</strong> z {offers.length + pending.length}. Z policzoną ceną porównawczą: {visible.length}. Dopłaty do sprawdzenia: {visiblePending.length}.</p>
     <div className={styles.grid}>{visible.map(o => <OfferCard key={o.id} offer={o} />)}</div>
-    {!visible.length && <div className={styles.empty}><h3>Brak mieszkań przy tych ustawieniach</h3><p>Zmień metraż lub liczbę pokoi albo wybierz większy budżet. Nie doliczamy tu ofert z nieustalonym kosztem obowiązkowych dodatków.</p><button className="button" onClick={reset}>Wyczyść filtry</button></div>}
-    {!!pending.length && <details className={styles.pending}><summary>Inne propozycje — koszt dodatków wymaga potwierdzenia ({pending.length})</summary><p>To ceny samych lokali. Nie zaliczamy tych ofert do wyników w ustalonym budżecie i nie przedstawiamy ich jako pełnej ceny zakupu.</p><div className={styles.grid}>{pending.map(o => <OfferCard key={o.id} offer={o} />)}</div></details>}
+    {!visible.length && !visiblePending.length && <div className={styles.empty}><h3>Brak mieszkań przy tych ustawieniach</h3><p>Zmień metraż lub liczbę pokoi albo wybierz większy budżet. Nie doliczamy tu ofert z nieustalonym kosztem obowiązkowych dodatków.</p><button className="button" onClick={reset}>Wyczyść filtry</button></div>}
+    {!!visiblePending.length && <section className={styles.pending} aria-label="Mieszkania z dopłatami do potwierdzenia"><h3>Więcej mieszkań — dopłaty do sprawdzenia ({visiblePending.length})</h3><p>Cena samego lokalu mieści się w wybranym przedziale. Parking lub komórka mogą zwiększyć koszt zakupu ponad budżet. Sprawdź warunki przy ofercie.</p><div className={styles.grid}>{visiblePending.map(o => <OfferCard key={o.id} offer={o} />)}</div></section>}
+
   </section>;
 }

@@ -33,3 +33,5 @@
 @media(max-width:359px){.priceRow{flex-wrap:wrap}.offerLink{flex-grow:1}.cardState{font-size:11px}}
 
 .developerDark{background:#302518;border-radius:5px;padding:5px 8px}.developerDark img{height:26px}
+
+.pending>h3{font-size:20px;line-height:1.35;margin:0 0 8px}.pending>p{margin:0 0 18px}.budgets small+small{font-size:12px;line-height:1.4}
