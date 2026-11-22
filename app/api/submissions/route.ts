@@ -15,9 +15,9 @@ export async function POST(request: Request) {
     const data = await request.json();
     if (data.website) return Response.json({ ok: true });
     const kind =
-      data.kind === "company" || data.kind === "ad" ? data.kind : "offer";
+      data.kind === "company" || data.kind === "ad" || data.kind === "campaign" ? data.kind : "offer";
     if (kind !== "offer")
-      data.title = kind === "company" ? "Nowa firma" : "Zapytanie o baner";
+      data.title = kind === "company" ? "Nowa firma" : kind === "campaign" ? "Zapytanie o kampanię reklamową" : "Zapytanie o baner";
     data.kind = kind;
     if (
       typeof data.company !== "string" ||
@@ -35,9 +35,17 @@ export async function POST(request: Request) {
         (typeof data.contact !== "string" ||
           data.contact.length > 254 ||
           !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact))) ||
+      (kind === "campaign" &&
+        (typeof data.contact !== "string" ||
+          data.contact.length > 254 ||
+          !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(data.contact) ||
+          typeof data.phone !== "string" || data.phone.length > 40 ||
+          !["zapytania", "ruch", "oferta", "wizerunek", "nie-wiem"].includes(data.objective) ||
+          !["nie-wiem", "do-500", "500-1500", "1500-3000", "powyzej-3000"].includes(data.budget) ||
+          typeof data.conditions !== "string" || data.conditions.length > 2000)) ||
       data.title.length < 3 ||
       data.title.length > 200 ||
-      !/^https?:\/\//.test(data.source || "") ||
+      (kind === "campaign" ? (data.source.length > 0 && !/^https?:\/\//.test(data.source)) : !/^https?:\/\//.test(data.source)) ||
       !data.confirmed ||
       JSON.stringify(data).length > 15000
     )
