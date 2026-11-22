@@ -189,6 +189,7 @@ export default function Business() {
             <h2 id="campaign-title">Potrzebujesz reklamy, a nie tylko wpisu?</h2>
             <p>Możemy zaproponować przygotowanie kreacji i kampanii na Facebooku oraz Instagramie kierowanej do lokalnych odbiorców. Działania dobieramy do celu: ruch na stronie, zapytania lub zainteresowanie konkretną ofertą.</p>
             <a className={styles.primary} href="#zapytanie">Poproś o propozycję <ArrowUpRight size={17} /></a>
+            <p style={{marginTop:16,fontSize:12}}>Interesuje Cię baner na PriceStok? <a href="/dodaj-promocje?typ=reklama" style={{textDecoration:"underline",color:"#975008",fontWeight:700}}>Zapytaj o termin i miejsce</a>.</p>
           </div>
           <div className={styles.campaignChecklist}>
             <p><Check size={18} /> Ustalenie celu i grupy odbiorców</p>
