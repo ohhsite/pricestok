@@ -795,14 +795,16 @@ export default function AdminPanel() {
                   {d.company} · {d.category} · {s.created.slice(0, 10)}
                 </p>
                 <p>{d.conditions}</p>
-                <a
-                  className="text-link"
-                  href={d.source || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {d.source ? "Sprawdź źródło ↗" : "Brak podanej strony"}
-                </a>
+                {d.source ? (
+                  <a
+                    className="text-link"
+                    href={d.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Sprawdź źródło ↗
+                  </a>
+                ) : <p>Brak podanego linku do strony.</p>}
                 <div className="admin-tools">
                   {d.kind === "company" && (
                     <button
