@@ -788,19 +788,23 @@ export default function AdminPanel() {
             return (
               <article className="submission" key={s.id}>
                 <strong>{d.title}</strong>
-                {d.kind === "ad" && d.contact && <p>Kontakt: {d.contact}</p>}
+                {(d.kind === "ad" || d.kind === "campaign") && d.contact && <p>Kontakt: {d.contact}</p>}
+                {d.kind === "campaign" && d.phone && <p>Telefon: {d.phone}</p>}
+                {d.kind === "campaign" && <p>Cel: {d.objective || "—"} · Budżet reklamowy: {d.budget || "—"}</p>}
                 <p>
                   {d.company} · {d.category} · {s.created.slice(0, 10)}
                 </p>
                 <p>{d.conditions}</p>
-                <a
-                  className="text-link"
-                  href={d.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Sprawdź źródło ↗
-                </a>
+                {d.source ? (
+                  <a
+                    className="text-link"
+                    href={d.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Sprawdź źródło ↗
+                  </a>
+                ) : <p>Brak podanego linku do strony.</p>}
                 <div className="admin-tools">
                   {d.kind === "company" && (
                     <button
@@ -819,7 +823,7 @@ export default function AdminPanel() {
                       Przygotuj wizytówkę firmy
                     </button>
                   )}
-                  {d.kind !== "company" && d.kind !== "ad" && (
+                  {d.kind !== "company" && d.kind !== "ad" && d.kind !== "campaign" && (
                     <button
                       className="table-action"
                       onClick={() => {
