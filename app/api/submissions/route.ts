@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       (kind === "campaign" &&
         (typeof data.contact !== "string" ||
           data.contact.length > 254 ||
-          !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(data.contact) ||
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact) ||
           typeof data.phone !== "string" || data.phone.length > 40 ||
           !["zapytania", "ruch", "oferta", "wizerunek", "nie-wiem"].includes(data.objective) ||
           !["nie-wiem", "do-500", "500-1500", "1500-3000", "powyzej-3000"].includes(data.budget) ||
