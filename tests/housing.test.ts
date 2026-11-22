@@ -10,7 +10,7 @@ test("budgets use the displayed package, not an apartment's headline price", () 
   assert.equal(inBudget(offer, "600"), true);
 });
 test("inclusive ceilings and strict over-600 boundary leave no gap", () => {
-  const offer: HousingOffer = { ...housingOffers[0], price: 545000 };
+  const offer: HousingOffer = { ...housingOffers.find(o => o.id === "polarna-7")!, price: 545000 };
   assert.equal(comparisonPrice(offer), 600000);
   assert.equal(inBudget(offer, "600"), true);
   assert.equal(inBudget(offer, "600-plus"), false);
@@ -32,7 +32,7 @@ test("sorting by area and package cost does not mutate the source catalog", () =
   const asc = sortHousing(housingOffers, "price-asc");
   const desc = sortHousing(housingOffers, "price-desc");
   assert.equal(asc[0].id, "polarna-7");
-  assert.equal(desc[0].id, "polarna-14");
+  assert.equal(desc[0].id, "jagienki-b1-53");
   assert.equal(sortHousing(housingOffers, "rooms-desc")[0].rooms, 4);
   assert.equal(sortHousing(housingOffers, "area-desc")[0].area, 79.91);
   assert.deepEqual(housingOffers.map(o => o.id), ids);

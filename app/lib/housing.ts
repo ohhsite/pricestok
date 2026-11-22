@@ -1,3 +1,5 @@
+import { additionalHousingOffers, additionalHousingPending } from "./housing-additional.ts";
+
 export type Budget = "all" | "400" | "500" | "600" | "600-plus";
 export type HousingOffer = {
   id: string; investment: string; developer: string; address: string; district: string;
@@ -22,6 +24,7 @@ const polar = (id: number, area: number, rooms: number, floor: number, price: nu
   source: "https://www.ktk-deweloper.pl/oferta/polarna/", detailsSource: `https://www.ktk-deweloper.pl/oferta/polarna/lok-${id}/`, checked: housingChecked,
 });
 export const housingOffers: HousingOffer[] = [
+  ...additionalHousingOffers,
   polar(7, 26.05, 1, 1, 309995), polar(17, 41.50, 2, 0, 431600),
   polar(16, 43.31, 2, 0, 467748), polar(10, 43.80, 3, 1, 499320),
   polar(5, 43.94, 3, 0, 500916), polar(13, 53.44, 2, 2, 545088),
@@ -40,6 +43,7 @@ export const housingOffers: HousingOffer[] = [
     source: "https://bialystok.nieruchomosci-online.pl/nowe-mieszkanie,rezydencja-manufaktura/26975311.html", checked: housingChecked },
 ];
 export const housingPending: HousingOffer[] = [
+  ...additionalHousingPending,
   { id: "symfonia-f4", investment: "Symfonia Życia II · F4", developer: "Sokołowscy Nieruchomości", address: "ul. Produkcyjna, Białystok", district: "Zawady", area: 32.30, rooms: 2, floor: 0, price: 339000, parking: null, storage: null, storageIncluded: false, basis: "incomplete", note: "Ogródek ok. 40 m². Cena i obowiązek zakupu parkingu oraz komórki nie zostały potwierdzone. Tej oferty nie zaliczamy do pełnych kosztów budżetowych.", source: "https://www.sokolowscynieruchomosci.pl/inwestycje/symfonia-zycia-etap-ii/f4", checked: housingChecked },
   { id: "symfonia-i13", investment: "Symfonia Życia II · I13", developer: "Sokołowscy Nieruchomości", address: "ul. Produkcyjna, Białystok", district: "Zawady", area: 46.93, rooms: 3, floor: 2, price: 435000, parking: null, storage: null, storageIncluded: false, basis: "incomplete", note: "Balkon. Cena i obowiązek zakupu parkingu oraz komórki nie zostały potwierdzone. Tej oferty nie zaliczamy do pełnych kosztów budżetowych.", source: "https://www.sokolowscynieruchomosci.pl/inwestycje/symfonia-zycia-etap-ii/i13", checked: housingChecked },
 ];

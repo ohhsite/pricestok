@@ -4,6 +4,8 @@ import { comparisonPrice, housingMoney, sortHousing, type HousingOffer, type Hou
 import styles from "./Housing.module.css";
 
 const developerLogos: Record<string, string> = {
+  "Solidster": "/brands/developers/solidster.webp",
+  "BIRKBUD": "/brands/developers/birkbud.png",
   "KTK Deweloper": "/brands/developers/ktk.svg",
   "Yuniversal Podlaski": "/brands/developers/yuniversal.png",
   "MERCISE": "/brands/developers/mercise.webp",
