@@ -3,22 +3,45 @@ import { useState } from "react";
 import { comparisonPrice, housingMoney, sortHousing, type HousingOffer, type HousingSort } from "../lib/housing";
 import styles from "./Housing.module.css";
 
+const developerLogos: Record<string, string> = {
+  "KTK Deweloper": "/brands/developers/ktk.svg",
+  "Yuniversal Podlaski": "/brands/developers/yuniversal.png",
+  "MERCISE": "/brands/developers/mercise.webp",
+  "Sokołowscy Nieruchomości": "/brands/developers/sokolowscy.svg",
+};
+
 function OfferCard({ offer }: { offer: HousingOffer }) {
   const total = comparisonPrice(offer);
+  const basis = offer.basis === "incomplete" ? "Dopłaty do potwierdzenia" : offer.basis === "apartment-only" ? "Bez opcjonalnych dodatków" : offer.basis === "optional-parking" ? "Z opcjonalnym parkingiem" : "Z parkingiem i komórką";
   return <article className={styles.card} id={offer.id}>
-    <div className={styles.cardTop}><span className={styles.badge}>{offer.basis === "incomplete" ? "Dopłaty do potwierdzenia" : offer.basis === "apartment-only" ? "Samo mieszkanie" : "Z parkingiem i komórką"}</span><span>{offer.developer}</span></div>
+    <div className={styles.cardTop}>
+      <div className={`${styles.developer} ${offer.developer === "Sokołowscy Nieruchomości" ? styles.developerDark : ""}`}>
+        {/* Official brand assets are served locally without changing their artwork. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={developerLogos[offer.developer]} alt={offer.developer} width="112" height="36" loading="lazy" />
+      </div>
+      <span className={styles.cardState}>Rynek pierwotny</span>
+    </div>
     <h3>{offer.investment}{offer.id.startsWith("polarna-") ? ` · lokal ${offer.id.split("-")[1]}` : offer.id.startsWith("jagienki-") ? ` · nr ${offer.id.split("-").at(-1)}` : ""}</h3>
     <p className={styles.address}>{offer.address} · {offer.district}</p>
-    <div className={styles.features}><strong>{offer.area.toLocaleString("pl-PL", { minimumFractionDigits: 2 })} m²</strong><span>{offer.rooms} {offer.rooms === 1 ? "pokój" : "pokoje"}</span><span>{offer.floor === 0 ? "Parter" : `Piętro ${offer.floor}`}</span><span>Stan deweloperski</span></div>
-    <dl className={styles.costs}>
-      <div><dt>Mieszkanie</dt><dd>{housingMoney(offer.price)}</dd></div>
-      <div><dt>Parking{offer.basis === "optional-parking" ? " (opcjonalny)" : ""}</dt><dd>{offer.parking !== null ? `${offer.basis === "optional-parking" ? "od " : ""}${housingMoney(offer.parking)}` : offer.basis === "apartment-only" ? "Nie wliczamy" : "Do ustalenia"}</dd></div>
-      <div><dt>Komórka / box</dt><dd>{offer.storageIncluded ? "W cenie" : offer.storage !== null ? housingMoney(offer.storage) : offer.basis === "apartment-only" ? "Opcjonalna, niewliczona" : "Do ustalenia"}</dd></div>
-    </dl>
-    <div className={styles.total}><span>{total === null ? "Cena lokalu, bez ustalonych dopłat" : offer.basis === "apartment-only" ? "Cena bez opcjonalnych dodatków" : "Cena porównawcza z dodatkami"}</span><strong>{offer.basis === "optional-parking" ? "od " : ""}{housingMoney(total ?? offer.price)}</strong></div>
-    <p className={styles.note}>{offer.note}</p>
-    <div className={styles.source}><span>Sprawdzono 22.11.2026</span><a href={offer.source} target="_blank" rel="noopener noreferrer">Sprawdź u sprzedawcy</a></div>
-    {offer.detailsSource && <a className={styles.detailsLink} href={offer.detailsSource} target="_blank" rel="noopener noreferrer">{offer.id.startsWith("polarna-") ? "Plan i szczegóły lokalu" : "Źródło informacji o dodatkach"}</a>}
+    <div className={styles.features}><strong>{offer.area.toLocaleString("pl-PL", { minimumFractionDigits: 2 })} m²</strong><span>{offer.rooms} {offer.rooms === 1 ? "pokój" : offer.rooms < 5 ? "pokoje" : "pokoi"}</span><span>{offer.floor === 0 ? "Parter" : `Piętro ${offer.floor}`}</span></div>
+    <div className={styles.priceRow}>
+      <div className={styles.total}><span>{total === null ? "Cena samego mieszkania" : "Cena porównawcza"}</span><strong>{offer.basis === "optional-parking" ? "od " : ""}{housingMoney(total ?? offer.price)}</strong></div>
+      <a className={styles.offerLink} href={offer.source} target="_blank" rel="noopener noreferrer" aria-label={`Zobacz ofertę: ${offer.investment}, ${offer.area} m²`}>Zobacz ofertę</a>
+    </div>
+    <p className={styles.basis}>{basis}</p>
+    <details className={styles.cardDetails}>
+      <summary>Koszty i szczegóły</summary>
+      <p className={styles.developerName}>Deweloper: {offer.developer} · stan deweloperski</p>
+      <dl className={styles.costs}>
+        <div><dt>Mieszkanie</dt><dd>{housingMoney(offer.price)}</dd></div>
+        <div><dt>Parking{offer.basis === "optional-parking" ? " (opcjonalny)" : ""}</dt><dd>{offer.parking !== null ? `${offer.basis === "optional-parking" ? "od " : ""}${housingMoney(offer.parking)}` : offer.basis === "apartment-only" ? "Nie wliczamy" : "Do ustalenia"}</dd></div>
+        <div><dt>Komórka / box</dt><dd>{offer.storageIncluded ? "W cenie" : offer.storage !== null ? housingMoney(offer.storage) : offer.basis === "apartment-only" ? "Opcjonalna, niewliczona" : "Do ustalenia"}</dd></div>
+      </dl>
+      <p className={styles.note}>{offer.note}</p>
+      <p className={styles.source}>Sprawdzono 22.11.2026</p>
+      {offer.detailsSource && <a className={styles.detailsLink} href={offer.detailsSource} target="_blank" rel="noopener noreferrer">{offer.id.startsWith("polarna-") ? "Plan i szczegóły lokalu" : "Źródło informacji o dodatkach"}</a>}
+    </details>
   </article>;
 }
 
