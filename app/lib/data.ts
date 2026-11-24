@@ -48,6 +48,7 @@ export const categories = [
   { id: "rozrywka", name: "Rozrywka", icon: "Ticket", color: "#e9edff" },
   { id: "zakupy", name: "Zakupy", icon: "ShoppingBag", color: "#fff3d8" },
   { id: "uslugi", name: "Usługi", icon: "Wrench", color: "#e7f1f1" },
+  { id: "motoryzacja", name: "Motoryzacja", icon: "Wrench", color: "#e7f1f1" },
   { id: "dla-dzieci", name: "Dla dzieci", icon: "Baby", color: "#fce9ed" },
 ];
 // Current source-checked offers; removed legacy entries remain recoverable in the database.
