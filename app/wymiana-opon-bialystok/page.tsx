@@ -1,0 +1,26 @@
+import Link from "next/link";
+export const metadata = { title: "Wymiana opon Białystok – cennik 2026 i tania wulkanizacja", description: "Porównaj ceny wymiany czterech opon w Białymstoku: felgi stalowe i aluminiowe 15–18 cali, wymiana kół i przechowalnia.", alternates: {canonical:"/wymiana-opon-bialystok"} };
+const portal="https://dobrymechanik.pl/uslugi/wymiana-opon/bialystok/";
+type Row={name:string; address:string; url:string; phone?:string; p:(number|null)[]; note:string};
+const rows:Row[]=[
+{name:"Mar-Max",address:"Białystok",url:"https://autoserwis-bialystok.pl/cennik/",phone:"513098008",p:[80,100,100,120,120],note:"Ceny od; z wyważaniem"},
+{name:"Auto Serwis Wasilewski",address:"Zabłudowska 69",url:portal,p:[null,null,160,null,null],note:"Portal; alu do 16 cali"},
+{name:"Inter Auto",address:"Hetmańska 90",url:"https://inter-auto.com.pl/cennik/",phone:"501770300",p:[140,140,160,180,200],note:"Ceny od; stawka za sztukę × 4"},
+{name:"Centrum Serwisowe Fasty",address:"Przędzalniana 60A",url:portal,p:[null,null,168,200,null],note:"Portal; alu do 16 cali"},
+{name:"Autoserwis 123",address:"Hetmańska 76",url:"https://www.autoserwis123.pl/cennik.html",phone:"512123174",p:[150,160,170,180,220],note:"Stal od 150 zł"},
+{name:"Max Auto",address:"Kopernika 97a",url:"https://www.oponeo.pl/serwis-samochodowy/bialystok/premio-max-auto-2103",p:[150,180,180,200,220],note:"Oponeo – montaż po zakupie opon"},
+{name:"PREMIO JW13",address:"Kopernika 99",url:portal,p:[null,null,null,null,240],note:"Portal"},
+{name:"Remex Auto",address:"Białostocka 108/2, Wasilków",url:portal,p:[null,null,null,190,210],note:"Portal; okolice Białegostoku"}
+];
+const labels=["Stal 16″","Alu 15″","Alu 16″","Alu 17″","Alu 18″"];
+export default function Page(){return <main style={{maxWidth:1100,margin:"auto",padding:"32px 16px",lineHeight:1.6}}>
+<Link href="/">← PriceStok – lokalne okazje</Link><p style={{color:"#b45309",fontWeight:700}}>PORÓWNANIA CEN · BIAŁYSTOK</p>
+<h1>Gdzie najtaniej wymienić opony w Białymstoku? Cennik 2026</h1><p>Porównujemy dostępne online ceny sezonowej wymiany czterech opon. Źródła sprawdzone 24 listopada 2026 r. Najniższa znaleziona stawka zaczyna się od 80 zł na felgach stalowych. Nie jest to pełny ranking wszystkich warsztatów w mieście.</p>
+<div style={{display:"flex",gap:12,flexWrap:"wrap"}}>{labels.map((label,i)=><a key={label} href={"#rozmiar-"+i} style={{padding:10,border:"1px solid #ddd",borderRadius:8}}>{label}</a>)}</div>
+<h2>Porównanie cen wymiany opon – 8 serwisów</h2><div style={{overflowX:"auto"}}><table className="holiday-table" style={{minWidth:780,width:"100%"}}><thead><tr><th>Serwis</th>{labels.map(s=><th key={s}>{s}</th>)}<th>Warunki</th></tr></thead><tbody>{rows.map(r=><tr key={r.name}><td><a href={r.url}>{r.name}</a><br/><small>{r.address}</small>{r.phone&&<><br/><a href={"tel:"+r.phone}>{r.phone}</a></>}</td>{r.p.map((v,i)=><td key={i}>{v===null?"—":v+" zł"}</td>)}<td>{r.note}</td></tr>)}</tbody></table></div>
+<p>Kwoty orientacyjne za komplet. Brak ceny oznacza brak potwierdzonej stawki dla tej konfiguracji. Przed wizytą potwierdź cenę, wyważanie, materiały, dopłaty TPMS i termin. Oferty portali mogą różnić się od cen bezpośrednich.</p>
+{labels.map((label,i)=><section id={"rozmiar-"+i} key={label}><h2>Najtańsza wymiana opon – {label}</h2><ol>{rows.filter(r=>r.p[i]!==null).sort((a,b)=>(a.p[i]??0)-(b.p[i]??0)).map(r=><li key={r.name}><a href={r.url}>{r.name}</a> – {r.p[i]} zł ({r.note})</li>)}</ol></section>)}
+<h2>Wymiana całych kół w Białymstoku</h2><p>To inna usługa niż przekładanie opon na felgach. Autoserwis 123: stal od 100 zł według własnego cennika; alu 17″ 120 zł według portalu. JW13 GTS AUTO: alu do 16″ 140 zł, 17″ 160 zł według portalu.</p><p><a href={portal}>Sprawdź ceny przekładania kół</a>.</p>
+<h2>Przechowywanie opon – hotel dla opon</h2><ul><li><a href="https://www.autoserwis123.pl/cennik.html">Autoserwis 123</a>: opony od 100 zł, koła od 120 zł.</li><li><a href="https://inter-auto.com.pl/cennik/">Inter Auto</a>: opony od 120 zł, koła od 150 zł.</li></ul><p>Zapytaj o okres przechowania i warunki odbioru.</p>
+<h2>Mobilna wulkanizacja z dojazdem</h2><p>Przed zamówieniem poproś o łączną wycenę usługi, dojazdu oraz ewentualnej dopłaty za SUV. Nie mamy jeszcze potwierdzonego porównania cen mobilnych serwisów.</p>
+<h2>Jak znaleźć tanią wulkanizację?</h2><p>Porównuj tę samą średnicę felgi i ten sam zakres prac. Ceny startowe mogą nie obejmować wszystkich materiałów. Przy oponach RunFlat i czujnikach ciśnienia zapytaj o dopłaty.</p><p>Lubisz takie zestawienia? Obserwuj PriceStok i sprawdzaj <Link href="/">więcej lokalnych okazji</Link>.</p></main>}
