@@ -26,6 +26,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     : { data: [], error: null };
   const companies = await listCompanies().catch(() => []);
   return [
+    { url: base + "/wymiana-opon-bialystok", changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: base + "/kategoria/motoryzacja", changeFrequency: "weekly" as const, priority: 0.8 },
     ...housingPages.map(page => ({ url: base + page.path, lastModified: new Date("2026-11-22T19:00:00+01:00"), changeFrequency: "weekly" as const, priority: 0.8 })),
     ...[weekendPath, ...weekendGroups.map((group) => group.path)].map((path) => ({ url: base + path, lastModified: new Date("2026-11-20T19:00:00+01:00") })),
     { url: base + "/porownanie-cen-cateringu-wigilijnego-bialystok-2026", lastModified: new Date("2026-11-09T20:00:00+01:00"), changeFrequency: "weekly" as const, priority: 0.8 },
@@ -39,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     { url: base, changeFrequency: "daily" as const, priority: 1 },
     ...categories
+      .filter((c) => c.id !== "motoryzacja")
       .filter((c) => c.content?.trim() || active.some((o) => o.category === c.id ||
         categories.some((child) => child.id === o.category && child.parent === c.id)))
       .map((c) => ({
