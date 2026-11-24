@@ -23,7 +23,7 @@ export default function SiteMenu() {
       <nav aria-label="Nawigacja strony" onClick={e => { if ((e.target as HTMLElement).closest("a") && ref.current) ref.current.open = false; }}>
         <a className="menu-all" href="/#okazje">Wszystkie promocje <ChevronRight size={17} /></a>
         <span className="menu-label">Kategorie</span>
-        <div className="menu-categories">{categories.filter(c => !c.parent).map(c => <a key={c.id} href={"/kategoria/" + c.id}>{c.name}<ChevronRight size={15} /></a>)}</div>
+        <div className="menu-categories">{categories.filter(c => !c.parent && c.id !== "motoryzacja").map(c => <a key={c.id} href={"/kategoria/" + c.id}>{c.name}<ChevronRight size={15} /></a>)}</div>
         <span className="menu-label">Mieszkania w Białymstoku</span>
         <a href="/mieszkania-bialystok">Wszystkie mieszkania</a><a href="/mieszkania-do-400-tys-bialystok">Mieszkania do 400 tys. zł</a><a href="/mieszkania-do-500-tys-bialystok">Mieszkania do 500 tys. zł</a><a href="/mieszkania-do-600-tys-bialystok">Mieszkania do 600 tys. zł</a><a href="/mieszkania-powyzej-600-tys-bialystok">Mieszkania powyżej 600 tys. zł</a>
         <span className="menu-label">Święta w Białymstoku</span>
