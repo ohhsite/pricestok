@@ -40,7 +40,6 @@ export default async function Category({ params }: Props) {
   if (!category) notFound();
   return (
     <>
-    {slug === "motoryzacja" && <section style={{maxWidth:1100,margin:"24px auto",padding:"20px",background:"#fff",border:"1px solid #e5ded2",borderRadius:16}}><p style={{color:"#94501a",fontWeight:700}}>PORÓWNANIE CEN</p><h2>Gdzie najtaniej wymienić opony w Białymstoku?</h2><p>Porównaj ceny wulkanizacji, wymiany kół i przechowywania opon według rozmiaru felg.</p><a className="button" href="/wymiana-opon-bialystok">Zobacz porównanie cen →</a></section>}
     <Catalog
       offers={await listOffers()}
       categories={categories}

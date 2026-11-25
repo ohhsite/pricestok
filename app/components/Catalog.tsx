@@ -415,6 +415,7 @@ export default function Catalog({
                   </span>
                   <strong>{c.name}</strong>
                   <small>
+                    {c.id === "motoryzacja" && <>1 porównanie cen<br /></>}
                     {active.filter((o) => matchesCategory(o, c.id)).length}{" "}
                     {countLabel(
                       active.filter((o) => matchesCategory(o, c.id)).length,
@@ -467,6 +468,7 @@ export default function Catalog({
               {tab === "events" ? "Przejdź do promocji" : "Wszystkie promocje"} <ArrowRight size={17} />
             </a>
           </div>
+          {category === "motoryzacja" && <section style={{padding:"20px",background:"#fff",border:"1px solid #e5ded2",borderRadius:16,marginBottom:24}}><p style={{color:"#94501a",fontWeight:700}}>PORÓWNANIE CEN</p><h2>Gdzie najtaniej wymienić opony w Białymstoku?</h2><p>Porównaj ceny wulkanizacji, wymiany kół i przechowywania opon według rozmiaru felg.</p><a className="button" href="/wymiana-opon-bialystok">Zobacz porównanie cen →</a></section>}
           <div className="filters">
             <div className="tabs">
               {[
@@ -586,7 +588,7 @@ export default function Catalog({
                 </div>
               )}
             </>
-          ) : (
+          ) : category === "motoryzacja" ? null : (
             <div className="empty">
               <Search size={32} />
               <h3>Tu jeszcze szukamy dobrych okazji</h3>
